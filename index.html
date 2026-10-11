@@ -363,6 +363,14 @@ button.cell:active{transform:scale(.92)}
 .mrow .inp{height:42px}
 .mhdr{display:grid;grid-template-columns:minmax(0,1fr) 64px 76px 38px;gap:6px;font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;font-weight:600}
 select.inp{font-family:var(--font-body)}
+.minihead{font-size:13px;font-weight:600;margin-top:16px;color:var(--fg)}
+.chrow{display:flex;align-items:center;gap:10px;padding:10px 0;border-top:1px solid var(--line)}
+.chrow:first-child{border-top:0}
+.chrow .hfields{flex:1}
+.chrow .calc{font-size:12px}
+.chrow.act .inp{border-color:var(--accent)}
+.steps{margin:4px 0 10px;padding-left:20px;font-size:14px;display:flex;flex-direction:column;gap:4px}
+.addh .btn.full{grid-column:1/-1}
 
 .toast{position:fixed;left:50%;bottom:calc(150px + env(safe-area-inset-bottom,0px));transform:translate(-50%,10px);background:var(--fg);color:var(--bg);padding:10px 16px;border-radius:12px;font-size:14px;font-weight:500;opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;max-width:calc(100% - 32px);text-align:center;z-index:20}
 .toast.show{opacity:1;transform:translate(-50%,0)}
@@ -400,7 +408,7 @@ select.inp{font-family:var(--font-body)}
 
   <!-- CALENDAR / PLAN -->
   <section id="v-cal" hidden>
-    <p class="eyebrow">Oct 12 – Dec 30, 2026</p>
+    <p class="eyebrow" id="cRange"></p>
     <div class="titlebar"><h1 class="page-title" id="cTitle">Calendar</h1>
       <span class="seg" id="calSeg"><button type="button" data-cs="heat" aria-pressed="true">Heatmap</button><button type="button" data-cs="plan" aria-pressed="false">Plan</button></span></div>
     <div id="calHeat">
@@ -570,6 +578,28 @@ select.inp{font-family:var(--font-body)}
       <div id="instBox"></div>
     </div>
     <div class="panel">
+      <h2>Cloud sync</h2>
+      <div id="syncBox"></div>
+    </div>
+    <div class="panel">
+      <h2>Challenges</h2>
+      <p class="sub">Each challenge has its own dates, calendar, stats, badges and report. Your log, habits, meals and schedule carry over.</p>
+      <div id="chList"></div>
+      <h3 class="minihead">Start a new challenge</h3>
+      <div class="addh">
+        <input class="inp text full" id="ncName" maxlength="40" placeholder="Name, e.g. Winter 2027" aria-label="Challenge name">
+        <label class="field">Start date<input class="inp" id="ncStart" type="date"></label>
+        <label class="field">Length (days)<input class="inp" id="ncLen" type="number" inputmode="numeric" min="7" max="366" value="80"></label>
+        <p class="calc full" id="ncInfo"></p>
+        <button class="btn primary full" id="ncAdd" type="button">Start challenge</button>
+      </div>
+    </div>
+    <div class="panel">
+      <h2>Spreadsheet export</h2>
+      <p class="sub">CSV files open in Excel, Google Sheets or Numbers. The daily log has one row per day across every challenge; the lift file has one row per set.</p>
+      <div class="btnrow"><button class="btn primary" id="csvDays" type="button">Daily log (.csv)</button><button class="btn" id="csvLifts" type="button">Lift sets (.csv)</button></div>
+    </div>
+    <div class="panel">
       <h2>Backup</h2>
       <p class="sub">Your log lives in this browser only. Copy a backup to keep it safe or move it to another device.</p>
       <div class="btnrow">
@@ -589,7 +619,7 @@ select.inp{font-family:var(--font-body)}
       </div>
       <div class="btnrow" style="margin-top:18px"><button class="btn danger" id="resetBtn" type="button">Erase all data</button></div>
       <div class="confirm" id="resetConfirm" hidden>
-        <p>Erase every logged day and reset settings? Copy a backup first if you might want it back.</p>
+        <p>Erase every logged day and reset settings on this device? Cloud sync is turned off first, so your synced copy stays safe. Copy a backup if you might want it back.</p>
         <div class="btnrow"><button class="btn danger" id="resetYes" type="button">Erase</button><button class="btn" id="resetNo" type="button">Cancel</button></div>
       </div>
     </div>
@@ -617,8 +647,8 @@ select.inp{font-family:var(--font-body)}
 <script>
 (function(){
 'use strict';
-const START = new Date(2026, 9, 12), END = new Date(2026, 11, 30), TOTAL = 80, WEEKS = 12;
-const HALFWAY = new Date(2026, 10, 20); // day 40
+const DEFAULT_CHALLENGE = {id:'c2026', name:'80-Day Block', start:'2026-10-12', end:'2026-12-30'};
+let CHAL, START, END, TOTAL, WEEKS, HALFWAY;
 const SKEY = 'block80.v1';
 const TYPES = ['check', 'num', 'water', 'gym'];
 const DEFAULT_HABITS = [
@@ -650,8 +680,8 @@ const DEFAULT_LIFTS = {
 };
 const BADGES = [
   {id:'perfect1', name:'First perfect day'}, {id:'streak7', name:'7-day chain'}, {id:'week100', name:'Perfect week'},
-  {id:'pr1', name:'First PR'}, {id:'streak30', name:'30-day chain'}, {id:'halfway', name:'Halfway, Nov 20'},
-  {id:'gym25', name:'25 gym sessions'}, {id:'streak50', name:'50-day chain'}, {id:'finish', name:'Finished Dec 30'}
+  {id:'pr1', name:'First PR'}, {id:'streak30', name:'30-day chain'}, {id:'halfway', name:'Halfway'},
+  {id:'gym25', name:'25 gym sessions'}, {id:'streak50', name:'50-day chain'}, {id:'finish', name:'Finished'}
 ];
 const CHECK_SVG = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>';
 const CHEV = '<svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>';
@@ -696,6 +726,12 @@ const fmtHM = mins => Math.floor(mins / 60) + 'h ' + pad(Math.round(mins % 60)) 
 function fmtClock(sec){ sec = Math.round(sec); const h = Math.floor(sec / 3600), m = Math.floor(sec % 3600 / 60), s = sec % 60; return h ? h + ':' + pad(m) + ':' + pad(s) : m + ':' + pad(s); }
 const fmtN = (n, d) => Number(n).toLocaleString('en-US', {maximumFractionDigits:d == null ? 1 : d});
 const pct = p => Math.round(p * 100) + '%';
+function setPeriod(c){ CHAL = c; START = parseKey(c.start); END = parseKey(c.end); TOTAL = diffDays(START, END) + 1; WEEKS = Math.ceil(TOTAL / 7); HALFWAY = addDays(START, Math.ceil(TOTAL / 2) - 1); }
+setPeriod(DEFAULT_CHALLENGE);
+const rangeLabel = () => fMD.format(START) + ' – ' + fMD.format(END) + ', ' + END.getFullYear();
+const endLabel = () => fMD.format(END);
+const firstSunday = () => addDays(START, (7 - START.getDay()) % 7 || 7);
+const rKey = wi => 'r' + key(weekStart(wi));
 
 /* ---------- data ---------- */
 const posNum = v => (typeof v === 'number' && isFinite(v) && v >= 0) ? Math.round(v * 100) / 100 : null;
@@ -731,11 +767,13 @@ function cleanDay(v){
     .map(L => ({ex:L.ex.trim().slice(0, 60), w:posNum(L.w) || 0, r:Math.floor(L.r)}));
   d.dur = intOrNull(v.dur);
   if (typeof v.note === 'string') d.note = v.note.slice(0, 4000);
+  if (typeof v.u === 'number') d.u = v.u;
   return d;
 }
 function cleanSettings(s){
   const out = defaultSettings();
   if (!s || typeof s !== 'object') return out;
+  if (typeof s.u === 'number') out.u = s.u;
   if (Array.isArray(s.habits)) {
     const seen = new Set();
     const hs = s.habits.filter(h => h && typeof h.id === 'string' && idOK(h.id) && typeof h.name === 'string' && TYPES.includes(h.type) && !seen.has(h.id) && seen.add(h.id))
@@ -782,29 +820,54 @@ function cleanSettings(s){
 }
 function clean(raw){
   if (!raw || typeof raw !== 'object' || !raw.days || typeof raw.days !== 'object') return null;
-  const out = {version:3, settings:cleanSettings(raw.settings), days:{}, reviews:{}, badges:{}};
+  const out = {version:4, settings:cleanSettings(raw.settings), days:{}, reviews:{}, badges:{}, challenges:[]};
   for (const [k, v] of Object.entries(raw.days)) if (isKey(k) && v && typeof v === 'object') out.days[k] = cleanDay(v);
-  if (raw.reviews && typeof raw.reviews === 'object') for (const [k, v] of Object.entries(raw.reviews)) {
-    if (/^w\d{1,2}$/.test(k) && v && typeof v === 'object') out.reviews[k] = {good:String(v.good || '').slice(0, 2000), fix:String(v.fix || '').slice(0, 2000)};
+  if (Array.isArray(raw.challenges)) {
+    const seen = new Set();
+    for (const c of raw.challenges) if (c && typeof c.id === 'string' && idOK(c.id) && !seen.has(c.id) && isKey(c.start) && isKey(c.end) && c.start <= c.end) {
+      seen.add(c.id);
+      const o = {id:c.id, name:String(c.name || 'Challenge').slice(0, 40), start:c.start, end:c.end};
+      if (c.deleted) o.deleted = true; if (typeof c.u === 'number') o.u = c.u;
+      out.challenges.push(o);
+    }
   }
-  if (raw.badges && typeof raw.badges === 'object') for (const b of BADGES) if (isKey(raw.badges[b.id])) out.badges[b.id] = raw.badges[b.id];
+  if (!out.challenges.some(c => !c.deleted)) out.challenges.push(Object.assign({}, DEFAULT_CHALLENGE));
+  if (raw.reviews && typeof raw.reviews === 'object') for (const [k, v] of Object.entries(raw.reviews)) {
+    let kk = k;
+    if (/^w\d{1,2}$/.test(k)) kk = 'r' + key(addDays(parseKey(DEFAULT_CHALLENGE.start), 7 * Number(k.slice(1))));
+    if (/^r\d{4}-\d{2}-\d{2}$/.test(kk) && v && typeof v === 'object') { out.reviews[kk] = {good:String(v.good || '').slice(0, 2000), fix:String(v.fix || '').slice(0, 2000)}; if (typeof v.u === 'number') out.reviews[kk].u = v.u; }
+  }
+  if (raw.badges && typeof raw.badges === 'object') {
+    const flat = BADGES.some(b => isKey(raw.badges[b.id]));
+    const groups = flat ? {[DEFAULT_CHALLENGE.id]: raw.badges} : raw.badges;
+    for (const [cid, bs] of Object.entries(groups)) if (idOK(cid) && bs && typeof bs === 'object') { const g = {}; for (const b of BADGES) if (isKey(bs[b.id])) g[b.id] = bs[b.id]; if (Object.keys(g).length) out.badges[cid] = g; }
+  }
   return out;
 }
-let data = {version:3, settings:defaultSettings(), days:{}, reviews:{}, badges:{}};
+const freshData = () => ({version:4, settings:defaultSettings(), days:{}, reviews:{}, badges:{}, challenges:[Object.assign({}, DEFAULT_CHALLENGE)]});
+let data = freshData();
+let lastSettingsSig = null;
+function settingsSig(){ const o = Object.assign({}, data.settings); delete o.ui; delete o.u; return JSON.stringify(o); }
 let storageOK = true;
 function load(){
   try { const raw = localStorage.getItem(SKEY); if (raw) { const c = clean(JSON.parse(raw)); if (c) data = c; } }
   catch (e) { storageOK = false; }
 }
 function save(){
+  const sig = settingsSig(); if (lastSettingsSig !== null && sig !== lastSettingsSig) data.settings.u = stamp(data.settings.u); lastSettingsSig = sig;
   try { localStorage.setItem(SKEY, JSON.stringify(data)); storageOK = true; }
   catch (e) { if (storageOK) toast("Couldn't save on this device. Copy a backup from Setup."); storageOK = false; }
   queueBadgeCheck();
+  queueSync();
 }
 let saveT;
 const saveSoon = () => { clearTimeout(saveT); saveT = setTimeout(save, 350); };
 const S = () => data.settings;
-const rec = d => data.days[key(d)] || (data.days[key(d)] = blankDay());
+const stamp = prev => Math.max(Date.now(), (prev || 0) + 1);
+const rec = d => { const k = key(d), r = data.days[k] || (data.days[k] = blankDay()); r.u = stamp(r.u); return r; };
+const myBadges = () => data.badges[CHAL.id] || (data.badges[CHAL.id] = {});
+const liveChallenges = () => data.challenges.filter(c => !c.deleted).sort((a, b) => a.start.localeCompare(b.start));
+const badgeName = b => b.id === 'halfway' ? 'Halfway, ' + fMD.format(HALFWAY) : b.id === 'finish' ? 'Finished ' + endLabel() : b.name;
 const peek = d => data.days[key(d)];
 const isLogged = r => r && (Object.keys(r.checks).length || Object.keys(r.vals).length || r.water.length || r.meals.length || r.study.length || r.weight != null || r.wake || r.bed || r.run.dist || r.lifts.length || r.dur || r.note);
 const loggedCount = (src) => Object.values((src || data).days).filter(isLogged).length;
@@ -872,8 +935,8 @@ function dayXP(d, prs){
 function xpInfo(prs){
   const last = lastElapsed(); let xp = 0;
   if (last) for (const d of days(START, last)) xp += dayXP(d, prs);
-  for (const v of Object.values(data.reviews)) if ((v.good || '').trim() || (v.fix || '').trim()) xp += 25;
-  for (const b of BADGES) if (data.badges[b.id]) xp += 100;
+  for (const [k, v] of Object.entries(data.reviews)) if (k.slice(1) >= key(START) && k.slice(1) <= key(END) && ((v.good || '').trim() || (v.fix || '').trim())) xp += 25;
+  for (const b of BADGES) if (myBadges()[b.id]) xp += 100;
   return {xp, lvl:Math.floor(xp / 500) + 1, into:xp % 500};
 }
 function streak70(){
@@ -900,15 +963,15 @@ function badgeState(){
   const gym = gymCount(last), prs = Object.values(idx.prs).reduce((a, s) => a + s.size, 0), dn = last ? dayNum(last) : 0;
   return {
     perfect1:[perfect >= 1, Math.min(perfect, 1) + '/1'], streak7:[st.best >= 7, Math.min(st.best, 7) + '/7'], week100:[perfectWeek(), 'all 7 days'],
-    pr1:[prs >= 1, Math.min(prs, 1) + '/1'], streak30:[st.best >= 30, Math.min(st.best, 30) + '/30'], halfway:[TODAY >= HALFWAY, 'day ' + Math.min(dn, 40) + '/40'],
-    gym25:[gym >= 25, Math.min(gym, 25) + '/25'], streak50:[st.best >= 50, Math.min(st.best, 50) + '/50'], finish:[TODAY >= END, 'day ' + dn + '/80']
+    pr1:[prs >= 1, Math.min(prs, 1) + '/1'], streak30:[st.best >= 30, Math.min(st.best, 30) + '/30'], halfway:[TODAY >= HALFWAY, 'day ' + Math.min(dn, Math.ceil(TOTAL / 2)) + '/' + Math.ceil(TOTAL / 2)],
+    gym25:[gym >= 25, Math.min(gym, 25) + '/25'], streak50:[st.best >= 50, Math.min(st.best, 50) + '/50'], finish:[TODAY >= END, 'day ' + dn + '/' + TOTAL]
   };
 }
 let badgeT;
 function queueBadgeCheck(){ clearTimeout(badgeT); badgeT = setTimeout(() => syncBadges(false), 400); }
 function syncBadges(silent){
   const bs = badgeState(), fresh = [];
-  for (const b of BADGES) if (bs[b.id][0] && !data.badges[b.id]) { data.badges[b.id] = todayKeyClamped(); fresh.push(b.name); }
+  for (const b of BADGES) if (bs[b.id][0] && !myBadges()[b.id]) { myBadges()[b.id] = todayKeyClamped(); fresh.push(badgeName(b)); }
   if (!fresh.length) return;
   try { localStorage.setItem(SKEY, JSON.stringify(data)); } catch (e) {}
   if (!silent) { toast(fresh.length === 1 ? 'Badge unlocked: ' + fresh[0] + ' · +100 XP' : fresh.length + ' badges unlocked · +' + fresh.length * 100 + ' XP'); buzz(); }
@@ -933,7 +996,7 @@ function countdownText(){
   if (TODAY < START) { const n = diffDays(TODAY, START); return n === 1 ? 'Starts tomorrow' : 'Starts in ' + n + ' days'; }
   if (TODAY > END) return 'Block complete';
   const n = diffDays(TODAY, END);
-  return n === 0 ? 'Final day' : n + (n === 1 ? ' day' : ' days') + ' until Dec 30';
+  return n === 0 ? 'Final day' : n + (n === 1 ? ' day' : ' days') + ' until ' + endLabel();
 }
 const inFrame = (() => { try { return window.self !== window.top; } catch (e) { return true; } })();
 
@@ -968,7 +1031,7 @@ function renderDay(){
   const wp = $('#dWorkout'); wp.textContent = w ? w + ' day' + (dl ? ' · deload' : '') : 'Rest day'; wp.className = 'pill' + (w ? (dl ? ' deload' : '') : ' rest');
   $('#dCount').textContent = countdownText();
   let msg = '';
-  if (TODAY < START && same(d, START)) msg = 'Your 80 days start tomorrow, Monday Oct 12. You can look around now.';
+  if (TODAY < START && same(d, START)) msg = 'Your ' + TOTAL + ' days start ' + (diffDays(TODAY, START) === 1 ? 'tomorrow, ' : 'on ') + fShort.format(START) + '. You can look around now.';
   else if (d > TODAY) msg = "This day hasn't happened yet. It stays gray on the calendar until it arrives.";
   const n = $('#dNotice'); n.textContent = msg; n.hidden = !msg;
   $('#dReportCard').innerHTML = TODAY >= END && same(d, END) ? '<div class="notice" style="display:flex;align-items:center;justify-content:space-between;gap:12px"><span><b>Your 80-day report is ready.</b></span><button class="btn small primary" type="button" data-act="report">View report</button></div>' : '';
@@ -1005,7 +1068,7 @@ function renderDay(){
   renderReview();
   renderExtras();
   $('#dpLabel').textContent = fShort.format(d);
-  $('#dp').value = key(d);
+  $('#dp').min = key(START); $('#dp').max = key(END); $('#dp').value = key(d);
   $('#prevBtn').disabled = same(d, START);
   $('#nextBtn').disabled = same(d, END);
   const tb = $('#todayBtn'); tb.disabled = same(d, clamp(TODAY));
@@ -1024,11 +1087,11 @@ function renderMeals(){
 function renderReview(){
   const d = cur;
   if (d.getDay() !== 0) { reviewEl.innerHTML = ''; return; }
-  const wi = weekOf(d), rv = data.reviews['w' + wi] || {good:'', fix:''};
+  const wi = weekOf(d), rv = data.reviews[rKey(wi)] || {good:'', fix:''};
   let E = 0, W = 0; const miss = {};
   for (const x of days(weekStart(wi), d)) { if (x > TODAY) break; for (const h of applicable(x)) { const c = credit(x, h.id); W += h.weight || 1; E += (h.weight || 1) * c; if (!c) miss[h.id] = (miss[h.id] || 0) + 1; } }
   const top = Object.entries(miss).sort((a, b) => b[1] - a[1])[0];
-  const summ = W ? pct(E / W) + ' this week' + (top ? ' · most missed: ' + esc(hById(top[0]) ? hById(top[0]).name : top[0]) + ' (' + top[1] + '×)' : ' · nothing missed') : 'Your first review is on Sunday, Oct 18.';
+  const summ = W ? pct(E / W) + ' this week' + (top ? ' · most missed: ' + esc(hById(top[0]) ? hById(top[0]).name : top[0]) + ' (' + top[1] + '×)' : ' · nothing missed') : 'Your first review is on ' + fShort.format(firstSunday()) + '.';
   reviewEl.innerHTML = '<div class="card review"><p class="eyebrow">Sunday review · Week ' + (wi + 1) + (isDeload(wi + 1) ? ' · deload next week' : '') + '</p><h2>' + summ + '</h2>' +
     '<label class="field">What went well<textarea id="rvGood" data-rv="good" placeholder="Hit protein every day, 3 runs…">' + esc(rv.good) + '</textarea></label>' +
     '<label class="field">What to fix next week<textarea id="rvFix" data-rv="fix" placeholder="Phone out of the bedroom by 8:30…">' + esc(rv.fix) + '</textarea></label></div>';
@@ -1225,8 +1288,8 @@ dayRoot.addEventListener('input', e => {
     relevelNum(r, h.id); save(); updateDay(); return;
   }
   if (t.matches('[data-rv]')) {
-    const wi = 'w' + weekOf(cur), rv = data.reviews[wi] || (data.reviews[wi] = {good:'', fix:''});
-    rv[t.dataset.rv] = t.value.slice(0, 2000); saveSoon(); updateDay(); return;
+    const wi = rKey(weekOf(cur)), rv = data.reviews[wi] || (data.reviews[wi] = {good:'', fix:''});
+    rv[t.dataset.rv] = t.value.slice(0, 2000); rv.u = stamp(rv.u); saveSoon(); updateDay(); return;
   }
   if (t.id === 'lfEx') { updateLiftHint(); return; }
   const act = t.dataset.act; if (!act) return;
@@ -1251,14 +1314,14 @@ dayRoot.addEventListener('keydown', e => {
   e.target.blur();
 });
 
-function go(n){ const nd = addDays(cur, n); if (!inRange(nd)) { toast('Tracking runs Oct 12 – Dec 30'); return; } cur = nd; renderDay(); }
+function go(n){ const nd = addDays(cur, n); if (!inRange(nd)) { toast('This challenge runs ' + rangeLabel()); return; } cur = nd; renderDay(); }
 $('#prevBtn').addEventListener('click', () => go(-1));
 $('#nextBtn').addEventListener('click', () => go(1));
 $('#todayBtn').addEventListener('click', () => { cur = clamp(TODAY); renderDay(); });
 $('#dp').addEventListener('change', e => {
   const v = e.target.value; if (!v) return;
   const d = parseKey(v);
-  if (!inRange(d)) { toast('Pick a date between Oct 12 and Dec 30'); e.target.value = key(cur); return; }
+  if (!inRange(d)) { toast('Pick a date from ' + fMD.format(START) + ' to ' + fMD.format(END)); e.target.value = key(cur); return; }
   cur = d; renderDay();
 });
 let sx = null, sy = 0;
@@ -1271,31 +1334,33 @@ dayRoot.addEventListener('touchend', e => {
 
 /* ================= CALENDAR & PLAN ================= */
 function renderCal(){
+  $('#cRange').textContent = CHAL.name + ' · ' + rangeLabel();
   const seg = S().ui.calSeg || 'heat';
   $('#calSeg').querySelectorAll('button').forEach(b => b.setAttribute('aria-pressed', b.dataset.cs === seg));
   $('#calHeat').hidden = seg !== 'heat'; $('#calPlan').hidden = seg !== 'plan';
   $('#cTitle').textContent = seg === 'plan' ? 'Plan' : 'Calendar';
   if (seg === 'plan') { renderPlan(); return; }
   const last = lastElapsed();
-  $('#cCount').textContent = countdownText() + (last ? ' · Day ' + dayNum(last) + ' of 80' : '');
+  $('#cCount').textContent = countdownText() + (last ? ' · Day ' + dayNum(last) + ' of ' + TOTAL : '');
   let g = 0, y = 0, b = 0;
   if (last) for (const d of days(START, last)) { const s = status(d); if (s === 'good') g++; else if (s === 'warn') y++; else if (s === 'bad') b++; }
   $('#cTally').innerHTML = '<div><b>' + g + '</b><small>Perfect</small></div><div><b>' + y + '</b><small>70–99%</small></div><div><b>' + b + '</b><small>Below 70%</small></div>';
   const prs = liftIndex().prs;
   const dows = ['M','T','W','T','F','S','S'].map(x => '<span class="dow">' + x + '</span>').join('');
   let html = '';
-  for (const m of [9, 10, 11]) {
-    const first = new Date(2026, m, 1), dim = new Date(2026, m + 1, 0).getDate(), lead = (first.getDay() + 6) % 7;
+  const multiYear = START.getFullYear() !== END.getFullYear();
+  for (let first = new Date(START.getFullYear(), START.getMonth(), 1); first <= END; first = new Date(first.getFullYear(), first.getMonth() + 1, 1)) {
+    const dim = new Date(first.getFullYear(), first.getMonth() + 1, 0).getDate(), lead = (first.getDay() + 6) % 7;
     let cells = '';
     for (let i = 0; i < lead; i++) cells += '<span></span>';
     for (let i = 1; i <= dim; i++) {
-      const d = new Date(2026, m, i);
+      const d = new Date(first.getFullYear(), first.getMonth(), i);
       if (!inRange(d)) { cells += '<span class="cell out">' + i + '</span>'; continue; }
       const st = status(d), sc = dayScore(d), pr = !!prs[key(d)];
       const label = fMD.format(d) + ', ' + (st === 'future' ? 'upcoming' : pct(sc.p) + ' complete') + (pr ? ', new PR' : '');
       cells += '<button type="button" class="cell ' + st + (same(d, TODAY) ? ' today' : '') + '" data-k="' + key(d) + '" aria-label="' + label + '">' + i + (pr ? '<i class="dot"></i>' : '') + '</button>';
     }
-    html += '<div class="month"><h3>' + fMonth.format(first) + '</h3><div class="grid7">' + dows + cells + '</div></div>';
+    html += '<div class="month"><h3>' + fMonth.format(first) + (multiYear ? ' ' + first.getFullYear() : '') + '</h3><div class="grid7">' + dows + cells + '</div></div>';
   }
   $('#cMonths').innerHTML = html;
 }
@@ -1312,7 +1377,7 @@ function renderPlan(){
     rows.push('<li' + (same(d, TODAY) ? ' class="cur"' : '') + '><span class="pd">' + fShort.format(d).replace(',', '') + '</span><span class="pw' + (w ? '' : ' rest') + '">' + (w ? esc(w) : 'Rest day') + '</span>' + tag + '</li>');
   }
   $('#pNext').innerHTML = rows.join('');
-  $('#pNextSub').textContent = TODAY < START ? 'Starting Monday, Oct 12' : 'From today';
+  $('#pNextSub').textContent = TODAY < START ? 'Starting ' + fShort.format(START) : 'From today';
   const last = lastElapsed(), weekRows = [];
   for (let wi = 0; wi < WEEKS; wi++) {
     const ws = weekStart(wi), we = weekEnd(wi); let planned = 0, done = 0;
@@ -1396,8 +1461,11 @@ function niceTicks(min, max, count){
   return out;
 }
 function axisDays(h){
-  return [[0, 'Oct 12'], [20, 'Nov 1'], [50, 'Dec 1'], [79, 'Dec 30']].map(([i, t], j) =>
-    '<text x="' + xDay(i) + '" y="' + ((h || CH) - 6) + '" text-anchor="' + (j === 0 ? 'start' : j === 3 ? 'end' : 'middle') + '">' + t + '</text>').join('');
+  const mids = [];
+  for (let m = new Date(START.getFullYear(), START.getMonth() + 1, 1); m < END; m = new Date(m.getFullYear(), m.getMonth() + 1, 1)) { const i = diffDays(START, m); if (i >= 8 && TOTAL - 1 - i >= 8) mids.push([i, fMD.format(m)]); }
+  const step = Math.ceil(mids.length / 4) || 1;
+  const ticks = [[0, fMD.format(START)]].concat(mids.filter((_, j) => j % step === 0), [[TOTAL - 1, fMD.format(END)]]);
+  return ticks.map(([i, t], j) => '<text x="' + xDay(i) + '" y="' + ((h || CH) - 6) + '" text-anchor="' + (j === 0 ? 'start' : j === ticks.length - 1 ? 'end' : 'middle') + '">' + t + '</text>').join('');
 }
 function yGrid(ticks, y, fmt){ return ticks.map(v => '<line class="gl" x1="' + PL + '" x2="' + (CW - PR_) + '" y1="' + y(v) + '" y2="' + y(v) + '"/><text x="' + (PL - 6) + '" y="' + (y(v) + 3) + '" text-anchor="end">' + fmt(v) + '</text>').join(''); }
 function bindChart(wrap, ro, xs, texts){
@@ -1548,9 +1616,9 @@ function runChart(){
   weekBars(wk, v => fmtN(v, 1), 'Running distance by week', texts, kv, ro, wrap);
 }
 function renderBadges(){
-  const bs = badgeState(), got = BADGES.filter(b => data.badges[b.id]).length;
+  const bs = badgeState(), got = BADGES.filter(b => myBadges()[b.id]).length;
   $('#sBadgeSub').textContent = got + ' of ' + BADGES.length + ' earned · each one is worth 100 XP';
-  $('#sBadges').innerHTML = BADGES.map(b => { const k = data.badges[b.id]; return '<div class="badge' + (k ? ' got' : '') + '">' + MEDAL + '<b>' + esc(b.name) + '</b><small>' + (k ? fMD.format(parseKey(k)) : bs[b.id][1]) + '</small></div>'; }).join('');
+  $('#sBadges').innerHTML = BADGES.map(b => { const k = myBadges()[b.id]; return '<div class="badge' + (k ? ' got' : '') + '">' + MEDAL + '<b>' + esc(badgeName(b)) + '</b><small>' + (k ? fMD.format(parseKey(k)) : bs[b.id][1]) + '</small></div>'; }).join('');
 }
 function renderConnections(){
   const c = connections();
@@ -1560,14 +1628,14 @@ function renderConnections(){
 }
 function renderStats(){
   const last = lastElapsed(), idx = liftIndex(), U = S().units;
-  $('#sEyebrow').textContent = last ? 'Day ' + dayNum(last) + ' of 80' : 'Starts Mon, Oct 12';
+  $('#sEyebrow').textContent = CHAL.name + ' · ' + (last ? 'Day ' + dayNum(last) + ' of ' + TOTAL : 'Starts ' + fShort.format(START));
   $('#openReport').textContent = TODAY >= END ? 'Final report' : 'Report so far';
   const tot = periodTotals();
   $('#sOverall').innerHTML = tot.W ? Math.round(tot.E / tot.W * 100) + '<small>%</small>' : '—';
-  $('#sOverallSub').textContent = tot.W ? 'Weighted score across ' + tot.days + (tot.days === 1 ? ' day' : ' days') : 'Fills in from Oct 12';
+  $('#sOverallSub').textContent = tot.W ? 'Weighted score across ' + tot.days + (tot.days === 1 ? ' day' : ' days') : 'Fills in from ' + fMD.format(START);
   if (TODAY < START) { $('#sLeft').textContent = diffDays(TODAY, START); $('#sLeftLbl').textContent = diffDays(TODAY, START) === 1 ? 'day until it starts' : 'days until it starts'; }
   else if (TODAY > END) { $('#sLeft').textContent = '0'; $('#sLeftLbl').textContent = 'days left · complete'; }
-  else { $('#sLeft').textContent = diffDays(TODAY, END); $('#sLeftLbl').textContent = 'days until Dec 30'; }
+  else { $('#sLeft').textContent = diffDays(TODAY, END); $('#sLeftLbl').textContent = 'days until ' + endLabel(); }
   $('#sPerfect').textContent = tot.perfect;
   const xi = xpInfo(idx.prs);
   $('#sLvl').textContent = xi.lvl; $('#sLvlBar').style.width = (xi.into / 5) + '%';
@@ -1603,7 +1671,7 @@ function renderStats(){
     return '<div class="wkrow"><span>' + esc(h.name) + '</span><span class="bar"><i style="width:' + (p == null ? 0 : p * 100) + '%;background:' + (p == null ? 'transparent' : rateColor(p)) + '"></i></span><span class="n">' + (p == null ? '—' : pct(p)) + '</span></div>';
   }).join('');
   $('#sWeekSub').textContent = fMD.format(ws) + ' – ' + fMD.format(we) + (isDeload(weekSel) ? ' · deload week' : '') + (wW ? ' · ' + pct(wE / wW) + ' weighted' : ws > TODAY ? ' · upcoming' : '');
-  const rv = data.reviews['w' + weekSel];
+  const rv = data.reviews[rKey(weekSel)];
   $('#sWeekRev').innerHTML = rv && (rv.good.trim() || rv.fix.trim()) ? '<div class="revnote">' + (rv.good.trim() ? '<b>Went well</b>' + esc(rv.good) : '') + (rv.fix.trim() ? '<b>To fix</b>' + esc(rv.fix) : '') + '</div>' : '';
   const chip = $('#sChips [aria-pressed="true"]'); if (chip) chip.scrollIntoView({block:'nearest', inline:'center'});
 }
@@ -1640,13 +1708,13 @@ function reportData(){
   const gymH = S().habits.find(h => h.type === 'gym'); let planned = 0;
   if (gymH && last) for (const d of days(START, last)) if (applies(gymH, d)) planned++;
   return {last, U, tot, water, studyM, studyDays, studyChecked, runD, runs, weights, best, hr, gym:gymCount(last), planned,
-    prs:Object.values(idx.prs).reduce((a, s) => a + s.size, 0), st:streak70(), badges:BADGES.filter(b => data.badges[b.id]).length, xp:xpInfo(idx.prs)};
+    prs:Object.values(idx.prs).reduce((a, s) => a + s.size, 0), st:streak70(), badges:BADGES.filter(b => myBadges()[b.id]).length, xp:xpInfo(idx.prs)};
 }
 function renderReport(){
   const R = reportData(), final = TODAY >= END;
-  $('#rEyebrow').textContent = final ? 'Oct 12 – Dec 30, 2026 · complete' : 'Report so far · day ' + (R.last ? dayNum(R.last) : 0) + ' of 80';
-  $('#rTitle').textContent = final ? 'Your 80-day report' : 'Progress report';
-  if (!R.last) { $('#rBody').innerHTML = '<p class="sub">The report fills in once the block starts on Monday, Oct 12.</p>'; return; }
+  $('#rEyebrow').textContent = final ? rangeLabel() + ' · complete' : CHAL.name + ' · report so far · day ' + (R.last ? dayNum(R.last) : 0) + ' of ' + TOTAL;
+  $('#rTitle').textContent = final ? CHAL.name + ' report' : 'Progress report';
+  if (!R.last) { $('#rBody').innerHTML = '<p class="sub">The report fills in once the challenge starts on ' + fShort.format(START) + '.</p>'; return; }
   const overall = R.tot.W ? R.tot.E / R.tot.W : 0, wch = R.weights.length > 1 ? R.weights[R.weights.length - 1] - R.weights[0] : null;
   const tile = (label, val, note) => '<div class="tile"><small>' + label + '</small><b>' + val + '</b>' + (note ? '<span>' + note + '</span>' : '') + '</div>';
   const topH = R.hr[0], lowH = R.hr[R.hr.length - 1];
@@ -1668,7 +1736,7 @@ function renderReport(){
     R.hr.map(x => '<div class="wkrow"><span>' + esc(x.h.name) + '</span><span class="bar"><i style="width:' + x.p * 100 + '%;background:' + rateColor(x.p) + '"></i></span><span class="n">' + pct(x.p) + '</span></div>').join('') + '</div>' +
     '<div class="btnrow"><button class="btn primary" type="button" id="repCopy">Copy summary</button></div>';
   $('#repCopy').addEventListener('click', () => {
-    const lines = [(final ? '80-Day Block, Oct 12 – Dec 30, 2026' : '80-Day Block progress, day ' + dayNum(R.last) + ' of 80'),
+    const lines = [(final ? CHAL.name + ', ' + rangeLabel() : CHAL.name + ' progress, day ' + dayNum(R.last) + ' of ' + TOTAL),
       'Overall: ' + pct(overall) + ' · ' + R.tot.perfect + ' perfect days · longest chain ' + R.st.best + ' days',
       R.best ? 'Best week: Week ' + (R.best.wi + 1) + ' (' + pct(R.best.p) + ')' : '', topH ? 'Most consistent: ' + topH.h.name + ' (' + pct(topH.p) + ')' : '',
       'Gym sessions: ' + R.gym + ' of ' + R.planned, 'Water: ' + fmtN(R.water / 1000, 0) + ' L', 'Hours studied: ' + fmtN(R.studyM / 60, 1),
@@ -1798,11 +1866,11 @@ function scheduleReminders(){
 function buildICS(){
   const r = S().remind, stamp = new Date().toISOString().replace(/[-:]/g, '').replace(/\.\d+/, '');
   const L = ['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//80-Day Block//EN','CALSCALE:GREGORIAN','X-WR-CALNAME:80-Day Block'];
-  const ev = (id, t, title, desc, rule, start) => { if (!isTime(t)) return; const hm = t.replace(':', ''); L.push('BEGIN:VEVENT','UID:' + id + '@80-day-block','DTSTAMP:' + stamp,'DTSTART:' + (start || '20261012') + 'T' + hm + '00','DURATION:PT5M','RRULE:' + rule,'SUMMARY:' + title,'DESCRIPTION:' + desc,'TRANSP:TRANSPARENT','BEGIN:VALARM','ACTION:DISPLAY','DESCRIPTION:' + title,'TRIGGER:PT0M','END:VALARM','END:VEVENT'); };
-  const daily = 'FREQ=DAILY;UNTIL=20261230T235900';
+  const ev = (id, t, title, desc, rule, start) => { if (!isTime(t)) return; const hm = t.replace(':', ''); L.push('BEGIN:VEVENT','UID:' + id + '@80-day-block','DTSTAMP:' + stamp,'DTSTART:' + (start || key(START).replace(/-/g, '')) + 'T' + hm + '00','DURATION:PT5M','RRULE:' + rule,'SUMMARY:' + title,'DESCRIPTION:' + desc,'TRANSP:TRANSPARENT','BEGIN:VALARM','ACTION:DISPLAY','DESCRIPTION:' + title,'TRIGGER:PT0M','END:VALARM','END:VEVENT'); };
+  const until = key(END).replace(/-/g, '') + 'T235900', daily = 'FREQ=DAILY;UNTIL=' + until;
   ev('winddown', r.winddown, 'Wind down', 'Screens off. Lights out by ' + fmtTime((hById('sleep') || {}).time || '21:00') + '.', daily);
   r.water.forEach((t, i) => ev('water' + i, t, 'Water check', 'Log your water. Goal ' + fmtN(((S().habits.find(h => h.type === 'water') || {}).target || 4000) / 1000, 2) + ' L.', daily));
-  ev('review', '19:00', 'Weekly review', 'Open the tracker: what went well and what to fix.', 'FREQ=WEEKLY;BYDAY=SU;UNTIL=20261230T235900', '20261018');
+  ev('review', '19:00', 'Weekly review', 'Open the tracker: what went well and what to fix.', 'FREQ=WEEKLY;BYDAY=SU;UNTIL=' + until, key(firstSunday()).replace(/-/g, ''));
   L.push('END:VCALENDAR');
   return L.join('\r\n');
 }
@@ -1851,7 +1919,8 @@ $('#instBox').addEventListener('click', e => { if (e.target.id !== 'instBtn' || 
 window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); installEvt = e; if (view === 'set') renderInstall(); });
 
 /* backup */
-const exportJSON = () => JSON.stringify({app:'80-day-block', version:3, exported:new Date().toISOString(), range:['2026-10-12','2026-12-30'], settings:data.settings, days:data.days, reviews:data.reviews, badges:data.badges}, null, 1);
+const exportObj = () => ({app:'80-day-block', version:4, exported:new Date().toISOString(), settings:data.settings, challenges:data.challenges, days:data.days, reviews:data.reviews, badges:data.badges});
+const exportJSON = () => JSON.stringify(exportObj(), null, 1);
 let dlNs = null;
 try { if (window.claude && window.claude.use) window.claude.use('downloads').then(ns => { dlNs = ns; if (view === 'set') renderBackup(); }, () => {}); } catch (e) {}
 function renderBackup(){
@@ -1861,7 +1930,7 @@ function renderBackup(){
   st.className = 'status' + (storageOK ? '' : ' warn');
   st.textContent = storageOK ? 'Saved in this browser · ' + n + (n === 1 ? ' day' : ' days') + ' logged' : "This browser isn't saving data. Copy a backup before you close the page.";
 }
-function renderSettings(){ renderBackup(); renderHabitsEditor(); renderMealsEditor(); renderSchedule(); renderUnits(); renderReminders(); renderInstall(); }
+function renderSettings(){ renderBackup(); renderHabitsEditor(); renderMealsEditor(); renderSchedule(); renderUnits(); renderReminders(); renderInstall(); renderSync(); renderChallenges(); }
 $('#copyBtn').addEventListener('click', () => {
   const txt = exportJSON(), ta = $('#exportTa'); ta.value = txt;
   const fallback = () => { ta.focus(); ta.select(); toast('Selected. Copy it from the box.'); };
@@ -1896,22 +1965,277 @@ $('#fileIn').addEventListener('change', e => {
   const fr = new FileReader(); fr.onload = () => stageImport(String(fr.result)); fr.onerror = () => toast("Couldn't read that file"); fr.readAsText(f);
   e.target.value = '';
 });
-$('#importYes').addEventListener('click', () => { if (!pending) return; data = pending; pending = null; save(); syncBadges(true); $('#importConfirm').hidden = true; $('#importTa').value = ''; renderSettings(); scheduleReminders(); toast('Backup loaded'); });
+$('#importYes').addEventListener('click', () => { if (!pending) return; data = pending; pending = null; stampAll(); lastSettingsSig = settingsSig(); activate(pickActive(), false); save(); syncBadges(true); $('#importConfirm').hidden = true; $('#importTa').value = ''; renderSettings(); scheduleReminders(); toast('Backup loaded'); });
 $('#importNo').addEventListener('click', () => { pending = null; $('#importConfirm').hidden = true; });
 $('#resetBtn').addEventListener('click', () => { $('#resetConfirm').hidden = false; });
 $('#resetNo').addEventListener('click', () => { $('#resetConfirm').hidden = true; });
-$('#resetYes').addEventListener('click', () => { data = {version:3, settings:defaultSettings(), days:{}, reviews:{}, badges:{}}; save(); $('#resetConfirm').hidden = true; renderSettings(); scheduleReminders(); toast('All data erased'); });
+$('#resetYes').addEventListener('click', () => { disconnectSync(true); data = freshData(); lastSettingsSig = settingsSig(); activate(pickActive(), false); save(); $('#resetConfirm').hidden = true; renderSettings(); scheduleReminders(); toast('All data erased'); });
+
+/* ================= CHALLENGES ================= */
+const AKEY = 'block80.active';
+function pickActive(){
+  const cs = liveChallenges(), tk = key(TODAY);
+  let id = null; try { id = localStorage.getItem(AKEY); } catch (e) {}
+  return cs.find(c => c.id === id) || cs.find(c => c.start <= tk && tk <= c.end) || cs.filter(c => c.start <= tk).pop() || cs[0];
+}
+function activate(c, remember){
+  setPeriod(c);
+  if (remember) { try { localStorage.setItem(AKEY, c.id); } catch (e) {} }
+  cur = clamp(TODAY); weekSel = null;
+}
+const chStatus = c => { const tk = key(TODAY); return tk < c.start ? 'upcoming' : tk > c.end ? 'done' : 'in progress'; };
+const overlaps = (st, en, skip) => liveChallenges().find(c => c.id !== skip && !(en < c.start || st > c.end));
+let armedCh = null;
+function renderChallenges(){
+  const cs = liveChallenges();
+  $('#chList').innerHTML = cs.map(c => {
+    const a = parseKey(c.start), b = parseKey(c.end), n = diffDays(a, b) + 1, act = c.id === CHAL.id;
+    return '<div class="chrow' + (act ? ' act' : '') + '" data-cid="' + c.id + '"><div class="hfields"><input class="inp text" data-chf="name" maxlength="40" value="' + esc(c.name) + '" aria-label="Challenge name">' +
+      '<span class="calc">' + fMD.format(a) + ' – ' + fMD.format(b) + ', ' + b.getFullYear() + ' · ' + n + ' days · ' + chStatus(c) + '</span></div>' +
+      (act ? '<span class="tag today">Viewing</span>' : '<button class="btn small" type="button" data-chview>View</button>' +
+        (cs.length > 1 ? '<button class="x" type="button" data-chdel aria-label="Remove ' + esc(c.name) + '">' + (armedCh === c.id ? '<span style="font-size:11px;font-weight:700;color:var(--bad)">Sure?</span>' : X_SVG) + '</button>' : '')) + '</div>';
+  }).join('');
+  const last = cs[cs.length - 1], lastEnd = parseKey(last.end), base = lastEnd >= TODAY ? addDays(lastEnd, 1) : TODAY;
+  const start = addDays(base, (8 - base.getDay()) % 7);
+  if (!$('#ncStart').value) $('#ncStart').value = key(start);
+  const season = m => m < 2 || m === 11 ? 'Winter ' : m < 5 ? 'Spring ' : m < 8 ? 'Summer ' : 'Fall ';
+  $('#ncName').placeholder = 'Name, e.g. ' + season(start.getMonth()) + start.getFullYear();
+  ncInfo();
+}
+function ncInfo(){
+  const st = $('#ncStart').value, n = parseInt($('#ncLen').value, 10), el = $('#ncInfo');
+  if (!isKey(st) || !(n >= 7 && n <= 366)) { el.textContent = 'Pick a start date and a length between 7 and 366 days.'; return; }
+  const e = addDays(parseKey(st), n - 1), ov = overlaps(st, key(e));
+  el.textContent = (ov ? 'Overlaps ' + ov.name + '. Pick a later start. ' : '') + 'Runs ' + fShort.format(parseKey(st)) + ' to ' + fShort.format(e) + ', ' + e.getFullYear() + '. Habits, meals and schedule carry over.';
+}
+$('#ncStart').addEventListener('input', ncInfo);
+$('#ncLen').addEventListener('input', ncInfo);
+$('#ncAdd').addEventListener('click', () => {
+  const st = $('#ncStart').value, n = parseInt($('#ncLen').value, 10);
+  if (!isKey(st)) { toast('Pick a start date'); $('#ncStart').focus(); return; }
+  if (!(n >= 7 && n <= 366)) { toast('Length must be 7 to 366 days'); $('#ncLen').focus(); return; }
+  const en = key(addDays(parseKey(st), n - 1)), ov = overlaps(st, en);
+  if (ov) { toast('Those dates overlap ' + ov.name); return; }
+  const name = ($('#ncName').value.trim() || $('#ncName').placeholder.replace(/^Name, e\.g\. /, '')).slice(0, 40);
+  const c = {id:'c' + Date.now().toString(36), name, start:st, end:en, u:Date.now()};
+  data.challenges.push(c); activate(c, true); save();
+  $('#ncName').value = ''; $('#ncStart').value = '';
+  toast('Started ' + name); setView('day');
+});
+$('#chList').addEventListener('change', e => {
+  const t = e.target, row = t.closest('[data-cid]'); if (!row || t.dataset.chf !== 'name') return;
+  const c = data.challenges.find(x => x.id === row.dataset.cid); const v = t.value.trim();
+  if (!v) { t.value = c.name; return; }
+  c.name = v.slice(0, 40); c.u = stamp(c.u); save(); toast('Renamed');
+});
+$('#chList').addEventListener('click', e => {
+  const row = e.target.closest('[data-cid]'); if (!row) return;
+  const c = data.challenges.find(x => x.id === row.dataset.cid);
+  if (e.target.closest('[data-chview]')) { armedCh = null; activate(c, true); renderSettings(); toast('Viewing ' + c.name); return; }
+  if (e.target.closest('[data-chdel]')) {
+    if (armedCh !== c.id) { armedCh = c.id; renderChallenges(); return; }
+    armedCh = null; c.deleted = true; c.u = stamp(c.u); delete data.badges[c.id]; save(); renderChallenges(); toast('Removed ' + c.name + '. Logged days are kept.');
+  }
+});
+
+/* ================= CSV EXPORT ================= */
+const csvEsc = v => { v = v == null ? '' : String(v); return /[",\n\r]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v; };
+const toCSV = rows => '﻿' + rows.map(r => r.map(csvEsc).join(',')).join('\r\n') + '\r\n';
+function dailyRows(){
+  const U = S().units, hs = S().habits, nums = hs.filter(h => h.type === 'num'), idx = liftIndex(), saved = CHAL;
+  const rows = [['date', 'challenge', 'day', 'weekday', 'workout', 'deload_week', 'score_pct'].concat(hs.map(h => h.name), nums.map(h => h.name + ' (' + h.unit + ')'),
+    ['water_l', 'weight_' + U.body, 'wake', 'bed', 'sleep_hours', 'run_' + U.dist, 'run_time', 'run_pace_per_' + U.dist, 'gym_minutes', 'sets', 'prs', 'study_minutes', 'study_subjects', 'meals', 'note'])];
+  try {
+    for (const c of liveChallenges()) {
+      setPeriod(c); const last = lastElapsed(); if (!last) continue;
+      for (const d of days(START, last)) {
+        const r = peek(d) || blankDay(), s = dayScore(d), sl = sleepMins(d), k = key(d), w = workoutFor(d);
+        rows.push([k, c.name, dayNum(d), fWeekday.format(d), w || 'Rest', w && isDeload(weekOf(d)) ? 'yes' : '', Math.round(s.p * 1000) / 10]
+          .concat(hs.map(h => applies(h, d) ? credit(d, h.id) : ''), nums.map(h => r.vals[h.id] != null ? r.vals[h.id] : ''),
+          [r.water.length ? waterTotal(r) / 1000 : '', r.weight != null ? r.weight : '', r.wake, r.bed, sl != null ? Math.round(sl / 6) / 10 : '',
+           r.run.dist != null ? r.run.dist : '', r.run.sec ? fmtClock(r.run.sec) : '', r.run.dist && r.run.sec ? fmtClock(r.run.sec / r.run.dist) : '',
+           r.dur != null ? r.dur : '', r.lifts.length || '', idx.prs[k] ? idx.prs[k].size : '', studyTotal(r) || '', [...new Set(r.study.map(x => x.t))].join('; '), r.meals.map(m => m.n).join('; '), r.note]));
+      }
+    }
+  } finally { setPeriod(saved); }
+  return rows;
+}
+function liftRows(){
+  const U = S().units, idx = liftIndex(), rows = [['date', 'exercise', 'weight_' + U.lift, 'reps', 'est_1rm_' + U.lift, 'pr', 'set_number']];
+  for (const k of idx.keys) { const prs = idx.prs[k] || new Set(), count = {}; data.days[k].lifts.forEach((L, i) => { const n = norm(L.ex); count[n] = (count[n] || 0) + 1; rows.push([k, L.ex, L.w || 0, L.r, L.w ? Math.round(liftScore(L.w, L.r) * 10) / 10 : '', prs.has(i) ? 'yes' : '', count[n]]); }); }
+  return rows;
+}
+function offerFile(name, text, mime){
+  const copyIt = () => { try { navigator.clipboard.writeText(text.replace(/^﻿/, '')).then(() => toast('Copied ' + name + '. Paste it into a spreadsheet.'), () => toast("Couldn't save or copy here")); } catch (e) { toast("Couldn't save or copy here"); } };
+  if (inFrame) {
+    if (!dlNs) { copyIt(); return; }
+    dlNs.save({filename:name, data:text}).then(() => toast('Saved ' + name), err => { const c = err && err.code; if (c === 'declined') return; if (c === 'rate_limited') { toast('Try again in a moment'); return; } copyIt(); });
+    return;
+  }
+  const blob = new Blob([text], {type:mime});
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name;
+  document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+}
+$('#csvDays').addEventListener('click', () => { const rows = dailyRows(); if (rows.length < 2) { toast('Nothing logged yet'); return; } offerFile('80-day-block-daily-' + key(new Date()) + '.csv', toCSV(rows), 'text/csv'); });
+$('#csvLifts').addEventListener('click', () => { const rows = liftRows(); if (rows.length < 2) { toast('No lift sets logged yet'); return; } offerFile('80-day-block-lifts-' + key(new Date()) + '.csv', toCSV(rows), 'text/csv'); });
+
+/* ================= CLOUD SYNC (Supabase) ================= */
+const SYNC_KEY = 'block80.sync';
+const SQL = `-- 80-Day Block sync: one private row per sync code.
+create table if not exists public.block80_sync (
+  code text primary key,
+  data jsonb not null,
+  updated_at timestamptz not null default now()
+);
+alter table public.block80_sync enable row level security;
+-- No policies on purpose: the table is closed to direct access.
+-- The app only reads and writes through these two functions.
+
+create or replace function public.block80_get(p_code text)
+returns jsonb language sql security definer set search_path = public as $$
+  select data from public.block80_sync where code = p_code and length(p_code) >= 24;
+$$;
+
+create or replace function public.block80_put(p_code text, p_data jsonb)
+returns void language plpgsql security definer set search_path = public as $$
+begin
+  if length(p_code) < 24 then raise exception 'sync code too short'; end if;
+  insert into public.block80_sync (code, data, updated_at) values (p_code, p_data, now())
+  on conflict (code) do update set data = excluded.data, updated_at = now();
+end $$;
+
+revoke all on function public.block80_get(text) from public;
+revoke all on function public.block80_put(text, jsonb) from public;
+grant execute on function public.block80_get(text) to anon, authenticated;
+grant execute on function public.block80_put(text, jsonb) to anon, authenticated;`;
+let sync = (() => { try { const v = JSON.parse(localStorage.getItem(SYNC_KEY) || 'null'); return v && v.url && v.key && v.code ? v : null; } catch (e) { return null; } })();
+let syncing = false, syncAgain = false, syncErr = '', syncT = null, pendingRender = false;
+const syncAllowed = () => !inFrame;
+const saveSyncCfg = () => { try { if (sync) localStorage.setItem(SYNC_KEY, JSON.stringify(sync)); else localStorage.removeItem(SYNC_KEY); } catch (e) {} };
+function queueSync(){ if (!sync || !syncAllowed()) return; clearTimeout(syncT); syncT = setTimeout(() => syncNow(false), 4000); }
+function sHeaders(k){ const h = {'Content-Type':'application/json', apikey:k}; if (!/^sb_/.test(k)) h.Authorization = 'Bearer ' + k; return h; }
+async function rpc(cfg, fn, body){
+  let r;
+  try { r = await fetch(cfg.url.replace(/\/+$/, '') + '/rest/v1/rpc/' + fn, {method:'POST', headers:sHeaders(cfg.key), body:JSON.stringify(body), cache:'no-store'}); }
+  catch (e) { throw new Error(navigator.onLine === false ? "You're offline. It syncs again when you're back online." : "Couldn't reach Supabase. Check the project URL."); }
+  const t = await r.text();
+  if (!r.ok) {
+    if (/PGRST202|could not find the function|does not exist/i.test(t) || r.status === 404) throw new Error("The setup script hasn't been run in this Supabase project yet.");
+    if (r.status === 401 || r.status === 403) throw new Error('Supabase rejected the key. Copy the publishable (anon) key again.');
+    throw new Error('Supabase returned an error (' + r.status + '). Try again in a minute.');
+  }
+  return t ? JSON.parse(t) : null;
+}
+function stampAll(){ const now = Date.now(); for (const r of Object.values(data.days)) r.u = now; for (const r of Object.values(data.reviews)) r.u = now; for (const c of data.challenges) c.u = now; data.settings.u = now; }
+function mergeRemote(rem){
+  let changed = false;
+  for (const [k, v] of Object.entries(rem.days)) { const l = data.days[k]; if (!l || (v.u || 0) > (l.u || 0)) { data.days[k] = v; changed = true; } }
+  if ((rem.settings.u || 0) > (data.settings.u || 0)) { const ui = data.settings.ui; data.settings = rem.settings; data.settings.ui = ui; changed = true; }
+  for (const [k, v] of Object.entries(rem.reviews)) { const l = data.reviews[k]; if (!l || (v.u || 0) > (l.u || 0)) { data.reviews[k] = v; changed = true; } }
+  for (const c of rem.challenges) { const i = data.challenges.findIndex(x => x.id === c.id); if (i < 0) { data.challenges.push(c); changed = true; } else if ((c.u || 0) > (data.challenges[i].u || 0)) { data.challenges[i] = c; changed = true; } }
+  for (const [cid, bs] of Object.entries(rem.badges)) { const mine = data.badges[cid] || (data.badges[cid] = {}); for (const [b, dt] of Object.entries(bs)) if (!mine[b] || dt < mine[b]) { mine[b] = dt; changed = true; } }
+  return changed;
+}
+async function syncNow(manual){
+  if (!sync || !syncAllowed()) return;
+  if (syncing) { syncAgain = true; return; }
+  syncing = true; clearTimeout(syncT); renderSyncStatus();
+  try {
+    const remote = await rpc(sync, 'block80_get', {p_code:sync.code});
+    let changed = false;
+    if (remote) { const c = clean(remote); if (c) changed = mergeRemote(c); }
+    lastSettingsSig = settingsSig();
+    try { localStorage.setItem(SKEY, JSON.stringify(data)); } catch (e) {}
+    await rpc(sync, 'block80_put', {p_code:sync.code, p_data:exportObj()});
+    sync.last = Date.now(); syncErr = ''; saveSyncCfg();
+    if (changed) refreshAfterMerge();
+    if (manual) toast(changed ? 'Synced. Changes from your other device are in.' : 'Synced');
+  } catch (e) { syncErr = e.message; if (manual) toast(e.message); }
+  finally { syncing = false; renderSyncStatus(); if (syncAgain) { syncAgain = false; queueSync(); } }
+}
+const typing = () => { const a = document.activeElement; return !!(a && /INPUT|TEXTAREA|SELECT/.test(a.tagName) && a.closest('.app')); };
+function refreshAfterMerge(){
+  if (typing()) { pendingRender = true; return; }
+  pendingRender = false;
+  const keep = cur, ws = weekSel;
+  activate(liveChallenges().find(c => c.id === CHAL.id) || pickActive(), false);
+  if (inRange(keep)) cur = keep; weekSel = ws;
+  setView(view, true);
+}
+document.addEventListener('focusout', () => { if (pendingRender) setTimeout(() => { if (pendingRender && !typing()) refreshAfterMerge(); }, 400); });
+const makeLink = () => 'b80sync:' + btoa(JSON.stringify({u:sync.url, k:sync.key, c:sync.code}));
+function parseLink(s){
+  try { const o = JSON.parse(atob(s.trim().replace(/^b80sync:/, ''))); if (o && /^https:\/\//.test(o.u) && o.k && typeof o.c === 'string' && o.c.length >= 24) return {url:o.u, key:o.k, code:o.c}; } catch (e) {}
+  return null;
+}
+function newCode(){ const a = new Uint8Array(24); crypto.getRandomValues(a); return btoa(String.fromCharCode.apply(null, a)).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, ''); }
+function ago(t){ const m = Math.round((Date.now() - t) / 60000); return m < 1 ? 'just now' : m < 60 ? m + ' min ago' : m < 1440 ? Math.round(m / 60) + ' h ago' : Math.round(m / 1440) + ' d ago'; }
+function renderSyncStatus(){
+  const el = $('#syncStatus'); if (!el || !sync) return;
+  let host = sync.url; try { host = new URL(sync.url).host; } catch (e) {}
+  el.className = 'status' + (syncErr ? ' warn' : '');
+  el.textContent = syncing ? 'Syncing with ' + host + '…' : syncErr ? syncErr : 'Connected to ' + host + ' · ' + (sync.last ? 'last synced ' + ago(sync.last) : 'not synced yet');
+}
+function disconnectSync(quiet){ sync = null; syncErr = ''; clearTimeout(syncT); saveSyncCfg(); if (!quiet) toast('Sync turned off. Your log stays on this device.'); }
+async function connect(cfg, btn){
+  if (btn) { btn.disabled = true; btn.textContent = 'Connecting…'; }
+  try { await rpc(cfg, 'block80_get', {p_code:cfg.code}); }
+  catch (e) { syncErr = e.message; renderSync(); toast(e.message); return; }
+  sync = cfg; syncErr = ''; saveSyncCfg(); renderSync(); await syncNow(true);
+}
+function renderSync(){
+  const box = $('#syncBox');
+  if (!syncAllowed()) { box.innerHTML = '<p class="sub">This viewer blocks connections to other sites, so sync runs in the installed app at saivamsivarma.github.io/80-day-block. Set it up there on your phone, then join from your laptop with the sync link.</p>'; return; }
+  if (sync) {
+    box.innerHTML = '<p class="status" id="syncStatus"></p><div class="btnrow"><button class="btn primary" type="button" id="syncNowBtn">Sync now</button><button class="btn" type="button" id="syncOff">Disconnect</button></div>' +
+      '<label class="field" style="margin-top:14px">Sync link for your other devices<input class="inp text" id="syncLink" readonly value="' + esc(makeLink()) + '"></label>' +
+      '<div class="btnrow"><button class="btn" type="button" id="syncCopy">Copy sync link</button></div>' +
+      '<p class="foot">On your laptop, open the app, go to Setup, and paste this link under Join. Anyone with the link can read and edit your log, so keep it private. Syncing happens a few seconds after each change and whenever you open the app. If two devices edit the same day before syncing, the most recent edit to that day wins.</p>';
+    renderSyncStatus(); return;
+  }
+  box.innerHTML = '<p class="sub">Keep your log the same on your phone and laptop with a free Supabase project. The data goes to your own project and nowhere else.</p>' +
+    '<ol class="steps"><li>Create a free project at supabase.com.</li><li>Open the SQL Editor, paste the setup script and click Run.</li><li>In Project Settings → API Keys, copy the Project URL and the publishable key (older projects call it the anon key).</li></ol>' +
+    '<textarea readonly id="sqlTa" aria-label="Setup script" style="font-family:var(--font-data);font-size:11px;min-height:120px">' + esc(SQL) + '</textarea>' +
+    '<div class="btnrow"><button class="btn" type="button" id="sqlCopy">Copy setup script</button></div>' +
+    '<div style="display:flex;flex-direction:column;gap:10px;margin-top:12px"><label class="field">Project URL<input class="inp text" id="sbUrl" inputmode="url" placeholder="https://abcd1234.supabase.co" autocomplete="off" autocapitalize="off" spellcheck="false"></label>' +
+    '<label class="field">Publishable key<input class="inp text" id="sbKey" placeholder="sb_publishable_… or eyJ…" autocomplete="off" autocapitalize="off" spellcheck="false"></label></div>' +
+    '<div class="btnrow"><button class="btn primary" type="button" id="sbConnect">Connect</button></div>' +
+    '<p class="sub" style="margin-top:18px">Already set up on another device? Paste its sync link here.</p>' +
+    '<input class="inp text" id="joinLink" placeholder="b80sync:…" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Sync link"><div class="btnrow"><button class="btn" type="button" id="joinBtn">Join</button></div>' +
+    (syncErr ? '<p class="status warn">' + esc(syncErr) + '</p>' : '');
+}
+$('#syncBox').addEventListener('click', e => {
+  const id = e.target.id;
+  if (id === 'syncNowBtn') syncNow(true);
+  else if (id === 'syncOff') { disconnectSync(false); renderSync(); }
+  else if (id === 'syncCopy' || id === 'sqlCopy') {
+    const txt = id === 'sqlCopy' ? SQL : makeLink(), el = id === 'sqlCopy' ? $('#sqlTa') : $('#syncLink');
+    const fb = () => { el.focus(); el.select(); toast('Selected. Copy it from the box.'); };
+    try { navigator.clipboard.writeText(txt).then(() => toast(id === 'sqlCopy' ? 'Setup script copied' : 'Sync link copied'), fb); } catch (x) { fb(); }
+  }
+  else if (id === 'sbConnect') {
+    const url = $('#sbUrl').value.trim().replace(/\/+$/, ''), k = $('#sbKey').value.trim();
+    if (!/^https:\/\/[^\s/]+$/.test(url)) { toast('Paste the Project URL, like https://abcd1234.supabase.co'); $('#sbUrl').focus(); return; }
+    if (k.length < 20) { toast('Paste the publishable key'); $('#sbKey').focus(); return; }
+    connect({url, key:k, code:newCode()}, e.target);
+  }
+  else if (id === 'joinBtn') {
+    const cfg = parseLink($('#joinLink').value);
+    if (!cfg) { toast("That doesn't look like a sync link. Copy it again from your other device."); return; }
+    connect(cfg, e.target);
+  }
+});
 
 /* ================= views ================= */
 const VIEWS = {day:'#v-day', cal:'#v-cal', stats:'#v-stats', set:'#v-set', report:'#v-report'};
-function setView(v){
+function setView(v, keepScroll){
   view = v;
   for (const [k, sel] of Object.entries(VIEWS)) $(sel).hidden = k !== v;
   const tabFor = v === 'report' ? 'stats' : v;
   document.querySelectorAll('.tab').forEach(t => { if (t.dataset.view === tabFor) t.setAttribute('aria-current', 'page'); else t.removeAttribute('aria-current'); });
   $('#daynav').hidden = v !== 'day';
   if (v === 'day') renderDay(); else if (v === 'cal') renderCal(); else if (v === 'stats') renderStats(); else if (v === 'report') renderReport(); else renderSettings();
-  window.scrollTo(0, 0);
+  if (!keepScroll) window.scrollTo(0, 0);
 }
 document.querySelectorAll('.tab').forEach(t => t.addEventListener('click', () => setView(t.dataset.view)));
 document.addEventListener('visibilitychange', () => {
@@ -1919,17 +2243,22 @@ document.addEventListener('visibilitychange', () => {
   const now = sod(new Date());
   if (!same(now, TODAY)) { const wasToday = same(cur, clamp(TODAY)); TODAY = now; if (wasToday) cur = clamp(TODAY); setView(view); syncBadges(false); }
   scheduleReminders();
+  if (sync) syncNow(false);
 });
 window.addEventListener('pagehide', save);
+window.addEventListener('online', () => { if (sync) syncNow(false); });
 
 if (!inFrame && 'serviceWorker' in navigator && /^https?:$/.test(location.protocol)) {
   navigator.serviceWorker.register('sw.js').then(r => { swReg = r; }).catch(() => {});
 }
 load();
+lastSettingsSig = settingsSig();
+activate(pickActive(), false);
 scheduleReminders();
 const h0 = (location.hash || '').slice(1);
 setView(VIEWS[h0] ? h0 : 'day');
 setTimeout(() => syncBadges(false), 600);
+if (sync) setTimeout(() => syncNow(false), 300);
 })();
 </script>
 
