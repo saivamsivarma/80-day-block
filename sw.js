@@ -1,5 +1,5 @@
 // 80-Day Block offline cache. Bump CACHE when the app changes.
-const CACHE = 'block80-v5';
+const CACHE = 'block80-v6';
 const CORE = ['./', './index.html', './manifest.webmanifest', './icon-192.png', './icon-512.png', './icon-maskable-512.png'];
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(CORE.map(u => new Request(u, {cache: 'reload'})))).then(() => self.skipWaiting()));

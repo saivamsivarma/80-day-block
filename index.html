@@ -372,6 +372,109 @@ select.inp{font-family:var(--font-body)}
 .steps{margin:4px 0 10px;padding-left:20px;font-size:14px;display:flex;flex-direction:column;gap:4px}
 .addh .btn.full{grid-column:1/-1}
 
+
+/* v5 */
+:root{--m-p:var(--accent);--m-c:#D98E04;--m-f:#9C36B5}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--m-c:#F0B429;--m-f:#CC5DE8}}
+:root[data-theme="dark"]{--m-c:#F0B429;--m-f:#CC5DE8}
+:root[data-accent="ember"]{--accent:#D9480F;--accent-soft:#FDEADF}
+:root[data-accent="teal"]{--accent:#0B7A70;--accent-soft:#DDF3F0}
+:root[data-accent="violet"]{--accent:#6741D9;--accent-soft:#ECE6FD}
+:root[data-accent="rose"]{--accent:#C2255C;--accent-soft:#FCE4EC}
+@media (prefers-color-scheme: dark){
+  :root[data-accent="ember"]:not([data-theme="light"]){--accent:#FF8A5B;--accent-soft:#3A2318}
+  :root[data-accent="teal"]:not([data-theme="light"]){--accent:#3CC7B7;--accent-soft:#12312E}
+  :root[data-accent="violet"]:not([data-theme="light"]){--accent:#A08BFF;--accent-soft:#2A2347}
+  :root[data-accent="rose"]:not([data-theme="light"]){--accent:#FF7AA8;--accent-soft:#3B1D2A}
+}
+:root[data-theme="dark"][data-accent="ember"]{--accent:#FF8A5B;--accent-soft:#3A2318}
+:root[data-theme="dark"][data-accent="teal"]{--accent:#3CC7B7;--accent-soft:#12312E}
+:root[data-theme="dark"][data-accent="violet"]{--accent:#A08BFF;--accent-soft:#2A2347}
+:root[data-theme="dark"][data-accent="rose"]{--accent:#FF7AA8;--accent-soft:#3B1D2A}
+.quote{font-size:14px;color:var(--muted);font-style:italic;margin:-2px 2px 12px;line-height:1.45}
+.quote span{font-style:normal;font-size:12px;white-space:nowrap}
+.quote span::before{content:"— "}
+.checkin{display:flex;flex-direction:column;align-items:flex-start;gap:2px;width:100%;margin-bottom:12px;padding:16px 18px;border-radius:18px;background:var(--accent);color:var(--accent-ink);text-align:left}
+.checkin:active{transform:scale(.99)}
+.ci-t{font-family:var(--font-display);font-size:24px;font-weight:700;line-height:1.1}
+.ci-s{font-size:13px;opacity:.9}
+.cinote{margin-bottom:12px;padding:10px 14px;border-radius:14px;background:var(--surface);border:1px dashed var(--line);font-size:14px;color:var(--muted)}
+.tbar{position:fixed;left:0;right:0;top:calc(env(safe-area-inset-top,0px) + 8px);z-index:15;display:flex;flex-wrap:wrap;justify-content:center;gap:6px;padding-inline:16px;pointer-events:none}
+.tpill{pointer-events:auto;display:inline-flex;align-items:center;gap:8px;height:38px;padding:0 6px 0 14px;border-radius:999px;background:var(--fg);color:var(--bg);font-family:var(--font-data);font-size:13px;box-shadow:0 4px 16px rgba(0,0,0,.18)}
+.tpill b{font-family:var(--font-body);font-weight:600}
+.tpill button{height:28px;padding:0 10px;border-radius:999px;background:rgba(127,127,127,.28);color:inherit;font-family:var(--font-body);font-size:12px;font-weight:600}
+.snack{position:fixed;left:50%;bottom:calc(150px + env(safe-area-inset-bottom,0px));transform:translate(-50%,10px);z-index:21;display:flex;align-items:center;gap:12px;max-width:calc(100% - 32px);padding:6px 6px 6px 16px;border-radius:14px;background:var(--fg);color:var(--bg);font-size:14px;opacity:0;transition:opacity .2s,transform .2s}
+.snack.show{opacity:1;transform:translate(-50%,0)}
+.snack span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
+.snack button{flex:none;height:34px;padding:0 14px;border-radius:10px;background:var(--accent);color:var(--accent-ink);font-weight:600;font-size:14px}
+.toast{bottom:calc(206px + env(safe-area-inset-bottom,0px))}
+.schip.undo{cursor:pointer;color:var(--muted)}
+.ring.pop{animation:pop .7s ease}
+@keyframes pop{0%{transform:scale(1)}35%{transform:scale(1.14)}100%{transform:scale(1)}}
+.confetti{position:fixed;inset:0;pointer-events:none;z-index:30;width:100%;height:100%}
+.gtools{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+.linkbtn{color:var(--accent);font-weight:600;font-size:13px;text-decoration:underline;text-underline-offset:2px}
+.stars{display:flex;gap:6px}
+.stars button{width:40px;height:40px;border-radius:11px;background:var(--surface-2);color:var(--muted);font-family:var(--font-data);font-size:14px}
+.stars button[aria-checked="true"]{background:var(--accent);color:var(--accent-ink)}
+.sore{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}
+.sorechip{height:36px;padding:0 12px;border-radius:10px;background:var(--surface-2);color:var(--fg);font-size:13px;font-weight:500}
+.sorechip i{font-style:normal;font-size:11px;font-weight:700;margin-left:2px}
+.sorechip.l1{background:var(--pr-bg);color:var(--pr-fg)}
+.sorechip.l2{background:var(--warn);color:var(--cell-ink)}
+.sorechip.l3{background:var(--bad);color:var(--cell-ink)}
+.mchip.scan{background:var(--fg);color:var(--bg)}
+.macros{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding-inline:14px}
+.macros label{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted);font-weight:500}
+.macros .inp{height:40px;text-align:right}
+.msplit{padding-inline:14px}
+.splitbar{display:flex;height:10px;border-radius:999px;overflow:hidden;background:var(--surface-2);gap:2px}
+.splitbar i{display:block;height:100%}
+.sp{background:var(--m-p)}.sc{background:var(--m-c)}.sf{background:var(--m-f)}
+.splitlbl{display:flex;flex-wrap:wrap;gap:4px 12px;margin-top:6px;font-size:12px;color:var(--muted)}
+.splitlbl i{display:inline-block;width:8px;height:8px;border-radius:2px;margin-right:5px;vertical-align:0}
+.mlist{list-style:none;margin:0;padding:0 14px}
+.mlist li{display:flex;align-items:center;gap:8px;min-height:48px;border-top:1px solid var(--line)}
+.mlist .mt{width:62px;flex:none;font-family:var(--font-data);font-size:12px;color:var(--muted)}
+.mlist .mn{flex:1;min-width:0;font-size:14px;font-weight:500;overflow:hidden;text-overflow:ellipsis}
+.mlist .mn small{display:block;font-size:11px;color:var(--muted);font-weight:400;font-family:var(--font-data)}
+.tagbtn{flex:none;height:30px;padding:0 10px;border-radius:9px;background:var(--surface-2);color:var(--muted);font-size:12px;font-weight:600}
+.tagbtn.on{background:var(--accent-soft);color:var(--accent)}
+.vrow .vbar{position:relative;height:10px;background:var(--surface-2);border-radius:8px;overflow:hidden}
+.vbar b{position:absolute;top:0;bottom:0;background:var(--accent-soft)}
+.vbar i{position:relative;display:block;height:100%;background:var(--accent);border-radius:8px}
+.swatches{display:flex;gap:8px}
+.swatches button{width:34px;height:34px;border-radius:50%;border:3px solid var(--surface)}
+.swatches button[aria-pressed="true"]{box-shadow:0 0 0 2px var(--fg)}
+.howto{margin-top:12px}
+.howto summary{cursor:pointer;font-weight:600;font-size:14px;color:var(--accent)}
+.lock{position:fixed;inset:0;z-index:40;background:var(--bg);display:flex;align-items:center;justify-content:center;padding:24px 16px}
+.lockbox{width:100%;max-width:320px;display:flex;flex-direction:column;align-items:center;gap:14px;text-align:center}
+.lockbox h2{font-family:var(--font-display);font-size:24px}
+.lockbox.shake{animation:shake .35s}
+@keyframes shake{25%{transform:translateX(-8px)}50%{transform:translateX(8px)}75%{transform:translateX(-4px)}}
+.pindots{display:flex;gap:14px;height:16px}
+.pindots i{width:14px;height:14px;border-radius:50%;border:2px solid var(--box-line)}
+.pindots i.on{background:var(--accent);border-color:var(--accent)}
+.keypad{display:grid;grid-template-columns:repeat(3,72px);gap:12px;margin-top:6px}
+.keypad button{height:64px;border-radius:50%;background:var(--surface-2);font-family:var(--font-display);font-size:26px;font-weight:600}
+.keypad button.alt{font-family:var(--font-body);font-size:13px;background:transparent;color:var(--muted);border-radius:14px}
+.lockbox .status{min-height:18px;max-width:280px}
+.sheet{position:fixed;inset:0;z-index:35;background:rgba(0,0,0,.45);display:flex;align-items:flex-end;justify-content:center}
+.sheet-in{width:100%;max-width:520px;max-height:92%;overflow:auto;background:var(--bg);border-radius:22px 22px 0 0;padding:16px 16px calc(20px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;gap:12px}
+.sheet-head{display:flex;align-items:center;justify-content:space-between}
+.sheet-head h2{font-family:var(--font-display);font-size:22px}
+.scanview{position:relative;border-radius:16px;overflow:hidden;background:#000;aspect-ratio:4/3;max-width:100%}
+.scanview video{width:100%;height:100%;object-fit:cover;display:block}
+.scanview .scanline{position:absolute;left:10%;right:10%;top:50%;height:2px;background:var(--bad);box-shadow:0 0 12px var(--bad)}
+.scanres{display:flex;flex-direction:column;gap:10px;padding:14px;border-radius:16px;background:var(--surface);border:1px solid var(--line)}
+.mtpl{padding:10px 0;border-top:1px solid var(--line);display:flex;flex-direction:column;gap:8px}
+.mtpl:first-child{border-top:0}
+.mnums{display:grid;grid-template-columns:repeat(4,minmax(0,1fr)) 38px;gap:6px;align-items:end}
+.mnums label{display:flex;flex-direction:column;gap:4px;font-size:11px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.05em;min-width:0}
+.mnums .inp{height:40px}
+.mtpl.new .mnums{grid-template-columns:repeat(4,minmax(0,1fr))}
+
 .toast{position:fixed;left:50%;bottom:calc(150px + env(safe-area-inset-bottom,0px));transform:translate(-50%,10px);background:var(--fg);color:var(--bg);padding:10px 16px;border-radius:12px;font-size:14px;font-weight:500;opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;max-width:calc(100% - 32px);text-align:center;z-index:20}
 .toast.show{opacity:1;transform:translate(-50%,0)}
 @media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
@@ -396,8 +499,11 @@ select.inp{font-family:var(--font-body)}
       <span class="schip" id="chStreak"><svg viewBox="0 0 24 24" class="flame" aria-hidden="true"><path fill="currentColor" d="M12 2.5c1.1 3.6 5.5 5.7 5.5 10.6a5.5 5.5 0 0 1-11 0c0-2.4 1.3-4 2.4-5 .2 1.7 1.1 2.8 2.2 3.4C10.6 8.6 11.1 5.3 12 2.5z"/></svg><span id="chStreakTxt">0 days</span></span>
       <span class="schip"><span id="chLvl">Lv 1</span><span class="xpbar"><i id="chXpBar"></i></span><span class="dim" id="chXp">0 XP</span></span>
       <span class="schip" id="chDayXp">+0 XP</span>
+      <button class="schip undo" id="undoChip" type="button" hidden>Undo</button>
     </div>
     <div id="dChain"></div>
+    <p class="quote" id="dQuote"></p>
+    <div id="dCheckin"></div>
     <p class="notice" id="dNotice" hidden></p>
     <div id="dReportCard"></div>
     <ul class="habits" id="habits"></ul>
@@ -485,11 +591,31 @@ select.inp{font-family:var(--font-body)}
       <p class="foot" id="sWkcFoot"></p>
     </div>
     <div class="panel">
+      <h2>Nutrition</h2>
+      <p class="sub">Average macros and meal timing</p>
+      <div class="kv" id="sNuKv"></div>
+      <div id="sNuBody"></div>
+    </div>
+    <div class="panel">
+      <h2>Weekly volume</h2>
+      <p class="sub" id="sVolSub"></p>
+      <div class="chips" id="sVolChips"></div>
+      <div id="sVol" style="margin-top:8px"></div>
+    </div>
+    <div class="panel">
       <h2>Sleep</h2>
       <p class="sub" id="sSlSub"></p>
       <div class="kv" id="sSlKv"></div>
       <p class="readout" id="sSlRo"></p>
       <div class="chart" id="sSlChart"></div>
+    </div>
+    <div class="panel">
+      <h2>Body and recovery</h2>
+      <p class="sub">Resting heart rate, measurements and soreness</p>
+      <div class="kv" id="sBoKv"></div>
+      <p class="readout" id="sBoRo"></p>
+      <div class="chart" id="sBoChart"></div>
+      <div id="sBoExtra"></div>
     </div>
     <div class="panel">
       <h2>Study</h2>
@@ -553,10 +679,11 @@ select.inp{font-family:var(--font-body)}
     </div>
     <div class="panel">
       <h2>Meal templates</h2>
-      <p class="sub">Tap a meal on the Day screen to add its protein and calories.</p>
-      <div class="mhdr"><span>Meal</span><span>Protein g</span><span>kcal</span><span></span></div>
+      <p class="sub">Tap a meal on the Day screen to add its macros. Leave kcal empty to work it out from protein, carbs and fat.</p>
       <div id="mealList"></div>
-      <div class="mrow" style="margin-top:4px"><input class="inp text" id="nmName" placeholder="New meal" maxlength="40" aria-label="New meal name"><input class="inp" id="nmP" type="number" inputmode="decimal" placeholder="g" aria-label="Protein grams"><input class="inp" id="nmK" type="number" inputmode="numeric" placeholder="kcal" aria-label="Calories"><button class="x" type="button" id="nmAdd" aria-label="Add meal" style="background:var(--accent);color:var(--accent-ink)"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></button></div>
+      <div class="mtpl new"><input class="inp text" id="nmName" placeholder="New meal, e.g. Overnight oats" maxlength="40" aria-label="New meal name">
+        <div class="mnums"><label>Protein<input class="inp" id="nmP" type="number" inputmode="decimal" min="0" placeholder="g"></label><label>Carbs<input class="inp" id="nmC" type="number" inputmode="decimal" min="0" placeholder="g"></label><label>Fat<input class="inp" id="nmF" type="number" inputmode="decimal" min="0" placeholder="g"></label><label>kcal<input class="inp" id="nmK" type="number" inputmode="numeric" min="0" placeholder="auto"></label></div>
+        <button class="btn primary small" type="button" id="nmAdd">Add meal</button></div>
     </div>
     <div class="panel">
       <h2>Weekly schedule</h2>
@@ -576,6 +703,30 @@ select.inp{font-family:var(--font-body)}
     <div class="panel">
       <h2>Install on your phone</h2>
       <div id="instBox"></div>
+    </div>
+    <div class="panel">
+      <h2>Appearance</h2>
+      <div id="apBox"></div>
+    </div>
+    <div class="panel">
+      <h2>Check-ins</h2>
+      <div id="ciBox"></div>
+    </div>
+    <div class="panel">
+      <h2>Gym tools</h2>
+      <div id="gtBox"></div>
+    </div>
+    <div class="panel">
+      <h2>Timers and sunlight</h2>
+      <div id="tlBox"></div>
+    </div>
+    <div class="panel">
+      <h2>Apple Health</h2>
+      <div id="hkBox"></div>
+    </div>
+    <div class="panel">
+      <h2>PIN lock</h2>
+      <div id="pinBox"></div>
     </div>
     <div class="panel">
       <h2>Cloud sync</h2>
@@ -642,6 +793,32 @@ select.inp{font-family:var(--font-body)}
     </div>
   </div>
 </nav>
+<div class="tbar" id="tbar" hidden></div>
+<div class="snack" id="snack" hidden role="status"><span id="snackTxt"></span><button type="button" id="snackUndo">Undo</button></div>
+<div class="lock" id="lock" hidden role="dialog" aria-modal="true" aria-labelledby="lockTitle">
+  <div class="lockbox">
+    <p class="eyebrow">80-Day Block</p>
+    <h2 id="lockTitle">Enter your PIN</h2>
+    <div class="pindots" id="lockDots"></div>
+    <p class="status warn" id="lockMsg"></p>
+    <div class="keypad" id="lockPad">
+      <button type="button" data-d="1">1</button><button type="button" data-d="2">2</button><button type="button" data-d="3">3</button>
+      <button type="button" data-d="4">4</button><button type="button" data-d="5">5</button><button type="button" data-d="6">6</button>
+      <button type="button" data-d="7">7</button><button type="button" data-d="8">8</button><button type="button" data-d="9">9</button>
+      <button type="button" class="alt" id="lockAlt">Forgot?</button><button type="button" data-d="0">0</button><button type="button" class="alt" id="lockDel" aria-label="Delete">Delete</button>
+    </div>
+  </div>
+</div>
+<div class="sheet" id="scanSheet" hidden role="dialog" aria-modal="true" aria-labelledby="scanTitle">
+  <div class="sheet-in">
+    <div class="sheet-head"><h2 id="scanTitle">Scan a barcode</h2><button class="x" type="button" id="scanClose" aria-label="Close scanner"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+    <div class="scanview"><video id="scanVideo" playsinline muted></video><div class="scanline"></div></div>
+    <p class="calc" id="scanMsg">Point the camera at the barcode.</p>
+    <div class="addstudy"><input class="inp" id="scanCode" inputmode="numeric" placeholder="Or type the barcode number" aria-label="Barcode number" autocomplete="off"><button class="btn" type="button" id="scanLookup">Look up</button></div>
+    <div id="scanResult"></div>
+    <p class="foot">Nutrition data from Open Food Facts, a free community database.</p>
+  </div>
+</div>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <script>
@@ -668,8 +845,8 @@ const DEFAULT_HABITS = [
   {id:'read',     name:'Read or journal',       type:'check', sub:'20 min reading or 2–3 lines', min:'5 minutes or 1 line', weight:1}
 ];
 const DEFAULT_MEALS = [
-  {name:'Protein shake', p:40, k:300}, {name:'Chicken rice bowl', p:45, k:700},
-  {name:'Greek yogurt bowl', p:25, k:350}, {name:'Eggs and toast', p:25, k:450}
+  {name:'Protein shake', p:40, c:12, f:4, k:240}, {name:'Chicken rice bowl', p:45, c:75, f:15, k:615},
+  {name:'Greek yogurt bowl', p:25, c:40, f:8, k:330}, {name:'Eggs and toast', p:25, c:30, f:22, k:420}
 ];
 const DEFAULT_LIFTS = {
   pull:['Lat pulldown','Pull-up','Chest-supported row','Seated cable row','Face pull','Barbell curl','Hammer curl'],
@@ -744,9 +921,13 @@ function defaultSettings(){
     habits: DEFAULT_HABITS.map(h => Object.assign({sub:'', on:true}, h)),
     schedule: ['', 'Pull', 'Push', 'Legs', 'Upper', 'Lower', ''],
     deloadEvery: 5,
-    units: {body:'kg', lift:'lb', dist:'mi'},
+    units: {body:'kg', lift:'lb', dist:'mi', meas:'cm'},
     meals: DEFAULT_MEALS.map(m => Object.assign({id:uid()}, m)),
     remind: {on:false, winddown:'20:30', water:['10:00','13:00','16:00']},
+    gym: {rest:120, autoRest:true},
+    strict: true,
+    pomo: {focus:25, brk:5},
+    loc: null,
     ui: {open:{}, calSeg:'heat'}
   };
 }
@@ -757,7 +938,7 @@ function cleanDay(v){
   if (v.vals && typeof v.vals === 'object') for (const [k, x] of Object.entries(v.vals)) { const n = posNum(x); if (n != null && idOK(k)) d.vals[k] = n; }
   for (const f of ['steps', 'protein', 'kcal']) { const n = intOrNull(v[f]); if (n != null) d.vals[f] = n; } // v1 format
   if (Array.isArray(v.water)) d.water = v.water.filter(x => typeof x === 'number' && x > 0 && x <= 5000);
-  if (Array.isArray(v.meals)) d.meals = v.meals.filter(m => m && typeof m.n === 'string').map(m => ({n:m.n.slice(0, 40), p:posNum(m.p) || 0, k:posNum(m.k) || 0}));
+  if (Array.isArray(v.meals)) d.meals = v.meals.filter(m => m && typeof m.n === 'string').map(m => ({n:m.n.slice(0, 40), p:posNum(m.p) || 0, c:posNum(m.c) || 0, f:posNum(m.f) || 0, k:posNum(m.k) || 0, t:isTime(m.t) ? m.t : '', tag:m.tag === 'pre' || m.tag === 'post' ? m.tag : ''}));
   if (Array.isArray(v.study)) d.study = v.study.filter(s => s && typeof s.t === 'string' && s.t.trim() && typeof s.m === 'number' && s.m > 0).map(s => ({t:s.t.trim().slice(0, 40), m:Math.min(720, Math.round(s.m))}));
   d.weight = posNum(v.weight);
   if (isTime(v.wake)) d.wake = v.wake;
@@ -767,6 +948,14 @@ function cleanDay(v){
     .map(L => ({ex:L.ex.trim().slice(0, 60), w:posNum(L.w) || 0, r:Math.floor(L.r)}));
   d.dur = intOrNull(v.dur);
   if (typeof v.note === 'string') d.note = v.note.slice(0, 4000);
+  if ([1, 2, 3, 4, 5].includes(v.sleepQ)) d.sleepQ = v.sleepQ;
+  if (v.sore && typeof v.sore === 'object') { const so = {}; for (const [p, l] of Object.entries(v.sore)) if (MUSCLES.includes(p) && [1, 2, 3].includes(l)) so[p] = l; if (Object.keys(so).length) d.sore = so; }
+  if (v.meas && typeof v.meas === 'object') { const me = {}; for (const f of MEAS) { const n = posNum(v.meas[f]); if (n) me[f] = n; } if (Object.keys(me).length) d.meas = me; }
+  const rh = intOrNull(v.rhr); if (rh && rh > 20 && rh < 250) d.rhr = rh;
+  const shh = posNum(v.sleepH); if (shh && shh < 20) d.sleepH = shh;
+  const smn = intOrNull(v.sunMin); if (smn) d.sunMin = Math.min(smn, 600);
+  if (v.vwake === true) d.vwake = true;
+  if (v.vbed === true) d.vbed = true;
   if (typeof v.u === 'number') d.u = v.u;
   return d;
 }
@@ -804,9 +993,14 @@ function cleanSettings(s){
     if (['kg','lb'].includes(s.units.body)) out.units.body = s.units.body;
     if (['kg','lb'].includes(s.units.lift)) out.units.lift = s.units.lift;
     if (['mi','km'].includes(s.units.dist)) out.units.dist = s.units.dist;
+    if (['cm','in'].includes(s.units.meas)) out.units.meas = s.units.meas;
   }
   if (Array.isArray(s.meals)) out.meals = s.meals.filter(m => m && typeof m.name === 'string' && m.name.trim()).slice(0, 30)
-    .map(m => ({id:typeof m.id === 'string' && idOK(m.id) ? m.id : uid(), name:m.name.trim().slice(0, 40), p:posNum(m.p) || 0, k:posNum(m.k) || 0}));
+    .map(m => ({id:typeof m.id === 'string' && idOK(m.id) ? m.id : uid(), name:m.name.trim().slice(0, 40), p:posNum(m.p) || 0, c:posNum(m.c) || 0, f:posNum(m.f) || 0, k:posNum(m.k) || 0}));
+  if (s.gym && typeof s.gym === 'object') { if ([60, 90, 120, 180].includes(s.gym.rest)) out.gym.rest = s.gym.rest; out.gym.autoRest = s.gym.autoRest !== false; }
+  if (typeof s.strict === 'boolean') out.strict = s.strict;
+  if (s.pomo && typeof s.pomo === 'object') { if ([25, 50].includes(s.pomo.focus)) out.pomo.focus = s.pomo.focus; if ([5, 10].includes(s.pomo.brk)) out.pomo.brk = s.pomo.brk; }
+  if (s.loc && typeof s.loc.lat === 'number' && typeof s.loc.lon === 'number' && Math.abs(s.loc.lat) <= 90 && Math.abs(s.loc.lon) <= 180) out.loc = {lat:s.loc.lat, lon:s.loc.lon};
   if (s.remind && typeof s.remind === 'object') {
     out.remind.on = !!s.remind.on;
     if (isTime(s.remind.winddown) || s.remind.winddown === '') out.remind.winddown = s.remind.winddown;
@@ -864,7 +1058,7 @@ let saveT;
 const saveSoon = () => { clearTimeout(saveT); saveT = setTimeout(save, 350); };
 const S = () => data.settings;
 const stamp = prev => Math.max(Date.now(), (prev || 0) + 1);
-const rec = d => { const k = key(d), r = data.days[k] || (data.days[k] = blankDay()); r.u = stamp(r.u); return r; };
+const rec = (d, label) => { const k = key(d); snap(k, label); const r = data.days[k] || (data.days[k] = blankDay()); r.u = stamp(r.u); return r; };
 const myBadges = () => data.badges[CHAL.id] || (data.badges[CHAL.id] = {});
 const liveChallenges = () => data.challenges.filter(c => !c.deleted).sort((a, b) => a.start.localeCompare(b.start));
 const badgeName = b => b.id === 'halfway' ? 'Halfway, ' + fMD.format(HALFWAY) : b.id === 'finish' ? 'Finished ' + endLabel() : b.name;
@@ -894,11 +1088,12 @@ const todayKeyClamped = () => key(clamp(TODAY));
 function finishedEnd(){ const last = lastElapsed(); if (!last) return null; const e = same(last, TODAY) ? addDays(last, -1) : last; return e < START ? null : e; }
 function setLevel(r, id, lv){ if (lv) r.checks[id] = lv; else delete r.checks[id]; }
 function levelFor(h, v){ if (v == null) return 0; if (v >= h.target) return true; if (h.minTarget && v >= h.minTarget) return 'min'; return 0; }
-function applyAuto(r, which){
+function applyAuto(r, which, d){
+  const strictNow = S().strict && d && same(d, TODAY);
   const w = hById('wake');
-  if ((!which || which === 'wake') && w && w.auto === 'wake' && r.wake) setLevel(r, 'wake', r.wake <= w.time ? true : (w.minTime && r.wake <= w.minTime ? 'min' : 0));
+  if ((!which || which === 'wake') && w && w.auto === 'wake' && r.wake && (!strictNow || r.vwake)) setLevel(r, 'wake', r.wake <= w.time ? true : (w.minTime && r.wake <= w.minTime ? 'min' : 0));
   const s = hById('sleep');
-  if ((!which || which === 'bed') && s && s.auto === 'bed' && r.bed) { const ok = r.bed >= '12:00'; setLevel(r, 'sleep', ok && r.bed <= s.time ? true : (ok && s.minTime && r.bed <= s.minTime ? 'min' : 0)); }
+  if ((!which || which === 'bed') && s && s.auto === 'bed' && r.bed && (!strictNow || r.vbed)) { const ok = r.bed >= '12:00'; setLevel(r, 'sleep', ok && r.bed <= s.time ? true : (ok && s.minTime && r.bed <= s.minTime ? 'min' : 0)); }
   const st = S().habits.find(h => h.auto === 'study');
   if (which === 'study' && st) setLevel(r, st.id, r.study.length ? levelFor(st, studyTotal(r)) : 0);
 }
@@ -979,7 +1174,7 @@ function syncBadges(silent){
 }
 function sleepMins(d){
   const prev = data.days[key(addDays(d, -1))], cur = data.days[key(d)];
-  if (!prev || !prev.bed || !cur || !cur.wake) return null;
+  if (!prev || !prev.bed || !cur || !cur.wake) return cur && cur.sleepH ? Math.round(cur.sleepH * 60) : null;
   let b = toMin(prev.bed); if (b < 12 * 60) b += 1440;
   const m = toMin(cur.wake) + 1440 - b;
   return m > 0 && m < 20 * 60 ? m : null;
@@ -1007,8 +1202,9 @@ let view = 'day', cur = clamp(TODAY), weekSel = null;
 const habitsEl = $('#habits'), extrasEl = $('#dExtras'), reviewEl = $('#dReview');
 function habitSub(h, r){
   const c = r && r.checks[h.id] === 'min';
-  if (h.auto === 'wake') return 'Out of bed by ' + fmtTime(h.time) + (r && r.wake ? ' · up at ' + fmtTime(r.wake) : '') + (c ? ' · partial' : '');
-  if (h.auto === 'bed') return 'Lights out by ' + fmtTime(h.time) + (r && r.bed ? ' · in bed ' + fmtTime(r.bed) : '') + (c ? ' · partial' : '');
+  if (h.auto === 'wake') return 'Out of bed by ' + fmtTime(h.time) + (r && r.wake ? ' · up at ' + fmtTime(r.wake) + (r.vwake ? ' ✓ verified' : '') : '') + (c ? ' · partial' : '');
+  if (h.auto === 'bed') return 'Lights out by ' + fmtTime(h.time) + (r && r.bed ? ' · in bed ' + fmtTime(r.bed) + (r.vbed ? ' ✓ verified' : '') : '') + (c ? ' · partial' : '');
+  if (h.id === 'sun') return sunSub(h, r);
   if (h.auto === 'study') { const t = studyTotal(r); return fmtN(h.target, 0) + ' min goal' + (t ? ' · ' + t + ' logged' : ' · log topics below') + (c ? ' · partial' : ''); }
   if (c && h.min) return 'Minimum: ' + h.min;
   return h.sub || '';
@@ -1035,7 +1231,7 @@ function renderDay(){
   else if (d > TODAY) msg = "This day hasn't happened yet. It stays gray on the calendar until it arrives.";
   const n = $('#dNotice'); n.textContent = msg; n.hidden = !msg;
   $('#dReportCard').innerHTML = TODAY >= END && same(d, END) ? '<div class="notice" style="display:flex;align-items:center;justify-content:space-between;gap:12px"><span><b>Your 80-day report is ready.</b></span><button class="btn small primary" type="button" data-act="report">View report</button></div>' : '';
-  renderChain();
+  renderChain(); renderQuote(); renderCheckin();
 
   const mealsOn = S().meals.length && (hById('protein') || hById('kcal'));
   const lastNutri = ['kcal', 'protein'].find(id => { const h = hById(id); return h && inLife(h, d); });
@@ -1059,6 +1255,7 @@ function renderDay(){
         '<div class="wbtns"><button class="wbtn" type="button" data-water="250">+250 ml</button><button class="wbtn" type="button" data-water="500">+500 ml</button><button class="wbtn" type="button" data-water="1000">+1 L</button><button class="wbtn undo" type="button" id="wUndo">Undo</button></div></li>';
     } else {
       row = '<li class="crow" data-row="' + h.id + '"><button class="row" type="button" data-toggle="' + h.id + '"><span class="box">' + CHECK_SVG + '</span><span class="txt"><b>' + nm + '</b><small data-sub="' + h.id + '">' + esc(habitSub(h, r)) + '</small></span></button>' +
+        (h.id === 'sun' ? '<button class="minbtn" type="button" data-act="suntimer" aria-pressed="' + !!timers.sun + '" style="margin-right:6px">' + (timers.sun ? 'Stop' : 'Timer') + '</button>' : '') +
         (h.min ? '<button class="minbtn" type="button" data-min="' + h.id + '" aria-pressed="false" title="Minimum: ' + esc(h.min) + '">Min</button>' : '') + '</li>';
     }
     return row;
@@ -1075,7 +1272,7 @@ function renderDay(){
   tb.textContent = TODAY < START ? 'Day 1' : TODAY > END ? 'Last day' : 'Today';
   updateDay();
 }
-function renderMeals(){
+function renderMealsV3(){
   const el = $('#mealRow'); if (!el) return;
   const r = peek(cur), ms = S().meals;
   const logged = r && r.meals.length ? r.meals.map(m => m.n).join(', ') : '';
@@ -1116,7 +1313,8 @@ function renderExtras(){
       '<div class="addlift"><input class="inp text" id="lfEx" list="liftOpts" placeholder="Exercise" maxlength="60" aria-label="Exercise" autocomplete="off">' +
       '<input class="inp" id="lfW" type="number" inputmode="decimal" min="0" step="any" placeholder="' + U.lift + '" aria-label="Weight in ' + U.lift + '">' +
       '<input class="inp" id="lfR" type="number" inputmode="numeric" min="1" step="1" placeholder="reps" aria-label="Reps" enterkeyhint="done">' +
-      '<button class="btn primary" type="button" data-act="addlift">Add set</button></div><p class="lasthint" id="lfHint"></p>');
+      '<button class="btn primary" type="button" data-act="addlift">Add set</button></div><p class="lasthint" id="lfHint"></p>' +
+      '<div class="gtools"><span class="calc">Rest</span><span class="seg sm">' + [60, 90, 120, 180].map(x => '<button type="button" data-rest="' + x + '" aria-pressed="' + (S().gym.rest === x) + '">' + fmtRest(x) + '</button>').join('') + '</span><button class="btn small" type="button" data-act="plates">Plates</button></div><p class="calc" id="plateOut"></p>');
   }
   if (S().habits.some(h => h.auto === 'study' && inLife(h, d)) || r.study.length) {
     html += det('study', 'study', 'Study log',
@@ -1124,7 +1322,8 @@ function renderExtras(){
       '<datalist id="topicOpts">' + studyTopics().map(t => '<option value="' + esc(t) + '"></option>').join('') + '</datalist>' +
       '<div class="addstudy"><input class="inp text" id="stT" list="topicOpts" placeholder="Subject, e.g. System design" maxlength="40" aria-label="Study subject" autocomplete="off">' +
       '<input class="inp" id="stM" type="number" inputmode="numeric" min="1" placeholder="min" aria-label="Minutes" enterkeyhint="done">' +
-      '<button class="btn primary" type="button" data-act="addstudy">Add session</button></div>');
+      '<button class="btn primary" type="button" data-act="addstudy">Add session</button></div>' +
+      '<div class="gtools"><button class="btn small primary" type="button" data-act="pomo">' + (timers.pomo ? 'Stop focus' : 'Start ' + S().pomo.focus + '-min focus') + '</button><span class="calc">Logs to the subject above when the timer ends.</span></div>');
   }
   const sec = r.run.sec;
   html += det('run', 'run', 'Run',
@@ -1134,7 +1333,7 @@ function renderExtras(){
   html += det('body', 'body', 'Body and sleep',
     '<label class="field">Morning weight (' + U.body + ')<input class="inp" id="bWt" data-act="weight" type="number" inputmode="decimal" min="0" step="any" placeholder="0.0" value="' + (r.weight != null ? r.weight : '') + '"></label>' +
     '<div class="fgrid"><label class="field">Woke up at<input class="inp" id="bWake" data-act="wake" type="time" value="' + r.wake + '"></label>' +
-    '<label class="field">In bed tonight at<input class="inp" id="bBed" data-act="bed" type="time" value="' + r.bed + '"></label></div><p class="calc" id="bCalc"></p>');
+    '<label class="field">In bed tonight at<input class="inp" id="bBed" data-act="bed" type="time" value="' + r.bed + '"></label></div><p class="calc" id="bCalc"></p>' + bodyExtras(r, d));
   html += det('note', 'note', 'Notes', '<textarea id="nNote" data-act="note" placeholder="Anything worth remembering, like why a habit slipped">' + esc(r.note) + '</textarea>');
   extrasEl.innerHTML = html;
   extrasEl.querySelectorAll('details').forEach(el => el.addEventListener('toggle', () => { S().ui.open[el.dataset.det] = el.open; try { localStorage.setItem(SKEY, JSON.stringify(data)); } catch (e) {} }));
@@ -1155,7 +1354,7 @@ function renderStudy(){
   if (!r || !r.study.length) { list.innerHTML = '<li class="empty">No sessions yet. Add what you studied and for how long.</li>'; return; }
   list.innerHTML = r.study.map((s, i) => '<li><span class="ex">' + esc(s.t) + '</span><span class="set">' + s.m + ' min</span><button class="x" type="button" data-act="delstudy" data-i="' + i + '" aria-label="Remove ' + esc(s.t) + ' session">' + X_SVG + '</button></li>').join('');
 }
-function updateLiftHint(){
+function updateLiftHintV3(){
   const el = $('#lfHint'), ex = $('#lfEx'); if (!el || !ex) return;
   const name = ex.value.trim(); if (!name) { el.textContent = ''; return; }
   const idx = liftIndex(), U = S().units, last = lastFor(name, key(cur), idx), b = idx.best[norm(name)];
@@ -1222,6 +1421,7 @@ function updateDay(){
   const bc = $('#bCalc');
   if (bc) bc.innerHTML = sl != null ? 'Last night: <strong>' + fmtHM(sl) + '</strong> of ' + fmtHM(tgt) + ' target' : 'Sleep hours appear when you log last night\'s bedtime and this morning\'s wake time.';
   sum('note', rr.note ? rr.note.slice(0, 48) + (rr.note.length > 48 ? '…' : '') : 'Why a habit slipped, how you felt', rr.note);
+  afterUpdate(d);
 }
 
 /* day interactions */
@@ -1230,33 +1430,21 @@ function relevelNum(r, id){ const h = hById(id); if (h && h.type === 'num') setL
 function syncNumInput(id){ const el = $('#in-' + id), r = peek(cur); if (el) el.value = r && r.vals[id] != null ? r.vals[id] : ''; }
 dayRoot.addEventListener('click', e => {
   const t = e.target.closest('[data-toggle]');
-  if (t) { const r = rec(cur), id = t.dataset.toggle; if (r.checks[id] === true) delete r.checks[id]; else r.checks[id] = true; save(); buzz(); updateDay(); return; }
+  if (t) { const id = t.dataset.toggle; if (strictBlocked(id)) return; const h = hById(id), on = !(peek(cur) && peek(cur).checks[id] === true); const r = rec(cur, (on ? 'Checked ' : 'Unchecked ') + (h ? h.name : id)); if (on) r.checks[id] = true; else delete r.checks[id]; save(); buzz(); updateDay(); return; }
   const mb = e.target.closest('[data-min]');
-  if (mb) { const r = rec(cur), id = mb.dataset.min; if (r.checks[id] === 'min') delete r.checks[id]; else r.checks[id] = 'min'; save(); buzz(); updateDay(); return; }
+  if (mb) { const id = mb.dataset.min; if (strictBlocked(id)) return; const r = rec(cur, 'Minimum: ' + (hById(id) ? hById(id).name : id)); if (r.checks[id] === 'min') delete r.checks[id]; else r.checks[id] = 'min'; save(); buzz(); updateDay(); return; }
   const wb = e.target.closest('[data-water]');
-  if (wb) { const r = rec(cur); r.water.push(Number(wb.dataset.water)); setWaterCheck(r); save(); buzz(); updateDay(); return; }
+  if (wb) { const r = rec(cur, 'Added ' + (Number(wb.dataset.water) >= 1000 ? Number(wb.dataset.water) / 1000 + ' L' : wb.dataset.water + ' ml') + ' water'); r.water.push(Number(wb.dataset.water)); setWaterCheck(r); save(); buzz(); updateDay(); return; }
   if (e.target.closest('#wUndo')) { const r = rec(cur); if (r.water.length) { r.water.pop(); setWaterCheck(r); save(); buzz(); updateDay(); } return; }
   const ml = e.target.closest('[data-meal]');
-  if (ml) {
-    const m = S().meals.find(x => x.id === ml.dataset.meal); if (!m) return;
-    const r = rec(cur);
-    r.meals.push({n:m.name, p:m.p, k:m.k});
-    if (hById('protein')) { r.vals.protein = Math.round(((r.vals.protein || 0) + m.p) * 100) / 100; relevelNum(r, 'protein'); syncNumInput('protein'); }
-    if (hById('kcal')) { r.vals.kcal = Math.round((r.vals.kcal || 0) + m.k); relevelNum(r, 'kcal'); syncNumInput('kcal'); }
-    save(); buzz(); renderMeals(); updateDay(); toast('Added ' + m.name); return;
-  }
+  if (ml) { const m = S().meals.find(x => x.id === ml.dataset.meal); if (m) addMealEntry({n:m.name, p:m.p, c:m.c || 0, f:m.f || 0, k:m.k}); return; }
   const a = e.target.closest('[data-act]'); if (!a) return;
   const act = a.dataset.act;
   if (act === 'addlift') addLift();
-  else if (act === 'dellift') { const r = rec(cur); r.lifts.splice(Number(a.dataset.i), 1); save(); renderLifts(); updateDay(); }
+  else if (act === 'dellift') { const r = rec(cur, 'Removed set'); r.lifts.splice(Number(a.dataset.i), 1); save(); renderLifts(); updateDay(); }
   else if (act === 'addstudy') addStudy();
-  else if (act === 'delstudy') { const r = rec(cur); r.study.splice(Number(a.dataset.i), 1); applyAuto(r, 'study'); save(); renderStudy(); updateDay(); }
-  else if (act === 'mealundo') {
-    const r = rec(cur), m = r.meals.pop(); if (!m) return;
-    if (r.vals.protein != null) { r.vals.protein = Math.max(0, Math.round((r.vals.protein - m.p) * 100) / 100); relevelNum(r, 'protein'); syncNumInput('protein'); }
-    if (r.vals.kcal != null) { r.vals.kcal = Math.max(0, Math.round(r.vals.kcal - m.k)); relevelNum(r, 'kcal'); syncNumInput('kcal'); }
-    save(); renderMeals(); updateDay();
-  }
+  else if (act === 'delstudy') { const r = rec(cur, 'Removed study session'); r.study.splice(Number(a.dataset.i), 1); applyAuto(r, 'study'); save(); renderStudy(); updateDay(); }
+  else if (act === 'mealundo') { const r = peek(cur); if (r && r.meals.length) removeMealEntry(r.meals.length - 1); }
   else if (act === 'report') setView('report');
 });
 function setWaterCheck(r){ const wh = S().habits.find(h => h.type === 'water'); if (wh) setLevel(r, wh.id, levelFor(wh, waterTotal(r))); }
@@ -1264,19 +1452,20 @@ function addLift(){
   const ex = $('#lfEx').value.trim(), w = parseFloat($('#lfW').value), reps = parseInt($('#lfR').value, 10);
   if (!ex) { toast('Enter an exercise'); $('#lfEx').focus(); return; }
   if (!(reps > 0)) { toast('Enter reps'); $('#lfR').focus(); return; }
-  const r = rec(cur);
+  const r = rec(cur, 'Added set');
   r.lifts.push({ex:ex.slice(0, 60), w:isFinite(w) && w > 0 ? Math.round(w * 100) / 100 : 0, r:Math.min(200, reps)});
   save();
   const idx = liftIndex(), prs = idx.prs[key(cur)];
   if (prs && prs.has(r.lifts.length - 1)) { toast('New PR on ' + ex + ' · +25 XP'); buzz(); }
   renderLifts(idx); updateDay(); updateLiftHint();
   $('#lfR').value = ''; $('#lfR').focus();
+  if (S().gym.autoRest) startRest();
 }
 function addStudy(){
   const t = $('#stT').value.trim(), m = parseInt($('#stM').value, 10);
   if (!t) { toast('Enter a subject'); $('#stT').focus(); return; }
   if (!(m > 0)) { toast('Enter minutes'); $('#stM').focus(); return; }
-  const r = rec(cur); r.study.push({t:t.slice(0, 40), m:Math.min(720, m)}); applyAuto(r, 'study'); save();
+  const r = rec(cur, 'Added study session'); r.study.push({t:t.slice(0, 40), m:Math.min(720, m)}); applyAuto(r, 'study'); save();
   renderStudy(); updateDay(); $('#stM').value = ''; buzz();
 }
 dayRoot.addEventListener('input', e => {
@@ -1291,7 +1480,7 @@ dayRoot.addEventListener('input', e => {
     const wi = rKey(weekOf(cur)), rv = data.reviews[wi] || (data.reviews[wi] = {good:'', fix:''});
     rv[t.dataset.rv] = t.value.slice(0, 2000); rv.u = stamp(rv.u); saveSoon(); updateDay(); return;
   }
-  if (t.id === 'lfEx') { updateLiftHint(); return; }
+  if (t.id === 'lfEx' || t.id === 'lfW' || t.id === 'lfR') { updateLiftHint(); return; }
   const act = t.dataset.act; if (!act) return;
   const r = rec(cur);
   if (act === 'dur') { const v = parseInt(t.value, 10); r.dur = v >= 0 ? v : null; save(); updateDay(); }
@@ -1302,7 +1491,7 @@ dayRoot.addEventListener('input', e => {
     r.run.sec = tot > 0 ? tot : null; save(); updateDay();
   }
   else if (act === 'weight') { const v = parseFloat(t.value); r.weight = isFinite(v) && v > 0 ? Math.round(v * 100) / 100 : null; save(); updateDay(); }
-  else if (act === 'wake' || act === 'bed') { r[act] = isTime(t.value) ? t.value : ''; applyAuto(r, act); save(); updateDay(); }
+  else if (act === 'wake' || act === 'bed') { r[act] = isTime(t.value) ? t.value : ''; if (act === 'wake') delete r.vwake; else delete r.vbed; applyAuto(r, act, cur); save(); updateDay(); }
   else if (act === 'note') { r.note = t.value.slice(0, 4000); saveSoon(); updateDay(); }
 });
 dayRoot.addEventListener('change', e => { if (e.target.id === 'lfEx') updateLiftHint(); });
@@ -1325,7 +1514,7 @@ $('#dp').addEventListener('change', e => {
   cur = d; renderDay();
 });
 let sx = null, sy = 0;
-dayRoot.addEventListener('touchstart', e => { if (e.target.closest('input,textarea,.wbtns,.addlift,.addstudy,.mchips,details[open] .card-body')) { sx = null; return; } sx = e.touches[0].clientX; sy = e.touches[0].clientY; }, {passive:true});
+dayRoot.addEventListener('touchstart', e => { if (e.target.closest('input,textarea,.wbtns,.addlift,.addstudy,.mchips,.macros,.mlist,#dCheckin,details[open] .card-body')) { sx = null; return; } sx = e.touches[0].clientX; sy = e.touches[0].clientY; }, {passive:true});
 dayRoot.addEventListener('touchend', e => {
   if (sx == null) return;
   const dx = e.changedTouches[0].clientX - sx, dy = e.changedTouches[0].clientY - sy; sx = null;
@@ -1575,7 +1764,7 @@ function sleepChart(){
   if (!arr.length) return emptyChart(kv, ro, wrap, 'Log bedtime and wake time in Body and sleep. Each night shows up the next morning.');
   const avg = arr.reduce((a, p) => a + p.m, 0) / arr.length, last7 = arr.slice(-7), avg7 = last7.reduce((a, p) => a + p.m, 0) / last7.length;
   const hit = arr.filter(p => p.m >= tgt - 15).length;
-  kv.innerHTML = '<div><b>' + fmtHM(avg7) + '</b><small>last 7 nights</small></div><div><b>' + fmtHM(avg) + '</b><small>average</small></div><div><b>' + hit + '/' + arr.length + '</b><small>nights on target</small></div>';
+  kv.innerHTML = '<div><b>' + fmtHM(avg7) + '</b><small>last 7 nights</small></div><div><b>' + fmtHM(avg) + '</b><small>average</small></div><div><b>' + hit + '/' + arr.length + '</b><small>nights on target</small></div>' + sleepExtraKV();
   const maxH = Math.max(10, Math.ceil(Math.max(...arr.map(p => p.m)) / 60)), ticks = niceTicks(0, maxH, 4), hi = ticks[ticks.length - 1];
   const y = h => PT + (CH - PT - PB) * (1 - h / hi), bw = Math.max(2, (CW - PL - PR_) / TOTAL - 1.5);
   wrap.innerHTML = '<svg viewBox="0 0 ' + CW + ' ' + CH + '" role="img" aria-label="Sleep hours per night">' + yGrid(ticks, y, v => v + 'h') + axisDays() +
@@ -1645,7 +1834,7 @@ function renderStats(){
   const ins = insights();
   $('#sInsights').innerHTML = ins.items.map(t => '<li>' + t + '</li>').join('') + (ins.note ? '<li>' + esc(ins.note) + '</li>' : '');
   renderConnections();
-  weightChart(); wkcChart(); sleepChart(); studyChart(); runChart();
+  weightChart(); wkcChart(); sleepChart(); studyChart(); runChart(); renderNutrition(); renderVolume(); renderBodyStats();
 
   const bests = Object.values(idx.best).filter(b => b.w > 0).sort((a, b) => b.k.localeCompare(a.k));
   $('#sPRs').innerHTML = bests.length ? '<div class="strow prrow head"><span>Exercise</span><span class="n">Best set</span><span class="n">e1RM</span></div>' +
@@ -1813,7 +2002,9 @@ $('#nhAdd').addEventListener('click', () => {
   renderHabitsEditor(); toast('Added ' + h.name);
 });
 function renderMealsEditor(){
-  $('#mealList').innerHTML = S().meals.map(m => '<div class="mrow" data-mid="' + m.id + '"><input class="inp text" data-mf="name" maxlength="40" value="' + esc(m.name) + '" aria-label="Meal name"><input class="inp" data-mf="p" type="number" inputmode="decimal" min="0" value="' + m.p + '" aria-label="Protein grams"><input class="inp" data-mf="k" type="number" inputmode="numeric" min="0" value="' + m.k + '" aria-label="Calories"><button class="x" type="button" data-mdel aria-label="Delete ' + esc(m.name) + '">' + X_SVG + '</button></div>').join('') || '<p class="empty" style="padding:6px 0">No meals yet.</p>';
+  $('#mealList').innerHTML = S().meals.map(m => '<div class="mtpl" data-mid="' + m.id + '"><input class="inp text" data-mf="name" maxlength="40" value="' + esc(m.name) + '" aria-label="Meal name">' +
+    '<div class="mnums">' + [['p', 'Protein'], ['c', 'Carbs'], ['f', 'Fat'], ['k', 'kcal']].map(([f, l]) => '<label>' + l + '<input class="inp" data-mf="' + f + '" type="number" inputmode="decimal" min="0" value="' + (m[f] || 0) + '"></label>').join('') +
+    '<button class="x" type="button" data-mdel aria-label="Delete ' + esc(m.name) + '">' + X_SVG + '</button></div></div>').join('') || '<p class="empty" style="padding:6px 0">No meals yet.</p>';
 }
 $('#mealList').addEventListener('change', e => {
   const t = e.target, row = t.closest('[data-mid]'); if (!row) return;
@@ -1824,11 +2015,14 @@ $('#mealList').addEventListener('change', e => {
 });
 $('#mealList').addEventListener('click', e => { const b = e.target.closest('[data-mdel]'); if (!b) return; const id = b.closest('[data-mid]').dataset.mid; S().meals = S().meals.filter(m => m.id !== id); save(); renderMealsEditor(); });
 $('#nmAdd').addEventListener('click', () => {
-  const n = $('#nmName').value.trim(), p = parseFloat($('#nmP').value), k = parseFloat($('#nmK').value);
+  const n = $('#nmName').value.trim(), num = id => { const v = parseFloat($(id).value); return v >= 0 ? v : 0; };
+  const p = num('#nmP'), c = num('#nmC'), f = num('#nmF'); let k = parseFloat($('#nmK').value);
   if (!n) { toast('Name the meal'); $('#nmName').focus(); return; }
-  if (!(p >= 0) && !(k >= 0)) { toast('Add protein or calories'); $('#nmP').focus(); return; }
-  S().meals.push({id:uid(), name:n.slice(0, 40), p:p >= 0 ? Math.round(p * 10) / 10 : 0, k:k >= 0 ? Math.round(k) : 0}); save();
-  $('#nmName').value = ''; $('#nmP').value = ''; $('#nmK').value = ''; renderMealsEditor(); toast('Meal added');
+  if (!(k >= 0)) k = Math.round(p * 4 + c * 4 + f * 9);
+  if (!p && !c && !f && !k) { toast('Add protein, carbs, fat or calories'); $('#nmP').focus(); return; }
+  S().meals.push({id:uid(), name:n.slice(0, 40), p:Math.round(p * 10) / 10, c:Math.round(c * 10) / 10, f:Math.round(f * 10) / 10, k:Math.round(k)}); save();
+  for (const id of ['#nmName', '#nmP', '#nmC', '#nmF', '#nmK']) $(id).value = '';
+  renderMealsEditor(); toast('Meal added');
 });
 function renderSchedule(){
   const order = [1, 2, 3, 4, 5, 6, 0];
@@ -1840,7 +2034,7 @@ $('#deloadSeg').addEventListener('click', e => { const b = e.target.closest('[da
 function renderUnits(){
   const U = S().units;
   const seg = (k, opts) => '<span class="seg">' + opts.map(o => '<button type="button" data-unit="' + k + '" data-val="' + o + '" aria-pressed="' + (U[k] === o) + '">' + o + '</button>').join('') + '</span>';
-  $('#unitList').innerHTML = '<div class="urow"><span>Bodyweight</span>' + seg('body', ['kg','lb']) + '</div><div class="urow"><span>Lifts</span>' + seg('lift', ['lb','kg']) + '</div><div class="urow"><span>Running</span>' + seg('dist', ['mi','km']) + '</div>';
+  $('#unitList').innerHTML = '<div class="urow"><span>Bodyweight</span>' + seg('body', ['kg','lb']) + '</div><div class="urow"><span>Lifts</span>' + seg('lift', ['lb','kg']) + '</div><div class="urow"><span>Running</span>' + seg('dist', ['mi','km']) + '</div><div class="urow"><span>Measurements</span>' + seg('meas', ['cm','in']) + '</div>';
 }
 $('#unitList').addEventListener('click', e => { const b = e.target.closest('[data-unit]'); if (!b) return; S().units[b.dataset.unit] = b.dataset.val; save(); renderUnits(); });
 
@@ -1930,7 +2124,7 @@ function renderBackup(){
   st.className = 'status' + (storageOK ? '' : ' warn');
   st.textContent = storageOK ? 'Saved in this browser · ' + n + (n === 1 ? ' day' : ' days') + ' logged' : "This browser isn't saving data. Copy a backup before you close the page.";
 }
-function renderSettings(){ renderBackup(); renderHabitsEditor(); renderMealsEditor(); renderSchedule(); renderUnits(); renderReminders(); renderInstall(); renderSync(); renderChallenges(); }
+function renderSettings(){ renderBackup(); renderHabitsEditor(); renderMealsEditor(); renderSchedule(); renderUnits(); renderReminders(); renderInstall(); renderSync(); renderChallenges(); renderAppearance(); renderCheckins(); renderGymTools(); renderTimersLoc(); renderHealth(); renderPrivacy(); }
 $('#copyBtn').addEventListener('click', () => {
   const txt = exportJSON(), ta = $('#exportTa'); ta.value = txt;
   const fallback = () => { ta.focus(); ta.select(); toast('Selected. Copy it from the box.'); };
@@ -2044,7 +2238,7 @@ const toCSV = rows => '﻿' + rows.map(r => r.map(csvEsc).join(',')).join('\r\n'
 function dailyRows(){
   const U = S().units, hs = S().habits, nums = hs.filter(h => h.type === 'num'), idx = liftIndex(), saved = CHAL;
   const rows = [['date', 'challenge', 'day', 'weekday', 'workout', 'deload_week', 'score_pct'].concat(hs.map(h => h.name), nums.map(h => h.name + ' (' + h.unit + ')'),
-    ['water_l', 'weight_' + U.body, 'wake', 'bed', 'sleep_hours', 'run_' + U.dist, 'run_time', 'run_pace_per_' + U.dist, 'gym_minutes', 'sets', 'prs', 'study_minutes', 'study_subjects', 'meals', 'note'])];
+    ['water_l', 'weight_' + U.body, 'wake', 'bed', 'sleep_hours', 'run_' + U.dist, 'run_time', 'run_pace_per_' + U.dist, 'gym_minutes', 'sets', 'prs', 'study_minutes', 'study_subjects', 'meals', 'note', 'sleep_quality', 'resting_hr', 'carbs_g', 'fat_g', 'sun_minutes', 'wake_verified', 'bed_verified', 'soreness'].concat(MEAS.map(m => m + '_' + U.meas)))];
   try {
     for (const c of liveChallenges()) {
       setPeriod(c); const last = lastElapsed(); if (!last) continue;
@@ -2054,7 +2248,7 @@ function dailyRows(){
           .concat(hs.map(h => applies(h, d) ? credit(d, h.id) : ''), nums.map(h => r.vals[h.id] != null ? r.vals[h.id] : ''),
           [r.water.length ? waterTotal(r) / 1000 : '', r.weight != null ? r.weight : '', r.wake, r.bed, sl != null ? Math.round(sl / 6) / 10 : '',
            r.run.dist != null ? r.run.dist : '', r.run.sec ? fmtClock(r.run.sec) : '', r.run.dist && r.run.sec ? fmtClock(r.run.sec / r.run.dist) : '',
-           r.dur != null ? r.dur : '', r.lifts.length || '', idx.prs[k] ? idx.prs[k].size : '', studyTotal(r) || '', [...new Set(r.study.map(x => x.t))].join('; '), r.meals.map(m => m.n).join('; '), r.note]));
+           r.dur != null ? r.dur : '', r.lifts.length || '', idx.prs[k] ? idx.prs[k].size : '', studyTotal(r) || '', [...new Set(r.study.map(x => x.t))].join('; '), r.meals.map(m => (m.t ? m.t + ' ' : '') + m.n + (m.tag ? ' (' + m.tag + '-workout)' : '')).join('; '), r.note, r.sleepQ || '', r.rhr || '', r.vals.carbs != null ? r.vals.carbs : '', r.vals.fat != null ? r.vals.fat : '', r.sunMin || '', r.vwake ? 'yes' : '', r.vbed ? 'yes' : '', r.sore ? Object.entries(r.sore).map(([p, l]) => p + ' ' + l).join('; ') : ''].concat(MEAS.map(m => (r.meas && r.meas[m]) || ''))));
       }
     }
   } finally { setPeriod(saved); }
@@ -2226,6 +2420,707 @@ $('#syncBox').addEventListener('click', e => {
   }
 });
 
+/* ================= v5 SHARED ================= */
+const MUSCLES = ['Chest', 'Back', 'Shoulders', 'Biceps', 'Triceps', 'Quads', 'Hamstrings', 'Glutes', 'Calves', 'Core'];
+const MEAS = ['waist', 'chest', 'arms', 'thighs'];
+const MUSCLE_RULES = [
+  [/leg curl|hamstring|romanian|rdl|good morning|nordic|stiff/i, 'Hamstrings'],
+  [/leg extension|squat|leg press|lunge|hack|step-?up|sissy|adductor/i, 'Quads'],
+  [/hip thrust|glute|bridge|abduct/i, 'Glutes'],
+  [/calf|calves/i, 'Calves'],
+  [/lateral raise|rear delt|face pull|overhead press|shoulder press|ohp|military|arnold|upright row|reverse fly/i, 'Shoulders'],
+  [/bench|chest|fly|flye|pec|push-?up|dip|incline|decline|db press|dumbbell press|machine press/i, 'Chest'],
+  [/row|pulldown|pull-?up|chin|\blat\b|lats|deadlift|shrug|pullover|back extension/i, 'Back'],
+  [/curl|bicep|preacher/i, 'Biceps'],
+  [/tricep|pushdown|skull|extension|close-?grip|kickback/i, 'Triceps'],
+  [/crunch|plank|\babs?\b|core|leg raise|woodchop|sit-?up|pallof/i, 'Core']
+];
+const muscleOf = ex => { for (const [re, m] of MUSCLE_RULES) if (re.test(ex)) return m; return 'Other'; };
+const cap = s => s.charAt(0).toUpperCase() + s.slice(1);
+const nowHM = () => { const n = new Date(); return pad(n.getHours()) + ':' + pad(n.getMinutes()); };
+const nowMin = () => { const n = new Date(); return n.getHours() * 60 + n.getMinutes(); };
+const hmOf = m => pad(Math.floor(m / 60) % 24) + ':' + pad(m % 60);
+const clockOf = dt => fmtTime(pad(dt.getHours()) + ':' + pad(dt.getMinutes()));
+const mmss = ms => { const s = Math.max(0, Math.round(ms / 1000)); return Math.floor(s / 60) + ':' + pad(s % 60); };
+const lsGet = (k, fb) => { try { const v = JSON.parse(localStorage.getItem(k) || 'null'); return v == null ? fb : v; } catch (e) { return fb; } };
+const lsSet = (k, v) => { try { if (v == null) localStorage.removeItem(k); else localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} };
+function vib(p){ try { navigator.vibrate && navigator.vibrate(p); } catch (e) {} }
+let actx = null;
+function audio(){ try { actx = actx || new (window.AudioContext || window.webkitAudioContext)(); if (actx.state === 'suspended') actx.resume(); } catch (e) { actx = null; } return actx; }
+function chime(n){
+  const a = audio(); if (!a) return;
+  for (let i = 0; i < (n || 1); i++) {
+    const o = a.createOscillator(), g = a.createGain(), t = a.currentTime + i * 0.32;
+    o.type = 'sine'; o.frequency.value = i % 2 ? 660 : 880;
+    g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(0.22, t + 0.02); g.gain.exponentialRampToValueAtTime(0.0001, t + 0.28);
+    o.connect(g); g.connect(a.destination); o.start(t); o.stop(t + 0.3);
+  }
+}
+document.addEventListener('pointerdown', () => audio(), {once:true, capture:true});
+const QUOTES = [
+  ['Well begun is half done.', 'Aristotle'],
+  ['First say to yourself what you would be; and then do what you have to do.', 'Epictetus'],
+  ['No man is free who is not master of himself.', 'Epictetus'],
+  ['Waste no more time arguing what a good man should be. Be one.', 'Marcus Aurelius'],
+  ['The impediment to action advances action. What stands in the way becomes the way.', 'Marcus Aurelius'],
+  ['It is not that we have a short time to live, but that we waste a lot of it.', 'Seneca'],
+  ['While we are postponing, life speeds by.', 'Seneca'],
+  ['Difficulties strengthen the mind, as labor does the body.', 'Seneca'],
+  ['Little by little, a little becomes a lot.', 'Tanzanian proverb'],
+  ['The journey of a thousand miles begins with one step.', 'Lao Tzu'],
+  ['Early to bed and early to rise makes a man healthy, wealthy, and wise.', 'Benjamin Franklin'],
+  ['Lost time is never found again.', 'Benjamin Franklin'],
+  ['Energy and persistence conquer all things.', 'Benjamin Franklin'],
+  ['Knowing is not enough; we must apply. Willing is not enough; we must do.', 'Goethe'],
+  ['He who has a why to live can bear almost any how.', 'Friedrich Nietzsche'],
+  ['Do what you can, with what you have, where you are.', 'Theodore Roosevelt'],
+  ['Hard day? Do the minimum version. The chain matters more than a perfect day.', ''],
+  ['Never skip twice.', ''],
+  ['Show up, log it, repeat.', ''],
+  ['The 5:30 alarm is a vote for the person you are becoming.', ''],
+  ['Sleep is where the gym work turns into muscle.', ''],
+  ['You do not need motivation. You need the next rep.', ''],
+  ['Protein first, then everything else.', ''],
+  ['Small wins before sunrise set the tone for the whole day.', ''],
+  ['A 70% day still keeps the chain. Take it.', ''],
+  ['Water, sunlight, sleep. The boring basics do the heavy lifting.', ''],
+  ['Add a rep or add a little weight. That is the whole game.', ''],
+  ['Future you is built by what you log today.', ''],
+  ['Discipline is remembering what you want.', ''],
+  ['One focused hour beats three distracted ones.', '']
+];
+function renderQuote(){
+  const el = $('#dQuote'), i = Math.abs(diffDays(new Date(2026, 0, 1), cur)) % QUOTES.length, q = QUOTES[i];
+  el.innerHTML = '“' + esc(q[0]) + '”' + (q[1] ? ' <span>' + esc(q[1]) + '</span>' : '');
+}
+
+/* ================= UNDO ================= */
+const undoStack = [];
+let snackT = null;
+function snap(k, label){
+  const now = Date.now(), last = undoStack[undoStack.length - 1];
+  if (!label && last && last.k === k && !last.labeled && now - last.at < 1500) { last.at = now; return; }
+  undoStack.push({k, before:data.days[k] ? JSON.parse(JSON.stringify(data.days[k])) : null, label:label || 'Edit', labeled:!!label, at:now});
+  if (undoStack.length > 40) undoStack.shift();
+  if (label) showSnack(label);
+  refreshUndoChip();
+}
+function showSnack(label){
+  const s = $('#snack'); $('#snackTxt').textContent = label; s.hidden = false;
+  requestAnimationFrame(() => s.classList.add('show'));
+  clearTimeout(snackT); snackT = setTimeout(hideSnack, 4500);
+}
+function hideSnack(){ const s = $('#snack'); s.classList.remove('show'); clearTimeout(snackT); snackT = setTimeout(() => { s.hidden = true; }, 220); }
+function undo(){
+  const u = undoStack.pop(); hideSnack();
+  if (!u) { toast('Nothing to undo'); refreshUndoChip(); return; }
+  const curU = data.days[u.k] ? data.days[u.k].u : 0;
+  data.days[u.k] = u.before ? u.before : blankDay();
+  data.days[u.k].u = stamp(Math.max(curU || 0, (u.before && u.before.u) || 0));
+  save();
+  const d = parseKey(u.k);
+  if (inRange(d)) cur = d;
+  if (view === 'day') renderDay();
+  toast('Undone: ' + u.label);
+  refreshUndoChip();
+}
+function refreshUndoChip(){ const c = $('#undoChip'); if (!c) return; const u = undoStack[undoStack.length - 1]; c.hidden = !u; if (u) c.title = 'Undo: ' + u.label; }
+$('#snackUndo').addEventListener('click', undo);
+$('#undoChip').addEventListener('click', undo);
+
+/* ================= CELEBRATION ================= */
+const celebrated = {};
+function afterUpdate(d){
+  const k = key(d), s = dayScore(d), full = s.t > 0 && s.p >= 0.999;
+  if (celebrated[k] === undefined) celebrated[k] = full;
+  else if (full && !celebrated[k]) { celebrated[k] = true; celebrate(); }
+  else if (!full) celebrated[k] = false;
+  refreshUndoChip(); refreshSunBtn(); refreshPomoBtn();
+}
+function celebrate(){
+  vib([30, 50, 30, 50, 140]); chime(3);
+  const ring = $('#ring'); ring.classList.remove('pop'); void ring.offsetWidth; ring.classList.add('pop');
+  toast('100% day. Chain secured.');
+  if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const cv = document.createElement('canvas'); cv.className = 'confetti'; document.body.appendChild(cv);
+  let ctx = null; try { ctx = cv.getContext('2d'); } catch (e) {}
+  if (!ctx) { cv.remove(); return; }
+  const dpr = window.devicePixelRatio || 1, W = window.innerWidth, H = window.innerHeight;
+  cv.width = W * dpr; cv.height = H * dpr; ctx.scale(dpr, dpr);
+  const cs = getComputedStyle(document.documentElement), cols = ['--accent', '--good', '--warn', '--flame', '--m-f'].map(v => cs.getPropertyValue(v).trim() || '#2F55E4');
+  const parts = Array.from({length:150}, () => ({x:W / 2 + (Math.random() - 0.5) * 80, y:H * 0.28, vx:(Math.random() - 0.5) * 13, vy:-Math.random() * 13 - 4, r:Math.random() * Math.PI, vr:(Math.random() - 0.5) * 0.4, w:6 + Math.random() * 6, h:3 + Math.random() * 4, c:cols[Math.floor(Math.random() * cols.length)]}));
+  const t0 = performance.now();
+  (function frame(t){
+    const el = t - t0; ctx.clearRect(0, 0, W, H);
+    for (const p of parts) { p.vy += 0.38; p.vx *= 0.99; p.x += p.vx; p.y += p.vy; p.r += p.vr; ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.r); ctx.globalAlpha = Math.max(0, 1 - el / 1800); ctx.fillStyle = p.c; ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h); ctx.restore(); }
+    if (el < 1800) requestAnimationFrame(frame); else cv.remove();
+  })(t0);
+}
+
+/* ================= CHECK-INS ================= */
+function windowFor(kind){
+  const h = hById(kind === 'wake' ? 'wake' : 'sleep'); if (!h || !h.time || !h.auto) return null;
+  const t = toMin(h.time);
+  return kind === 'wake' ? {open:t - 5, close:Math.max(t + 10, h.minTime ? toMin(h.minTime) : t + 10), h} : {open:t - 30, close:t + 30, h};
+}
+function strictBlocked(id){
+  if (!S().strict || !same(cur, TODAY)) return false;
+  const h = hById(id); if (!h || (h.auto !== 'wake' && h.auto !== 'bed')) return false;
+  const w = windowFor(h.auto === 'wake' ? 'wake' : 'bed');
+  toast('Strict check-ins are on: use the ' + (h.auto === 'wake' ? 'wake' : 'bedtime') + ' check-in between ' + fmtTime(hmOf(w.open)) + ' and ' + fmtTime(hmOf(w.close)) + '.');
+  return true;
+}
+let lastCheckinRender = 0;
+function renderCheckin(){
+  lastCheckinRender = Date.now();
+  const box = $('#dCheckin'); if (!box) return;
+  if (!same(cur, TODAY) || !inRange(TODAY)) { box.innerHTML = ''; return; }
+  const r = peek(TODAY) || {}, nm = nowMin(); let html = '';
+  for (const kind of ['wake', 'bed']) {
+    const w = windowFor(kind); if (!w || !inLife(w.h, TODAY)) continue;
+    if (kind === 'wake' ? r.vwake : r.vbed) continue;
+    if (nm >= w.open && nm <= w.close) {
+      html += '<button class="checkin" type="button" data-act="checkin" data-kind="' + kind + '"><span class="ci-t">' + (kind === 'wake' ? "I'm up" : 'Going to bed') + '</span><span class="ci-s">Tap to check in at ' + fmtTime(nowHM()) + ' · open until ' + fmtTime(hmOf(w.close)) + '</span></button>';
+    } else if (nm < w.open && w.open - nm <= 90) {
+      html += '<p class="cinote">' + (kind === 'wake' ? 'Wake' : 'Bedtime') + ' check-in opens at ' + fmtTime(hmOf(w.open)) + '.</p>';
+    }
+  }
+  box.innerHTML = html;
+}
+function checkIn(kind){
+  const w = windowFor(kind), nm = nowMin();
+  if (!w || nm < w.open || nm > w.close) { toast('The check-in window is closed.'); renderCheckin(); return; }
+  const t = nowHM(), r = rec(TODAY, (kind === 'wake' ? 'Wake' : 'Bedtime') + ' check-in ' + fmtTime(t));
+  if (kind === 'wake') { r.wake = t; r.vwake = true; applyAuto(r, 'wake', TODAY); } else { r.bed = t; r.vbed = true; applyAuto(r, 'bed', TODAY); }
+  save(); vib([20, 40, 20]); chime(1); renderDay();
+}
+
+/* ================= TIMERS ================= */
+const TKEY = 'block80.timers';
+let timers = lsGet(TKEY, {});
+const saveTimers = () => lsSet(TKEY, timers);
+let tickId = null;
+function startTicker(){ if (!tickId) tickId = setInterval(onTick, 1000); onTick(); }
+function rawRec(k){ const r = data.days[k] || (data.days[k] = blankDay()); r.u = stamp(r.u); return r; }
+function sunLevel(r){
+  const h = hById('sun'); if (!h) return;
+  const m = r.sunMin || 0;
+  if (m >= 30) r.checks.sun = true;
+  else if (h.min && m >= 10 && r.checks.sun !== true) r.checks.sun = 'min';
+}
+function onTick(){
+  const now = Date.now();
+  if (timers.rest && now >= timers.rest.end) { delete timers.rest; saveTimers(); chime(2); vib([200, 100, 200]); toast('Rest over. Next set.'); }
+  if (timers.sun) {
+    const s = timers.sun, mins = s.base + Math.floor((now - s.start) / 60000), r = data.days[s.k];
+    if (!r || (r.sunMin || 0) !== mins) { const rr = rawRec(s.k); rr.sunMin = mins; sunLevel(rr); save(); if (view === 'day' && key(cur) === s.k) updateDay(); }
+    if (mins >= 30) { delete timers.sun; saveTimers(); chime(2); vib([60, 60, 60]); toast('30 minutes of sunlight logged.'); if (view === 'day') updateDay(); }
+  }
+  if (timers.pomo && now >= timers.pomo.start + timers.pomo.dur * 60000) {
+    const p = timers.pomo;
+    if (p.phase === 'focus') { logPomo(p, p.dur); chime(3); vib([100, 80, 100]); toast('Focus done: ' + p.dur + ' min of ' + p.topic + ' logged. Take ' + S().pomo.brk + '.'); timers.pomo = {phase:'break', start:now, dur:S().pomo.brk, topic:p.topic, k:p.k}; }
+    else { delete timers.pomo; chime(1); toast('Break over.'); }
+    saveTimers();
+  }
+  renderTimerBar();
+  if (view === 'day' && now - lastCheckinRender > 30000) renderCheckin();
+}
+function renderTimerBar(){
+  const el = $('#tbar'), now = Date.now(), items = [];
+  if (timers.rest) items.push('<span class="tpill"><b>Rest</b> ' + mmss(timers.rest.end - now) + '<button type="button" data-tstop="rest">Skip</button></span>');
+  if (timers.sun) items.push('<span class="tpill"><b>Sunlight</b> ' + mmss(now - timers.sun.start + timers.sun.base * 60000) + ' / 30:00<button type="button" data-tstop="sun">Stop</button></span>');
+  if (timers.pomo) items.push('<span class="tpill"><b>' + (timers.pomo.phase === 'focus' ? 'Focus' : 'Break') + '</b> ' + mmss(timers.pomo.start + timers.pomo.dur * 60000 - now) + (timers.pomo.phase === 'focus' ? ' · ' + esc(timers.pomo.topic) : '') + '<button type="button" data-tstop="pomo">Stop</button></span>');
+  el.hidden = !items.length; el.innerHTML = items.join('');
+}
+$('#tbar').addEventListener('click', e => {
+  const b = e.target.closest('[data-tstop]'); if (!b) return;
+  const t = b.dataset.tstop;
+  if (t === 'rest') { delete timers.rest; saveTimers(); }
+  else if (t === 'sun') stopSun();
+  else if (t === 'pomo') stopPomo();
+  renderTimerBar();
+});
+const fmtRest = s => s < 60 ? s + 's' : (s % 60 ? Math.floor(s / 60) + ':' + pad(s % 60) : s / 60 + ' min');
+function startRest(sec){ sec = sec || S().gym.rest; timers.rest = {end:Date.now() + sec * 1000, dur:sec}; saveTimers(); audio(); renderTimerBar(); }
+function toggleSun(){
+  if (timers.sun) { stopSun(); return; }
+  const r = peek(cur); timers.sun = {start:Date.now(), k:key(cur), base:(r && r.sunMin) || 0}; saveTimers(); audio();
+  renderTimerBar(); updateDay(); toast('Sunlight timer started. It logs every minute.');
+}
+function stopSun(){
+  const s = timers.sun; if (!s) return;
+  const mins = s.base + Math.floor((Date.now() - s.start) / 60000), rr = rawRec(s.k);
+  rr.sunMin = mins; sunLevel(rr); delete timers.sun; saveTimers(); save();
+  toast(mins + ' min of sunlight logged'); if (view === 'day') updateDay(); renderTimerBar();
+}
+function refreshSunBtn(){ const b = $('[data-act="suntimer"]'); if (b) { b.textContent = timers.sun ? 'Stop' : 'Timer'; b.setAttribute('aria-pressed', !!timers.sun); } }
+function lastTopic(){ const ks = Object.keys(data.days).sort(); for (let i = ks.length - 1; i >= 0; i--) { const s = data.days[ks[i]].study; if (s.length) return s[s.length - 1].t; } return ''; }
+function togglePomo(){
+  if (timers.pomo) { stopPomo(); return; }
+  const topic = (($('#stT') && $('#stT').value.trim()) || lastTopic() || 'Study').slice(0, 40);
+  timers.pomo = {phase:'focus', start:Date.now(), dur:S().pomo.focus, topic, k:key(cur)}; saveTimers(); audio();
+  renderTimerBar(); refreshPomoBtn(); toast('Focus started: ' + S().pomo.focus + ' min of ' + topic);
+}
+function logPomo(p, mins){
+  const r = rawRec(p.k); r.study.push({t:p.topic, m:mins}); applyAuto(r, 'study'); save();
+  if (view === 'day' && key(cur) === p.k) { renderStudy(); updateDay(); }
+}
+function stopPomo(){
+  const p = timers.pomo; if (!p) return;
+  if (p.phase === 'focus') { const el = Math.floor((Date.now() - p.start) / 60000); if (el >= 5) { logPomo(p, el); toast('Logged ' + el + ' min of ' + p.topic); } else toast('Focus stopped. Under 5 minutes, so nothing was logged.'); }
+  delete timers.pomo; saveTimers(); renderTimerBar(); refreshPomoBtn();
+}
+function refreshPomoBtn(){ const b = $('[data-act="pomo"]'); if (b) b.textContent = timers.pomo ? (timers.pomo.phase === 'focus' ? 'Stop focus' : 'End break') : 'Start ' + S().pomo.focus + '-min focus'; }
+
+/* ================= SUNRISE ================= */
+function sunTimesFor(d){
+  const loc = S().loc; if (!loc) return null;
+  const y = d.getFullYear(), mo = d.getMonth(), da = d.getDate(), rad = Math.PI / 180;
+  const N = Math.round((Date.UTC(y, mo, da) - Date.UTC(y, 0, 0)) / 864e5), lngHour = loc.lon / 15;
+  const calc = rise => {
+    const t = N + ((rise ? 6 : 18) - lngHour) / 24, M = 0.9856 * t - 3.289;
+    let L = (M + 1.916 * Math.sin(M * rad) + 0.020 * Math.sin(2 * M * rad) + 282.634 + 720) % 360;
+    let RA = (Math.atan(0.91764 * Math.tan(L * rad)) / rad + 720) % 360;
+    RA = (RA + Math.floor(L / 90) * 90 - Math.floor(RA / 90) * 90) / 15;
+    const sinDec = 0.39782 * Math.sin(L * rad), cosDec = Math.cos(Math.asin(sinDec));
+    const cosH = (Math.cos(90.833 * rad) - sinDec * Math.sin(loc.lat * rad)) / (cosDec * Math.cos(loc.lat * rad));
+    if (cosH > 1 || cosH < -1) return null;
+    const H = (rise ? 360 - Math.acos(cosH) / rad : Math.acos(cosH) / rad) / 15;
+    let UT = (H + RA - 0.06571 * t - 6.622 - lngHour) % 24; if (UT < 0) UT += 24;
+    let dt = new Date(Date.UTC(y, mo, da) + UT * 3600e3);
+    if (dt.getDate() !== da) dt = new Date(dt.getTime() + (dt < d ? 864e5 : -864e5));
+    return dt;
+  };
+  const rise = calc(true), set = calc(false);
+  return rise && set ? {rise, set} : null;
+}
+function sunSub(h, r){
+  const parts = [];
+  if (r && r.checks[h.id] === 'min' && h.min) parts.push('Minimum: ' + h.min); else parts.push(h.sub || '30 minutes outside');
+  if (timers.sun && timers.sun.k === key(cur)) parts.push('timer running');
+  else if (r && r.sunMin) parts.push(r.sunMin + ' min logged');
+  const st = sunTimesFor(cur); if (st) parts.push('sunrise ' + clockOf(st.rise) + ', sunset ' + clockOf(st.set));
+  return parts.join(' · ');
+}
+
+/* ================= GYM TOOLS ================= */
+function plateText(target){
+  const kg = S().units.lift === 'kg', u = kg ? 'kg' : 'lb', bar = kg ? 20 : 45, plates = kg ? [25, 20, 15, 10, 5, 2.5, 1.25] : [45, 35, 25, 10, 5, 2.5];
+  if (!(target > 0)) return 'Enter a weight first, then tap Plates.';
+  if (target <= bar) return 'That is the empty ' + bar + ' ' + u + ' bar or less.';
+  let side = (target - bar) / 2; const used = [];
+  for (const p of plates) while (side >= p - 1e-9) { used.push(p); side -= p; }
+  const loaded = bar + 2 * used.reduce((a, b) => a + b, 0), counts = {};
+  used.forEach(p => { counts[p] = (counts[p] || 0) + 1; });
+  const txt = Object.keys(counts).map(Number).sort((a, b) => b - a).map(p => fmtN(p, 2) + (counts[p] > 1 ? ' ×' + counts[p] : '')).join(', ');
+  return 'Per side: ' + txt + ' on a ' + bar + ' ' + u + ' bar' + (Math.abs(loaded - target) > 1e-6 ? ' (closest you can load is ' + fmtN(loaded, 2) + ' ' + u + ')' : '') + '.';
+}
+function updateLiftHint(){
+  const el = $('#lfHint'), ex = $('#lfEx'); if (!el || !ex) return;
+  const name = ex.value.trim(), U = S().units, w = parseFloat($('#lfW').value), rp = parseInt($('#lfR').value, 10), parts = [];
+  if (name) {
+    const idx = liftIndex(), last = lastFor(name, key(cur), idx), b = idx.best[norm(name)], inc = U.lift === 'kg' ? 2.5 : 5;
+    if (last) {
+      const t = last.top;
+      parts.push('Last time: ' + (t.w ? fmtN(t.w, 2) + ' ' + U.lift + ' × ' : 'BW × ') + t.r);
+      if (t.w) parts.push(t.r >= 10 ? 'Try ' + fmtN(t.w + inc, 2) + ' × 8' : 'Try ' + fmtN(t.w, 2) + ' × ' + (t.r + 1) + ', or ' + fmtN(t.w + inc, 2) + ' once you hit 10 reps');
+      else parts.push('Try ' + (t.r + 1) + ' reps');
+      if (!$('#lfW').value && t.w) $('#lfW').placeholder = String(t.w);
+    } else parts.push('First time logging this one');
+    if (b && b.w) parts.push('best e1RM ' + fmtN(b.sc, 0));
+    const m = muscleOf(name); if (m !== 'Other') parts.push(m);
+  }
+  if (w > 0 && rp > 0) parts.push('this set ≈ ' + fmtN(liftScore(w, rp), 0) + ' ' + U.lift + ' e1RM');
+  el.textContent = parts.join(' · ');
+}
+
+/* ================= BODY ================= */
+let measOpen = null;
+function nextMeasDay(d){ const n = dayNum(d), add = (14 - ((n - 1) % 14)) % 14 || 14, nd = addDays(d, add); return nd > END ? null : nd; }
+function bodyExtras(r, d){
+  const U = S().units, due = dayNum(d) % 14 === 1, hasMeas = r.meas && Object.keys(r.meas).length, showMeas = due || hasMeas || measOpen === key(d);
+  let h = '<div class="fgrid"><label class="field">Resting heart rate (bpm)<input class="inp" id="bRhr" data-act="rhr" type="number" inputmode="numeric" min="25" max="220" placeholder="—" value="' + (r.rhr || '') + '"></label>' +
+    '<div class="field">Sleep quality<span class="stars" role="radiogroup" aria-label="Sleep quality, 1 to 5">' + [1, 2, 3, 4, 5].map(n => '<button type="button" data-act="sq" data-v="' + n + '" role="radio" aria-checked="' + ((r.sleepQ || 0) >= n) + '" aria-label="' + n + ' of 5">' + n + '</button>').join('') + '</span></div></div>' +
+    '<div class="field">Soreness<span class="calc" style="font-weight:400">Tap a muscle to cycle: mild, moderate, very sore</span><div class="sore">' +
+    MUSCLES.map(p => { const l = (r.sore || {})[p] || 0; return '<button type="button" class="sorechip l' + l + '" data-act="sore" data-p="' + p + '" aria-label="' + p + ' soreness ' + ['none', 'mild', 'moderate', 'very'][l] + '">' + p + (l ? ' <i>' + ['', 'mild', 'mod', 'very'][l] + '</i>' : '') + '</button>'; }).join('') + '</div></div>';
+  if (showMeas) h += '<div class="field">Measurements (' + U.meas + ')' + (due ? ' · due today' : '') + '<div class="fgrid">' + MEAS.map(m => '<label class="field">' + cap(m) + '<input class="inp" data-act="meas" data-m="' + m + '" type="number" inputmode="decimal" step="any" min="0" placeholder="—" value="' + ((r.meas || {})[m] || '') + '"></label>').join('') + '</div></div>';
+  else { const nd = nextMeasDay(d); h += '<p class="calc">Measurements are due every 2 weeks' + (nd ? ', next on ' + fShort.format(nd) : '') + '. <button class="linkbtn" type="button" data-act="measshow">Log now</button></p>'; }
+  h += '<p class="calc"><button class="linkbtn" type="button" data-act="hkpaste">Import from Apple Health</button> pastes steps, sleep and resting heart rate copied by your Shortcut.</p>';
+  return h;
+}
+
+/* ================= FOOD ================= */
+const canScan = () => !inFrame && !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia);
+function renderMeals(){
+  const el = $('#mealRow'); if (!el) return;
+  const r = peek(cur), ms = S().meals;
+  el.innerHTML = '<div class="mhead"><b>Food</b><span>' + (r && r.meals.length ? r.meals.length + ' logged' : 'tap a meal to add its macros') + '</span></div>' +
+    '<div class="mchips"><button class="mchip scan" type="button" data-act="scan"><span>Scan barcode</span><small>Open Food Facts</small></button>' +
+    ms.map(m => '<button class="mchip" type="button" data-meal="' + m.id + '"><span>' + esc(m.name) + '</span><small>' + fmtN(m.p, 1) + 'P · ' + fmtN(m.c || 0, 1) + 'C · ' + fmtN(m.f || 0, 1) + 'F · ' + fmtN(m.k, 0) + '</small></button>').join('') + '</div>' +
+    '<div class="macros"><label>Carbs<input class="inp" id="in-carbs" data-act="macro" data-k="carbs" type="number" inputmode="decimal" min="0" step="any" placeholder="0" value="' + (r && r.vals.carbs != null ? r.vals.carbs : '') + '"><span>g</span></label>' +
+    '<label>Fat<input class="inp" id="in-fat" data-act="macro" data-k="fat" type="number" inputmode="decimal" min="0" step="any" placeholder="0" value="' + (r && r.vals.fat != null ? r.vals.fat : '') + '"><span>g</span></label></div>' +
+    '<div class="msplit" id="mSplit"></div>' +
+    (r && r.meals.length ? '<ul class="mlist">' + r.meals.map((m, i) => '<li><span class="mt">' + (m.t ? fmtTime(m.t) : '') + '</span><span class="mn">' + esc(m.n) + '<small>' + fmtN(m.p, 1) + 'P · ' + fmtN(m.c || 0, 1) + 'C · ' + fmtN(m.f || 0, 1) + 'F · ' + fmtN(m.k, 0) + ' kcal</small></span>' +
+      '<button class="tagbtn' + (m.tag ? ' on' : '') + '" type="button" data-act="mealtag" data-i="' + i + '">' + (m.tag === 'pre' ? 'Pre-workout' : m.tag === 'post' ? 'Post-workout' : 'Timing') + '</button><button class="x" type="button" data-act="mealdel" data-i="' + i + '" aria-label="Remove ' + esc(m.n) + '">' + X_SVG + '</button></li>').join('') + '</ul>' : '');
+  renderSplit();
+}
+function renderSplit(){
+  const el = $('#mSplit'); if (!el) return;
+  const r = peek(cur) || blankDay(), p = r.vals.protein || 0, c = r.vals.carbs || 0, f = r.vals.fat || 0, kp = p * 4, kc = c * 4, kf = f * 9, t = kp + kc + kf;
+  if (!t || (!c && !f)) { el.innerHTML = '<span class="calc">Add carbs and fat, or tap meals, to see your macro split.</span>'; return; }
+  el.innerHTML = '<div class="splitbar" aria-hidden="true"><i class="sp" style="width:' + kp / t * 100 + '%"></i><i class="sc" style="width:' + kc / t * 100 + '%"></i><i class="sf" style="width:' + kf / t * 100 + '%"></i></div>' +
+    '<div class="splitlbl"><span><i class="sp"></i>Protein ' + fmtN(p, 0) + ' g · ' + pct(kp / t) + '</span><span><i class="sc"></i>Carbs ' + fmtN(c, 0) + ' g · ' + pct(kc / t) + '</span><span><i class="sf"></i>Fat ' + fmtN(f, 0) + ' g · ' + pct(kf / t) + '</span></div>';
+}
+function addVals(r, m, sign){
+  for (const [k, f, dec] of [['protein', 'p', 100], ['kcal', 'k', 1], ['carbs', 'c', 10], ['fat', 'f', 10]]) {
+    const v = m[f] || 0; if (!v) continue;
+    if ((k === 'protein' || k === 'kcal') && !hById(k)) continue;
+    r.vals[k] = Math.max(0, Math.round(((r.vals[k] || 0) + sign * v) * dec) / dec);
+    relevelNum(r, k); syncNumInput(k);
+  }
+}
+function addMealEntry(m, d){
+  d = d || cur;
+  const r = rec(d, 'Added ' + m.n);
+  r.meals.push({n:String(m.n).slice(0, 40), p:m.p || 0, c:m.c || 0, f:m.f || 0, k:m.k || 0, t:same(d, TODAY) ? nowHM() : '', tag:''});
+  addVals(r, m, 1); save(); buzz(); renderMeals(); updateDay();
+}
+function removeMealEntry(i){
+  const r0 = peek(cur); if (!r0 || !r0.meals[i]) return;
+  const r = rec(cur, 'Removed ' + r0.meals[i].n), m = r.meals.splice(i, 1)[0];
+  addVals(r, m, -1); save(); renderMeals(); updateDay();
+}
+let scanStream = null, scanRAF = null, zxReader = null, scanProduct = null;
+function openScan(){
+  $('#scanSheet').hidden = false; $('#scanResult').innerHTML = ''; $('#scanCode').value = ''; scanProduct = null;
+  document.querySelector('.app').inert = true; startCamera();
+}
+function closeScan(){ stopCamera(); $('#scanSheet').hidden = true; document.querySelector('.app').inert = false; }
+function loadScript(src){ return new Promise((res, rej) => { if (window.ZXing) return res(); const s = document.createElement('script'); s.src = src; s.onload = res; s.onerror = () => rej(new Error('load')); document.head.appendChild(s); }); }
+async function startCamera(){
+  const msg = $('#scanMsg'), v = $('#scanVideo');
+  $('.scanview').hidden = !canScan();
+  if (!canScan()) { msg.textContent = inFrame ? 'Camera scanning works in the installed app. Type the barcode number below instead.' : 'This browser has no camera access. Type the barcode number below.'; return; }
+  try {
+    if ('BarcodeDetector' in window) {
+      const det = new window.BarcodeDetector({formats:['ean_13', 'ean_8', 'upc_a', 'upc_e']});
+      scanStream = await navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:'environment'}}, audio:false});
+      v.srcObject = scanStream; await v.play(); msg.textContent = 'Point the camera at the barcode.';
+      const loop = async () => { if (!scanStream) return; try { const c = await det.detect(v); if (c.length) { scanFound(c[0].rawValue); return; } } catch (e) {} scanRAF = requestAnimationFrame(loop); };
+      loop();
+    } else {
+      msg.textContent = 'Starting the camera…';
+      await loadScript('https://cdn.jsdelivr.net/npm/@zxing/library@0.21.3/umd/index.min.js');
+      const hints = new Map(); hints.set(window.ZXing.DecodeHintType.POSSIBLE_FORMATS, [window.ZXing.BarcodeFormat.EAN_13, window.ZXing.BarcodeFormat.EAN_8, window.ZXing.BarcodeFormat.UPC_A, window.ZXing.BarcodeFormat.UPC_E]);
+      zxReader = new window.ZXing.BrowserMultiFormatReader(hints);
+      await zxReader.decodeFromConstraints({video:{facingMode:{ideal:'environment'}}}, v, res => { if (res) scanFound(res.getText()); });
+      msg.textContent = 'Point the camera at the barcode.';
+    }
+  } catch (e) {
+    msg.textContent = e && e.name === 'NotAllowedError' ? 'Camera access was blocked. Allow it in your browser settings, or type the number below.' : "Couldn't start the camera. Type the barcode number below instead.";
+  }
+}
+function stopCamera(){
+  if (scanRAF) cancelAnimationFrame(scanRAF); scanRAF = null;
+  if (zxReader) { try { zxReader.reset(); } catch (e) {} zxReader = null; }
+  if (scanStream) { scanStream.getTracks().forEach(t => t.stop()); scanStream = null; }
+  const v = $('#scanVideo'); if (v) v.srcObject = null;
+}
+function scanFound(code){ stopCamera(); vib(30); $('#scanCode').value = code; lookupCode(code); }
+async function lookupCode(code){
+  code = String(code).replace(/\D/g, '');
+  const out = $('#scanResult');
+  if (code.length < 8 || code.length > 14) { out.innerHTML = '<p class="calc">Barcodes have 8 to 13 digits.</p>'; return; }
+  out.innerHTML = '<p class="calc">Looking up ' + code + '…</p>';
+  try {
+    const res = await fetch('https://world.openfoodfacts.org/api/v2/product/' + code + '.json?fields=product_name,brands,nutriments,serving_size,serving_quantity');
+    const j = await res.json();
+    if (j.status !== 1 || !j.product) { out.innerHTML = '<p class="calc">No product found for ' + code + ' in Open Food Facts. Log it by hand, or add it at openfoodfacts.org.</p>'; return; }
+    const p = j.product, n = p.nutriments || {}, num = v => { const x = parseFloat(v); return isFinite(x) ? x : 0; };
+    const kcal = num(n['energy-kcal_100g']) || (num(n.energy_100g) ? num(n.energy_100g) / 4.184 : 0);
+    scanProduct = {name:((p.product_name || 'Product ' + code) + (p.brands ? ' (' + String(p.brands).split(',')[0].trim() + ')' : '')).slice(0, 40), per:{k:kcal, p:num(n.proteins_100g), c:num(n.carbohydrates_100g), f:num(n.fat_100g)}, serving:num(p.serving_quantity) || null, servingLabel:p.serving_size || ''};
+    renderScanResult();
+  } catch (e) {
+    out.innerHTML = '<p class="calc">' + (inFrame ? "This viewer can't reach Open Food Facts. Scan from the installed app." : "Couldn't reach Open Food Facts. Check your connection and try again.") + '</p>';
+  }
+}
+function scanAmounts(){ const g = parseFloat(($('#scanG') || {}).value) || 0, s = scanProduct.per, k = g / 100; return {p:Math.round(s.p * k * 10) / 10, c:Math.round(s.c * k * 10) / 10, f:Math.round(s.f * k * 10) / 10, k:Math.round(s.k * k)}; }
+function renderScanResult(){
+  const s = scanProduct, g = s.serving || 100;
+  $('#scanResult').innerHTML = '<div class="scanres"><b>' + esc(s.name) + '</b><span class="calc">Per 100 g: ' + fmtN(s.per.k, 0) + ' kcal · ' + fmtN(s.per.p, 1) + ' g protein · ' + fmtN(s.per.c, 1) + ' g carbs · ' + fmtN(s.per.f, 1) + ' g fat</span>' +
+    '<label class="field">Amount in grams' + (s.servingLabel ? ' (1 serving = ' + esc(s.servingLabel) + ')' : '') + '<input class="inp" id="scanG" type="number" inputmode="decimal" min="1" step="any" value="' + g + '"></label>' +
+    '<p class="calc" id="scanCalc"></p>' +
+    '<label class="urow"><span>Also save as a meal template</span><input type="checkbox" id="scanSave"></label>' +
+    '<button class="btn primary" type="button" id="scanAdd" style="width:100%">Add to ' + (same(cur, TODAY) ? 'today' : fMD.format(cur)) + '</button></div>';
+  scanCalcText();
+}
+function scanCalcText(){ const el = $('#scanCalc'); if (!el || !scanProduct) return; const a = scanAmounts(); el.innerHTML = 'Adds <strong>' + fmtN(a.k, 0) + ' kcal</strong> · ' + fmtN(a.p, 1) + ' g protein · ' + fmtN(a.c, 1) + ' g carbs · ' + fmtN(a.f, 1) + ' g fat'; }
+$('#scanClose').addEventListener('click', closeScan);
+$('#scanLookup').addEventListener('click', () => lookupCode($('#scanCode').value));
+$('#scanCode').addEventListener('keydown', e => { if (e.key === 'Enter') lookupCode($('#scanCode').value); });
+$('#scanResult').addEventListener('input', e => { if (e.target.id === 'scanG') scanCalcText(); });
+$('#scanResult').addEventListener('click', e => {
+  if (e.target.id !== 'scanAdd' || !scanProduct) return;
+  const a = scanAmounts(), g = parseFloat($('#scanG').value) || 0;
+  if (!(g > 0)) { toast('Enter an amount'); return; }
+  const name = scanProduct.name;
+  if ($('#scanSave').checked) { S().meals.push({id:uid(), name, p:a.p, c:a.c, f:a.f, k:a.k}); }
+  closeScan(); addMealEntry({n:name, p:a.p, c:a.c, f:a.f, k:a.k});
+});
+
+/* ================= HEALTH IMPORT ================= */
+const hnum = v => { const x = parseFloat(String(v == null ? '' : v).replace(/,/g, '')); return isFinite(x) ? x : null; };
+function parseHealth(text){ try { const m = String(text).match(/\{[\s\S]*\}/); return m ? JSON.parse(m[0]) : null; } catch (e) { return null; } }
+function applyHealth(o){
+  if (!o || typeof o !== 'object') { toast("That isn't Health data from the Shortcut."); return false; }
+  const dk = isKey(o.date) ? o.date : key(TODAY), d = parseKey(dk), r = rec(d, 'Imported from Health'), done = [];
+  const steps = hnum(o.steps); if (steps != null && steps >= 0 && hById('steps')) { r.vals.steps = Math.round(steps); relevelNum(r, 'steps'); done.push(fmtN(steps, 0) + ' steps'); }
+  let sh = hnum(o.sleep_hours); if (sh == null && hnum(o.sleep_minutes) != null) sh = hnum(o.sleep_minutes) / 60; if (sh == null && hnum(o.sleep_seconds) != null) sh = hnum(o.sleep_seconds) / 3600;
+  if (sh != null && sh > 0 && sh < 20) { r.sleepH = Math.round(sh * 100) / 100; done.push(fmtN(sh, 1) + ' h sleep'); }
+  const rhr = hnum(o.rhr != null ? o.rhr : o.resting_hr); if (rhr != null && rhr > 20 && rhr < 250) { r.rhr = Math.round(rhr); done.push(r.rhr + ' bpm resting'); }
+  const wt = hnum(o.weight); if (wt != null && wt > 0) { r.weight = Math.round(wt * 100) / 100; done.push(fmtN(wt, 1) + ' ' + S().units.body); }
+  save();
+  toast(done.length ? 'Health for ' + fMD.format(d) + ': ' + done.join(', ') : 'No steps, sleep, heart rate or weight found in that data.');
+  if (view === 'day') renderDay();
+  return done.length > 0;
+}
+async function importHealthClipboard(){
+  try { const t = await navigator.clipboard.readText(); if (!applyHealth(parseHealth(t))) {} }
+  catch (e) { setView('set'); setTimeout(() => { const ta = $('#hkTa'); if (ta) { ta.scrollIntoView({block:'center'}); ta.focus(); } toast("Couldn't read the clipboard. Paste the Health data into the box."); }, 50); }
+}
+function handleHealthHash(){
+  const h = location.hash || ''; if (!/^#hk=/.test(h)) return;
+  const raw = decodeURIComponent(h.slice(4)); let o = parseHealth(raw);
+  if (!o) { try { o = parseHealth(atob(raw)); } catch (e) {} }
+  try { history.replaceState(null, '', location.pathname + location.search); } catch (e) {}
+  applyHealth(o);
+}
+
+/* ================= DAY VIEW HANDLERS (v5) ================= */
+dayRoot.addEventListener('click', e => {
+  const a = e.target.closest('[data-act]'); if (!a) return;
+  const act = a.dataset.act;
+  if (act === 'checkin') checkIn(a.dataset.kind);
+  else if (act === 'suntimer') toggleSun();
+  else if (act === 'reststart') startRest();
+  else if (act === 'plates') { const w = parseFloat($('#lfW').value) || parseFloat($('#lfW').placeholder); $('#plateOut').textContent = plateText(w); }
+  else if (act === 'pomo') togglePomo();
+  else if (act === 'scan') openScan();
+  else if (act === 'mealdel') removeMealEntry(Number(a.dataset.i));
+  else if (act === 'mealtag') { const i = Number(a.dataset.i), r = rec(cur), m = r.meals[i]; if (!m) return; m.tag = m.tag === '' || !m.tag ? 'pre' : m.tag === 'pre' ? 'post' : ''; save(); renderMeals(); }
+  else if (act === 'sq') { const v = Number(a.dataset.v), r = rec(cur); r.sleepQ = r.sleepQ === v ? undefined : v; if (!r.sleepQ) delete r.sleepQ; save(); a.parentNode.querySelectorAll('button').forEach(b => b.setAttribute('aria-checked', (r.sleepQ || 0) >= Number(b.dataset.v))); }
+  else if (act === 'sore') { const p = a.dataset.p, r = rec(cur); r.sore = r.sore || {}; const l = ((r.sore[p] || 0) + 1) % 4; if (l) r.sore[p] = l; else delete r.sore[p]; save(); a.className = 'sorechip l' + l; a.innerHTML = p + (l ? ' <i>' + ['', 'mild', 'mod', 'very'][l] + '</i>' : ''); }
+  else if (act === 'measshow') { measOpen = key(cur); renderExtras(); }
+  else if (act === 'hkpaste') importHealthClipboard();
+});
+dayRoot.addEventListener('click', e => {
+  const b = e.target.closest('[data-rest]'); if (!b) return;
+  S().gym.rest = Number(b.dataset.rest); save();
+  b.parentNode.querySelectorAll('button').forEach(x => x.setAttribute('aria-pressed', x === b));
+  startRest(S().gym.rest);
+});
+dayRoot.addEventListener('input', e => {
+  const t = e.target, act = t.dataset.act; if (!act) return;
+  if (act === 'rhr') { const r = rec(cur), v = parseInt(t.value, 10); if (v > 20 && v < 250) r.rhr = v; else delete r.rhr; save(); }
+  else if (act === 'meas') { const r = rec(cur), v = parseFloat(t.value); r.meas = r.meas || {}; if (v > 0) r.meas[t.dataset.m] = Math.round(v * 10) / 10; else delete r.meas[t.dataset.m]; save(); }
+  else if (act === 'macro') { const r = rec(cur), v = parseFloat(t.value), k = t.dataset.k; if (v >= 0) r.vals[k] = Math.round(v * 10) / 10; else delete r.vals[k]; save(); renderSplit(); }
+});
+
+/* ================= STATS (v5) ================= */
+function sleepExtraKV(){
+  const last = lastElapsed(); if (!last) return '';
+  let q = 0, qn = 0, vw = 0, vb = 0, n = 0;
+  for (const d of days(START, last)) { const r = peek(d); n++; if (!r) continue; if (r.sleepQ) { q += r.sleepQ; qn++; } if (r.vwake) vw++; if (r.vbed) vb++; }
+  return '<div><b>' + (qn ? fmtN(q / qn, 1) + '/5' : '—') + '</b><small>sleep quality</small></div><div><b>' + vw + '/' + n + '</b><small>verified wake-ups</small></div><div><b>' + vb + '/' + n + '</b><small>verified bedtimes</small></div>';
+}
+function renderNutrition(){
+  const last = lastElapsed(), kv = $('#sNuKv'), box = $('#sNuBody');
+  let n = 0, P = 0, C = 0, F = 0, K = 0, pre = 0, post = 0, mealsN = 0;
+  if (last) for (const d of days(START, last)) { const r = peek(d); if (!r) continue; if (r.vals.carbs != null || r.vals.fat != null) { n++; P += r.vals.protein || 0; C += r.vals.carbs || 0; F += r.vals.fat || 0; K += r.vals.kcal || 0; } for (const m of r.meals) { mealsN++; if (m.tag === 'pre') pre++; else if (m.tag === 'post') post++; } }
+  if (!n) { kv.innerHTML = ''; box.innerHTML = '<p class="empty">Log carbs and fat, scan foods or tap meal templates to see your average macros.</p>'; return; }
+  const p = P / n, c = C / n, f = F / n, t = p * 4 + c * 4 + f * 9;
+  kv.innerHTML = '<div><b>' + fmtN(p, 0) + ' g</b><small>avg protein</small></div><div><b>' + fmtN(c, 0) + ' g</b><small>avg carbs</small></div><div><b>' + fmtN(f, 0) + ' g</b><small>avg fat</small></div>';
+  box.innerHTML = '<div class="splitbar" aria-hidden="true"><i class="sp" style="width:' + p * 4 / t * 100 + '%"></i><i class="sc" style="width:' + c * 4 / t * 100 + '%"></i><i class="sf" style="width:' + f * 9 / t * 100 + '%"></i></div>' +
+    '<div class="splitlbl"><span><i class="sp"></i>Protein ' + pct(p * 4 / t) + '</span><span><i class="sc"></i>Carbs ' + pct(c * 4 / t) + '</span><span><i class="sf"></i>Fat ' + pct(f * 9 / t) + '</span></div>' +
+    '<p class="foot">Averages over ' + n + ' days with carbs or fat logged' + (K ? ', about ' + fmtN(K / n, 0) + ' kcal a day' : '') + '. Meals logged: ' + mealsN + ' (' + pre + ' pre-workout, ' + post + ' post-workout).</p>';
+}
+let volSel = null;
+function renderVolume(){
+  const last = lastElapsed();
+  if (volSel == null) volSel = last ? Math.min(WEEKS - 1, weekOf(last)) : 0;
+  $('#sVolChips').innerHTML = Array.from({length:WEEKS}, (_, i) => '<button type="button" class="chip" data-vw="' + i + '" aria-pressed="' + (i === volSel) + '">Week ' + (i + 1) + '<small>' + fMD.format(weekStart(i)) + '</small></button>').join('');
+  const sets = {}, ton = {}, U = S().units; let tot = 0, tonT = 0;
+  for (const d of days(weekStart(volSel), weekEnd(volSel))) { const r = peek(d); if (!r) continue; for (const L of r.lifts) { const m = muscleOf(L.ex); sets[m] = (sets[m] || 0) + 1; ton[m] = (ton[m] || 0) + (L.w || 0) * L.r; tot++; tonT += (L.w || 0) * L.r; } }
+  const groups = MUSCLES.concat(sets.Other ? ['Other'] : []), mx = Math.max(22, ...Object.values(sets));
+  $('#sVolSub').textContent = fMD.format(weekStart(volSel)) + ' – ' + fMD.format(weekEnd(volSel)) + (isDeload(volSel) ? ' · deload week' : '') + ' · ' + tot + ' sets · ' + fmtN(tonT, 0) + ' ' + U.lift + ' moved';
+  $('#sVol').innerHTML = tot ? groups.map(g => { const n = sets[g] || 0; return '<div class="wkrow vrow"><span>' + g + '</span><span class="vbar"><b style="left:' + 10 / mx * 100 + '%;width:' + 10 / mx * 100 + '%"></b><i style="width:' + n / mx * 100 + '%"></i></span><span class="n">' + n + '</span></div>'; }).join('') +
+    '<p class="foot">Shaded band is 10–20 hard sets a week, a common range for growth. Exercises are grouped by their main muscle.</p>' : '<p class="empty">No sets logged this week yet.</p>';
+  const chip = $('#sVolChips [aria-pressed="true"]'); if (chip) chip.scrollIntoView({block:'nearest', inline:'center'});
+}
+$('#sVolChips').addEventListener('click', e => { const c = e.target.closest('[data-vw]'); if (!c) return; volSel = Number(c.dataset.vw); renderVolume(); });
+function renderBodyStats(){
+  const kv = $('#sBoKv'), ro = $('#sBoRo'), wrap = $('#sBoChart'), extra = $('#sBoExtra'), U = S().units, pts = [];
+  for (let i = 0; i < TOTAL; i++) { const r = data.days[key(addDays(START, i))]; if (r && r.rhr) pts.push({i, v:r.rhr}); }
+  if (pts.length) {
+    const lastP = pts[pts.length - 1], l7 = pts.filter(p => p.i > lastP.i - 7), a7 = l7.reduce((a, p) => a + p.v, 0) / l7.length;
+    kv.innerHTML = '<div><b>' + lastP.v + '</b><small>latest bpm</small></div><div><b>' + fmtN(a7, 0) + '</b><small>7-day avg</small></div><div><b>' + (pts.length > 1 ? (lastP.v - pts[0].v >= 0 ? '+' : '') + (lastP.v - pts[0].v) : '—') + '</b><small>since first</small></div>';
+    let mn = Math.min(...pts.map(p => p.v)), mx = Math.max(...pts.map(p => p.v)); if (mx - mn < 6) { mn -= 3; mx += 3; }
+    const ticks = niceTicks(mn, mx, 3), lo = ticks[0], hi = ticks[ticks.length - 1], y = v => PT + (CH - PT - PB) * (1 - (v - lo) / (hi - lo));
+    const path = pts.map((p, j) => (j ? 'L' : 'M') + xDay(p.i).toFixed(1) + ' ' + y(p.v).toFixed(1)).join(' ');
+    wrap.innerHTML = '<svg viewBox="0 0 ' + CW + ' ' + CH + '" role="img" aria-label="Resting heart rate">' + yGrid(ticks, y, v => fmtN(v, 0)) + axisDays() +
+      '<path d="' + path + '" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linejoin="round"/>' + pts.map(p => '<circle cx="' + xDay(p.i) + '" cy="' + y(p.v) + '" r="3" fill="var(--accent)"/>').join('') +
+      '<line class="guide" x1="0" x2="0" y1="' + PT + '" y2="' + (CH - PB) + '"/></svg>';
+    const xs = Array(TOTAL).fill(null), texts = Array(TOTAL).fill('');
+    pts.forEach(p => { xs[p.i] = xDay(p.i); texts[p.i] = fMD.format(addDays(START, p.i)) + ' · ' + p.v + ' bpm'; });
+    ro.textContent = texts[lastP.i]; bindChart(wrap, ro, xs, texts);
+  } else { kv.innerHTML = ''; ro.textContent = ''; wrap.innerHTML = '<p class="empty">Log resting heart rate in Body and sleep, or import it from Apple Health.</p>'; }
+  const first = {}, latest = {};
+  for (let i = 0; i < TOTAL; i++) { const k = key(addDays(START, i)), r = data.days[k]; if (!r || !r.meas) continue; for (const m of MEAS) if (r.meas[m]) { if (!first[m]) first[m] = {v:r.meas[m], k}; latest[m] = {v:r.meas[m], k}; } }
+  let html = '';
+  if (Object.keys(latest).length) html += '<div class="strow prrow head" style="margin-top:12px"><span>Measurement (' + U.meas + ')</span><span class="n">First → latest</span><span class="n">Change</span></div>' +
+    MEAS.filter(m => latest[m]).map(m => { const ch = latest[m].v - first[m].v; return '<div class="strow prrow"><span>' + cap(m) + '</span><span class="n">' + fmtN(first[m].v, 1) + ' → ' + fmtN(latest[m].v, 1) + '</span><span class="n">' + (first[m].k === latest[m].k ? '—' : (ch >= 0 ? '+' : '') + fmtN(ch, 1)) + '</span></div>'; }).join('');
+  const last = lastElapsed(), sore = {};
+  if (last) for (let d = last, i = 0; i < 14 && d >= START; d = addDays(d, -1), i++) { const r = peek(d); if (r && r.sore) for (const p of Object.keys(r.sore)) sore[p] = (sore[p] || 0) + r.sore[p]; }
+  const sp = Object.entries(sore).sort((a, b) => b[1] - a[1]);
+  if (sp.length) { const mx = sp[0][1]; html += '<p class="sub" style="margin:14px 0 4px">Soreness over the last 14 days (higher means more often or more sore)</p>' + sp.map(([p, v]) => '<div class="wkrow"><span>' + p + '</span><span class="bar"><i style="width:' + v / mx * 100 + '%;background:var(--flame)"></i></span><span class="n">' + v + '</span></div>').join(''); }
+  extra.innerHTML = html;
+}
+
+/* ================= SETTINGS (v5) ================= */
+const THEME_KEY = 'block80.theme';
+const ACCENTS = [['cobalt', 'Cobalt', '#2F55E4'], ['ember', 'Ember', '#D9480F'], ['teal', 'Teal', '#0B7A70'], ['violet', 'Violet', '#6741D9'], ['rose', 'Rose', '#C2255C']];
+let theme = lsGet(THEME_KEY, {mode:'system', accent:'cobalt'});
+function applyTheme(){
+  const r = document.documentElement;
+  if (theme.mode === 'light' || theme.mode === 'dark') r.setAttribute('data-theme', theme.mode); else if (!inFrame) r.removeAttribute('data-theme');
+  if (theme.accent && theme.accent !== 'cobalt') r.setAttribute('data-accent', theme.accent); else r.removeAttribute('data-accent');
+}
+function renderAppearance(){
+  $('#apBox').innerHTML = '<div class="urow"><span>Mode</span><span class="seg">' + [['system', 'Auto'], ['light', 'Light'], ['dark', 'Dark']].map(([v, l]) => '<button type="button" data-mode="' + v + '" aria-pressed="' + (theme.mode === v) + '">' + l + '</button>').join('') + '</span></div>' +
+    '<div class="urow"><span>Accent</span><span class="swatches">' + ACCENTS.map(([v, l, c]) => '<button type="button" data-accent="' + v + '" aria-pressed="' + (theme.accent === v) + '" aria-label="' + l + '" title="' + l + '" style="background:' + c + '"></button>').join('') + '</span></div>' +
+    '<p class="foot">Auto follows your phone. These are saved on this device only.</p>';
+}
+$('#apBox').addEventListener('click', e => {
+  const m = e.target.closest('[data-mode]'), a = e.target.closest('[data-accent]');
+  if (m) theme.mode = m.dataset.mode; else if (a) theme.accent = a.dataset.accent; else return;
+  lsSet(THEME_KEY, theme); applyTheme(); renderAppearance();
+});
+function renderGymTools(){
+  const g = S().gym, kg = S().units.lift === 'kg';
+  $('#gtBox').innerHTML = '<div class="urow"><span>Default rest</span><span class="seg sm">' + [60, 90, 120, 180].map(s => '<button type="button" data-grest="' + s + '" aria-pressed="' + (g.rest === s) + '">' + fmtRest(s) + '</button>').join('') + '</span></div>' +
+    '<div class="urow"><span>Start rest timer after each set</span><label class="switch" style="margin-top:0"><input type="checkbox" id="autoRest"' + (g.autoRest ? ' checked' : '') + ' aria-label="Auto rest timer"><span></span></label></div>' +
+    '<p class="foot">Plate math uses a ' + (kg ? '20 kg bar with 25, 20, 15, 10, 5, 2.5 and 1.25 kg plates' : '45 lb bar with 45, 35, 25, 10, 5 and 2.5 lb plates') + '. Overload hints add ' + (kg ? '2.5 kg' : '5 lb') + ' once you reach 10 reps, otherwise one more rep.</p>';
+}
+$('#gtBox').addEventListener('click', e => { const b = e.target.closest('[data-grest]'); if (!b) return; S().gym.rest = Number(b.dataset.grest); save(); renderGymTools(); });
+$('#gtBox').addEventListener('change', e => { if (e.target.id === 'autoRest') { S().gym.autoRest = e.target.checked; save(); } });
+function renderCheckins(){
+  const w = windowFor('wake'), b = windowFor('bed');
+  $('#ciBox').innerHTML = '<div class="urow"><span>Strict check-ins</span><label class="switch" style="margin-top:0"><input type="checkbox" id="strictOn"' + (S().strict ? ' checked' : '') + ' aria-label="Strict check-ins"><span></span></label></div>' +
+    '<p class="foot">When on, today\'s wake-up and bedtime habits can only be ticked with the check-in button, which records the real time. ' +
+    (w ? 'Wake check-in is open ' + fmtTime(hmOf(w.open)) + ' to ' + fmtTime(hmOf(w.close)) + '. ' : '') + (b ? 'Bedtime check-in is open ' + fmtTime(hmOf(b.open)) + ' to ' + fmtTime(hmOf(b.close)) + '. ' : '') +
+    'The windows follow the times set on those habits above. Past days can still be fixed by hand.</p>';
+}
+$('#ciBox').addEventListener('change', e => { if (e.target.id === 'strictOn') { S().strict = e.target.checked; save(); toast(S().strict ? 'Strict check-ins on' : 'Strict check-ins off'); } });
+function renderTimersLoc(){
+  const p = S().pomo, loc = S().loc, st = loc ? sunTimesFor(TODAY) : null;
+  $('#tlBox').innerHTML = '<div class="urow"><span>Focus length</span><span class="seg sm">' + [25, 50].map(v => '<button type="button" data-pf="' + v + '" aria-pressed="' + (p.focus === v) + '">' + v + ' min</button>').join('') + '</span></div>' +
+    '<div class="urow"><span>Break length</span><span class="seg sm">' + [5, 10].map(v => '<button type="button" data-pb="' + v + '" aria-pressed="' + (p.brk === v) + '">' + v + ' min</button>').join('') + '</span></div>' +
+    '<p class="sub" style="margin-top:12px">Location for sunrise and sunset times</p>' +
+    '<div class="fgrid"><label class="field">Latitude<input class="inp" id="locLat" type="number" inputmode="decimal" step="any" placeholder="37.35" value="' + (loc ? loc.lat : '') + '"></label><label class="field">Longitude<input class="inp" id="locLon" type="number" inputmode="decimal" step="any" placeholder="-121.95" value="' + (loc ? loc.lon : '') + '"></label></div>' +
+    '<div class="btnrow"><button class="btn" type="button" id="locUse">Use my location</button><button class="btn" type="button" id="locSave">Save</button>' + (loc ? '<button class="btn" type="button" id="locClear">Clear</button>' : '') + '</div>' +
+    '<p class="foot">' + (st ? 'Today: sunrise ' + clockOf(st.rise) + ', sunset ' + clockOf(st.set) + '. ' : '') + 'Stored rounded to about 1 km, on this device and in your sync copy.</p>';
+}
+$('#tlBox').addEventListener('click', e => {
+  const t = e.target, pf = t.closest('[data-pf]'), pb = t.closest('[data-pb]');
+  if (pf) { S().pomo.focus = Number(pf.dataset.pf); save(); renderTimersLoc(); return; }
+  if (pb) { S().pomo.brk = Number(pb.dataset.pb); save(); renderTimersLoc(); return; }
+  if (t.id === 'locSave') { const la = parseFloat($('#locLat').value), lo = parseFloat($('#locLon').value); if (!(la >= -90 && la <= 90 && lo >= -180 && lo <= 180)) { toast('Enter a latitude and longitude'); return; } S().loc = {lat:Math.round(la * 100) / 100, lon:Math.round(lo * 100) / 100}; save(); renderTimersLoc(); toast('Location saved'); }
+  else if (t.id === 'locClear') { S().loc = null; save(); renderTimersLoc(); }
+  else if (t.id === 'locUse') {
+    if (inFrame || !navigator.geolocation) { toast('Location works in the installed app. Enter it by hand here.'); return; }
+    t.textContent = 'Locating…';
+    navigator.geolocation.getCurrentPosition(pos => { S().loc = {lat:Math.round(pos.coords.latitude * 100) / 100, lon:Math.round(pos.coords.longitude * 100) / 100}; save(); renderTimersLoc(); toast('Location saved'); },
+      () => { t.textContent = 'Use my location'; toast("Couldn't get your location. Enter it by hand."); }, {timeout:10000, maximumAge:3600000});
+  }
+});
+function renderHealth(){
+  $('#hkBox').innerHTML = '<p class="sub">An iOS Shortcut reads today\'s steps, sleep and resting heart rate from Apple Health and copies them. Then tap Import here or in Body and sleep.</p>' +
+    '<div class="btnrow"><button class="btn primary" type="button" id="hkClip">Import from clipboard</button></div>' +
+    '<textarea id="hkTa" placeholder=\'{"date":"2026-10-12","steps":6234,"sleep_hours":7.6,"rhr":58}\' aria-label="Paste Health data" style="font-family:var(--font-data);font-size:12px;min-height:70px;margin-top:10px"></textarea>' +
+    '<div class="btnrow"><button class="btn" type="button" id="hkPasteBtn">Import pasted data</button></div>' +
+    '<details class="howto"><summary>Build the Shortcut (about 3 minutes)</summary><ol class="steps">' +
+    '<li>Open Shortcuts, tap +, and name it "Health to 80-Day Block".</li>' +
+    '<li>Add <b>Find Health Samples</b>: Type is Steps, Start Date is Today. Then <b>Calculate Statistics</b>: Sum. Rename the result "Steps".</li>' +
+    '<li>Add <b>Find Health Samples</b>: Type is Sleep Analysis, Start Date is in the last 1 day, Value is not In Bed and not Awake. Add <b>Get Details of Health Samples</b>: Duration, then <b>Calculate Statistics</b>: Sum. Rename it "Sleep". If it shows minutes, use "sleep_minutes" in the next step instead of "sleep_hours".</li>' +
+    '<li>Add <b>Find Health Samples</b>: Type is Resting Heart Rate, sorted by Start Date, latest first, limit 1. Rename it "RHR".</li>' +
+    '<li>Add <b>Text</b> with: {"steps": Steps, "sleep_hours": Sleep, "rhr": RHR}, inserting each variable in place of its name.</li>' +
+    '<li>Add <b>Copy to Clipboard</b>. Optionally add a personal automation in the Automation tab to run it every evening.</li>' +
+    '<li>Run it, open the app, and tap Import. The app also accepts "weight" and a "date" in YYYY-MM-DD format.</li></ol></details>';
+}
+$('#hkBox').addEventListener('click', e => {
+  if (e.target.id === 'hkClip') importHealthClipboard();
+  else if (e.target.id === 'hkPasteBtn') { const o = parseHealth($('#hkTa').value); if (applyHealth(o)) $('#hkTa').value = ''; }
+});
+
+/* ================= PIN LOCK ================= */
+const PIN_KEY = 'block80.pin';
+let pinCfg = lsGet(PIN_KEY, null), lockMode = null, pinBuf = '', pinFirst = '', pinFails = 0, lockUntil = 0, hiddenAt = 0, forgotArmed = false;
+async function hashPin(pin, salt){ const b = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(salt + ':' + pin)); return Array.from(new Uint8Array(b)).map(x => x.toString(16).padStart(2, '0')).join(''); }
+function showLock(mode){ lockMode = mode; pinBuf = ''; forgotArmed = false; $('#lock').hidden = false; document.querySelector('.app').inert = true; document.querySelector('.dock').inert = true; $('#lockMsg').textContent = ''; renderLock(); }
+function hideLock(){ lockMode = null; $('#lock').hidden = true; document.querySelector('.app').inert = false; document.querySelector('.dock').inert = false; }
+function renderLock(){
+  $('#lockTitle').textContent = {unlock:'Enter your PIN', set1:'Choose a 4-digit PIN', set2:'Enter the same PIN again', remove:'Enter your PIN to turn it off'}[lockMode] || '';
+  $('#lockDots').innerHTML = [0, 1, 2, 3].map(i => '<i' + (i < pinBuf.length ? ' class="on"' : '') + '></i>').join('');
+  $('#lockAlt').textContent = lockMode === 'unlock' ? (forgotArmed ? 'Tap again to erase' : 'Forgot?') : 'Cancel';
+}
+async function pinPress(dg){
+  if (!lockMode) return;
+  if (Date.now() < lockUntil) { $('#lockMsg').textContent = 'Too many tries. Wait ' + Math.ceil((lockUntil - Date.now()) / 1000) + ' s.'; return; }
+  if (pinBuf.length >= 4) return;
+  pinBuf += dg; vib(6); renderLock();
+  if (pinBuf.length < 4) return;
+  const entered = pinBuf;
+  if (lockMode === 'set1') { pinFirst = entered; lockMode = 'set2'; pinBuf = ''; setTimeout(renderLock, 120); return; }
+  if (lockMode === 'set2') {
+    if (entered !== pinFirst) { $('#lockMsg').textContent = "Those didn't match. Choose a PIN again."; lockMode = 'set1'; pinBuf = ''; setTimeout(renderLock, 200); return; }
+    const salt = Array.from(crypto.getRandomValues(new Uint8Array(12))).map(x => x.toString(16).padStart(2, '0')).join('');
+    pinCfg = {salt, hash:await hashPin(entered, salt)}; lsSet(PIN_KEY, pinCfg); hideLock(); renderPrivacy(); toast('PIN set'); return;
+  }
+  const ok = pinCfg && await hashPin(entered, pinCfg.salt) === pinCfg.hash;
+  if (ok) { pinFails = 0; if (lockMode === 'remove') { pinCfg = null; lsSet(PIN_KEY, null); hideLock(); renderPrivacy(); toast('PIN turned off'); } else hideLock(); return; }
+  pinFails++; pinBuf = ''; vib([60, 40, 60]);
+  const box = $('.lockbox'); box.classList.remove('shake'); void box.offsetWidth; box.classList.add('shake');
+  if (pinFails >= 5) { lockUntil = Date.now() + 30000; pinFails = 0; $('#lockMsg').textContent = 'Too many tries. Wait 30 seconds.'; } else $('#lockMsg').textContent = 'Wrong PIN';
+  setTimeout(renderLock, 150);
+}
+$('#lockPad').addEventListener('click', e => {
+  const b = e.target.closest('button'); if (!b) return;
+  if (b.dataset.d) pinPress(b.dataset.d);
+  else if (b.id === 'lockDel') { pinBuf = pinBuf.slice(0, -1); renderLock(); }
+  else if (b.id === 'lockAlt') {
+    if (lockMode !== 'unlock') { hideLock(); return; }
+    if (!forgotArmed) { forgotArmed = true; $('#lockMsg').textContent = 'Forgetting the PIN means erasing this device\'s log. If cloud sync is set up, you can rejoin with your sync link after.'; renderLock(); return; }
+    for (const k of [SKEY, PIN_KEY, SYNC_KEY, AKEY, TKEY]) { try { localStorage.removeItem(k); } catch (x) {} }
+    location.reload();
+  }
+});
+document.addEventListener('keydown', e => { if (!lockMode) return; if (/^\d$/.test(e.key)) pinPress(e.key); else if (e.key === 'Backspace') { pinBuf = pinBuf.slice(0, -1); renderLock(); } });
+function renderPrivacy(){
+  $('#pinBox').innerHTML = '<p class="sub">' + (pinCfg ? 'PIN lock is on. The app asks for it when it opens and after 2 minutes in the background.' : 'Add a 4-digit PIN that the app asks for when it opens.') + ' It keeps casual eyes out; your log isn\'t encrypted on the device.</p>' +
+    '<div class="btnrow">' + (pinCfg ? '<button class="btn" type="button" id="pinChange">Change PIN</button><button class="btn danger" type="button" id="pinOff">Turn off PIN</button>' : '<button class="btn primary" type="button" id="pinSet">Set a PIN</button>') + '</div>';
+}
+$('#pinBox').addEventListener('click', e => {
+  if (!window.crypto || !crypto.subtle) { toast("This browser can't set a PIN here."); return; }
+  if (e.target.id === 'pinSet' || e.target.id === 'pinChange') showLock('set1');
+  else if (e.target.id === 'pinOff') showLock('remove');
+});
+function initLock(){ if (pinCfg && window.crypto && crypto.subtle) showLock('unlock'); }
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden) { hiddenAt = Date.now(); return; }
+  if (pinCfg && !lockMode && hiddenAt && Date.now() - hiddenAt > 120000) showLock('unlock');
+  onTick();
+});
+
 /* ================= views ================= */
 const VIEWS = {day:'#v-day', cal:'#v-cal', stats:'#v-stats', set:'#v-set', report:'#v-report'};
 function setView(v, keepScroll){
@@ -2252,11 +3147,15 @@ if (!inFrame && 'serviceWorker' in navigator && /^https?:$/.test(location.protoc
   navigator.serviceWorker.register('sw.js').then(r => { swReg = r; }).catch(() => {});
 }
 load();
+applyTheme();
 lastSettingsSig = settingsSig();
 activate(pickActive(), false);
 scheduleReminders();
 const h0 = (location.hash || '').slice(1);
 setView(VIEWS[h0] ? h0 : 'day');
+handleHealthHash();
+initLock();
+startTicker();
 setTimeout(() => syncBadges(false), 600);
 if (sync) setTimeout(() => syncNow(false), 300);
 })();
