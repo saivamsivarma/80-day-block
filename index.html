@@ -475,6 +475,98 @@ select.inp{font-family:var(--font-body)}
 .mnums .inp{height:40px}
 .mtpl.new .mnums{grid-template-columns:repeat(4,minmax(0,1fr))}
 
+
+/* v6 */
+:root{--mood1:#C92A2A;--mood2:#E8590C;--mood3:#ADB5BD;--mood4:#74B816;--mood5:#2B8A3E;--frost:#228BE6}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--mood1:#FF6B6B;--mood2:#FF922B;--mood3:#5C6575;--mood4:#94D82D;--mood5:#51CF66;--frost:#4DABF7}}
+:root[data-theme="dark"]{--mood1:#FF6B6B;--mood2:#FF922B;--mood3:#5C6575;--mood4:#94D82D;--mood5:#51CF66;--frost:#4DABF7}
+.alert{margin-bottom:12px;padding:14px;border-radius:16px;background:var(--surface);border:1px solid var(--accent);display:flex;flex-direction:column;gap:4px}
+.alert b{font-size:15px;font-weight:600}
+.alert p{font-size:14px;color:var(--muted)}
+.alert .btnrow{margin-top:6px}
+.moodrow{display:flex;align-items:center;gap:12px;margin-top:12px;padding:10px 14px;border-radius:18px;background:var(--surface);border:1px solid var(--line)}
+.moods{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px;flex:1}
+.moods button{display:flex;flex-direction:column;align-items:center;gap:4px;padding:6px 0;border-radius:10px;font-size:11px;color:var(--muted);font-weight:600}
+.moods button i{width:24px;height:24px;border-radius:7px;opacity:.35}
+.moods button[aria-checked="true"]{background:var(--surface-2);color:var(--fg)}
+.moods button[aria-checked="true"] i{opacity:1;box-shadow:0 0 0 2px var(--surface),0 0 0 4px var(--fg)}
+.m1 i,i.m1,.sw.m1{background:var(--mood1)}.m2 i,i.m2,.sw.m2{background:var(--mood2)}.m3 i,i.m3,.sw.m3{background:var(--mood3)}.m4 i,i.m4,.sw.m4{background:var(--mood4)}.m5 i,i.m5,.sw.m5{background:var(--mood5)}
+.lopts{grid-column:1/-1;display:grid;grid-template-columns:110px minmax(0,1fr);gap:10px;align-items:end}
+.lopts .inp{height:42px}
+.ss{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted);min-height:42px}
+.ss input{width:20px;height:20px;accent-color:var(--accent)}
+.cues{font-size:13px;color:var(--muted);line-height:1.45}
+.cues b{color:var(--fg);font-weight:600;margin-right:4px}
+.lifts li.sup{border-left:3px solid var(--accent);padding-left:8px}
+.sslbl{font-family:var(--font-data);font-size:11px;font-weight:700;color:var(--accent);width:22px;flex:none}
+.lifts .set small{color:var(--muted);font-size:11px}
+.linkb{color:var(--faint)}
+.linkb.on{color:var(--accent)}
+.remain{padding:2px 14px 0;font-size:13px;color:var(--muted)}
+.remain b{color:var(--fg);font-weight:600}
+.mlist li.pgood .mn small::after{content:" · 30 g+";color:var(--good);font-weight:600}
+.locked #habits button,.locked #dExtras input,.locked #dExtras textarea,.locked #dExtras select,.locked #dExtras .card-body button,.locked #dMood button,.locked #mealRow button,.locked #mealRow input{pointer-events:none;opacity:.55}
+.cell.frozen{outline:2px dashed var(--frost);outline-offset:-3px}
+.mdays span.frozen{outline:2px dashed var(--frost);outline-offset:-2px}
+.stepper{display:inline-flex;align-items:center;gap:10px}
+.stepper button{width:34px;height:34px;border-radius:10px;background:var(--surface-2);font-size:18px;font-weight:600}
+.stepper b{min-width:18px;text-align:center;font-family:var(--font-data)}
+.glist{list-style:none;margin:10px 0 0;padding:0}
+.glist li{border-top:1px solid var(--line)}
+.glist label{display:flex;align-items:center;gap:10px;min-height:44px;font-size:14px}
+.glist input{width:20px;height:20px;accent-color:var(--accent)}
+.glist input:checked+span{text-decoration:line-through;color:var(--muted)}
+textarea.ing{min-height:52px;font-size:13px}
+.fcard{padding:22px 18px;border-radius:18px;background:var(--surface);border:1px solid var(--line);min-height:140px;display:flex;flex-direction:column;gap:12px}
+.fq{font-family:var(--font-display);font-size:22px;font-weight:600;line-height:1.25;white-space:pre-wrap;overflow-wrap:anywhere}
+.fa{font-size:16px;white-space:pre-wrap;overflow-wrap:anywhere}
+.fcard hr{border:0;border-top:1px dashed var(--line);margin:0}
+.grades{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.grades button{display:flex;flex-direction:column;align-items:center;gap:2px;padding:12px 4px;border-radius:14px;background:var(--surface-2)}
+.grades button b{font-size:15px}
+.grades button small{font-size:11px;color:var(--muted)}
+.grades button[data-g="0"]{background:var(--bad-soft);color:var(--bad)}
+.grades button[data-g="4"]{background:var(--accent);color:var(--accent-ink)}
+.grades button[data-g="4"] small{color:inherit;opacity:.8}
+.letter{padding:18px;border-radius:16px;background:var(--surface);border:1px solid var(--line);font-size:16px;line-height:1.6;white-space:pre-wrap;overflow-wrap:anywhere}
+.pix{display:grid;grid-template-columns:16px repeat(31,minmax(0,1fr));gap:2px;margin-top:8px}
+.pix i{aspect-ratio:1;border-radius:2px;background:var(--surface-2);max-width:100%}
+.pix i.na{background:transparent}
+.pix i.cd{box-shadow:inset 0 0 0 1px var(--muted)}
+.pix .pm,.pix .pd{font-family:var(--font-data);font-size:9px;color:var(--muted);text-align:center;line-height:1}
+.pix .pm{align-self:center}
+.sw.cdk{background:transparent;box-shadow:inset 0 0 0 1px var(--muted)}
+.tod{display:grid;gap:2px;margin-top:8px;align-items:center}
+.tod i{height:16px;border-radius:3px;background:var(--accent);opacity:var(--a)}
+.tod i.z{background:var(--surface-2);opacity:1}
+.tod .th{font-family:var(--font-data);font-size:9px;color:var(--muted);text-align:left;white-space:nowrap;overflow:visible}
+.tod .tl{font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding-right:6px}
+.librow{border-top:1px solid var(--line)}
+.librow summary{display:flex;justify-content:space-between;align-items:center;gap:10px;min-height:46px;cursor:pointer;font-size:14px;font-weight:500}
+.librow summary small{color:var(--muted);font-weight:400;font-size:12px}
+.libbody{display:flex;flex-direction:column;gap:8px;padding-bottom:12px}
+.chrule{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr) 38px;gap:6px;align-items:center;padding:6px 0;font-size:13px;color:var(--muted)}
+.chrule .inp{height:40px;font-family:var(--font-body);font-size:14px}
+.sgin{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--muted)}
+.sgin .inp{width:80px;height:40px}
+.mail{max-width:480px;margin:14px auto 0;padding:22px 20px;border-radius:22px;background:var(--surface);border:1px solid var(--line);display:flex;flex-direction:column;gap:12px}
+.mail h1{font-family:var(--font-display);font-size:34px;line-height:1;letter-spacing:-.02em}
+.mail h2{font-size:14px;font-weight:600;margin-top:6px}
+.mail .sub{margin-top:0}
+.mscore{display:flex;align-items:center;gap:16px;padding:14px 16px;border-radius:16px;background:var(--accent);color:var(--accent-ink)}
+.mscore b{font-family:var(--font-display);font-size:48px;line-height:1}
+.mscore span{font-size:13px;opacity:.9;line-height:1.4}
+.mdays{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px}
+.mdays span{display:flex;flex-direction:column;align-items:center;padding:6px 0;border-radius:10px;font-family:var(--font-data);font-size:12px;background:var(--future);color:var(--muted)}
+.mdays span b{font-family:var(--font-body);font-size:11px}
+.mdays span.good{background:var(--good);color:var(--cell-ink)}.mdays span.warn{background:var(--warn);color:var(--cell-ink)}.mdays span.bad{background:var(--bad);color:var(--cell-ink)}
+.mtiles{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.mtiles div{padding:10px;border-radius:12px;background:var(--surface-2);min-width:0}
+.mtiles small{display:block;font-size:11px;color:var(--muted)}
+.mtiles b{display:block;font-family:var(--font-display);font-size:18px;overflow-wrap:anywhere}
+.mfoot{font-size:11px;color:var(--muted);text-align:center;margin-top:6px}
+@media (max-width:420px){.mtiles{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
 .toast{position:fixed;left:50%;bottom:calc(150px + env(safe-area-inset-bottom,0px));transform:translate(-50%,10px);background:var(--fg);color:var(--bg);padding:10px 16px;border-radius:12px;font-size:14px;font-weight:500;opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;max-width:calc(100% - 32px);text-align:center;z-index:20}
 .toast.show{opacity:1;transform:translate(-50%,0)}
 @media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
@@ -504,10 +596,12 @@ select.inp{font-family:var(--font-body)}
     <div id="dChain"></div>
     <p class="quote" id="dQuote"></p>
     <div id="dCheckin"></div>
+    <div id="dAlerts"></div>
     <p class="notice" id="dNotice" hidden></p>
     <div id="dReportCard"></div>
     <ul class="habits" id="habits"></ul>
     <div id="dReview"></div>
+    <div id="dMood"></div>
     <div id="dExtras"></div>
     <p class="hint">Swipe left or right to change days</p>
   </section>
@@ -534,6 +628,11 @@ select.inp{font-family:var(--font-body)}
         <h2>Next 7 days</h2>
         <p class="sub" id="pNextSub"></p>
         <ul class="plist" id="pNext"></ul>
+      </div>
+      <div class="panel">
+        <h2>Grocery list</h2>
+        <p class="sub">How many times you'll eat each meal this week</p>
+        <div id="pGroc"></div>
       </div>
       <div class="panel">
         <h2>Training weeks</h2>
@@ -566,6 +665,17 @@ select.inp{font-family:var(--font-body)}
       <div class="badges" id="sBadges"></div>
     </div>
     <div class="panel">
+      <h2>Freeze tokens</h2>
+      <div id="sFz"></div>
+    </div>
+    <div class="panel">
+      <h2>Year in pixels</h2>
+      <p class="sub">Your mood for every day of the year</p>
+      <div class="chips" id="sPixChips"></div>
+      <div id="sPix"></div>
+      <p class="readout" id="sPixRo" style="margin-top:8px"></p>
+    </div>
+    <div class="panel">
       <h2>Patterns</h2>
       <p class="sub">Where days slip, based on finished days.</p>
       <ul class="insights" id="sInsights"></ul>
@@ -574,6 +684,12 @@ select.inp{font-family:var(--font-body)}
       <h2>Connections</h2>
       <p class="sub">How one habit lines up with another. These are patterns in your log, not proof of cause.</p>
       <div id="sConn"></div>
+    </div>
+    <div class="panel">
+      <h2>When you check things off</h2>
+      <p class="sub">The hour each habit gets ticked, from taps on the day itself</p>
+      <p class="readout" id="sTodRo"></p>
+      <div id="sTod"></div>
     </div>
     <div class="panel">
       <h2>Bodyweight</h2>
@@ -603,6 +719,13 @@ select.inp{font-family:var(--font-body)}
       <div id="sVol" style="margin-top:8px"></div>
     </div>
     <div class="panel">
+      <h2>Gym start times</h2>
+      <p class="sub">From gym check-ins. Dots are full sessions; amber ones were short.</p>
+      <div class="kv" id="sGtKv"></div>
+      <p class="readout" id="sGtRo"></p>
+      <div class="chart" id="sGtChart"></div>
+    </div>
+    <div class="panel">
       <h2>Sleep</h2>
       <p class="sub" id="sSlSub"></p>
       <div class="kv" id="sSlKv"></div>
@@ -624,6 +747,8 @@ select.inp{font-family:var(--font-body)}
       <p class="readout" id="sStRo"></p>
       <div class="chart" id="sStChart"></div>
       <div id="sStTopics" style="margin-top:10px"></div>
+      <div id="sStGoals"></div>
+      <div id="sStCards"></div>
     </div>
     <div class="panel">
       <h2>Running</h2>
@@ -644,7 +769,7 @@ select.inp{font-family:var(--font-body)}
       <div id="sStreaks"></div>
     </div>
     <div class="panel">
-      <h2>By week</h2>
+      <div class="titlebar"><h2>By week</h2><button class="btn small" type="button" id="openWeekly">Summary page</button></div>
       <p class="sub" id="sWeekSub"></p>
       <div class="chips" id="sChips"></div>
       <div id="sWeek" style="margin-top:8px"></div>
@@ -658,6 +783,13 @@ select.inp{font-family:var(--font-body)}
     <p class="eyebrow" style="margin-top:16px" id="rEyebrow"></p>
     <h1 class="page-title" id="rTitle">80-day report</h1>
     <div id="rBody"></div>
+  </section>
+
+  <!-- WEEK SUMMARY -->
+  <section id="v-week" hidden>
+    <div class="titlebar"><button class="backbtn" type="button" id="wkBack"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>Stats</button>
+      <span class="seg sm"><button type="button" id="wkPrev">Previous</button><button type="button" id="wkNext">Next</button></span></div>
+    <div id="wkBody"></div>
   </section>
 
   <!-- SETTINGS -->
@@ -703,6 +835,26 @@ select.inp{font-family:var(--font-body)}
     <div class="panel">
       <h2>Install on your phone</h2>
       <div id="instBox"></div>
+    </div>
+    <div class="panel">
+      <h2>Accountability</h2>
+      <div id="acBox"></div>
+    </div>
+    <div class="panel">
+      <h2>Habit chains</h2>
+      <div id="hcBox"><p class="sub">After you tick the first habit, the app suggests the next step.</p><div id="hcList"></div><div class="btnrow"><button class="btn small" type="button" id="hcAdd">Add a chain</button></div></div>
+    </div>
+    <div class="panel">
+      <h2>Exercise library</h2>
+      <div id="libBox"><p class="sub">Main muscle and form cues for each lift. Cues show in the gym log when you pick the exercise.</p>
+        <input class="inp text" id="libQ" placeholder="Search exercises" aria-label="Search exercises">
+        <div id="libList" style="margin-top:6px"></div>
+        <div class="addstudy" style="margin-top:10px"><input class="inp text" id="libNew" placeholder="New exercise" maxlength="60" aria-label="New exercise name"><button class="btn" type="button" id="libAdd">Add</button></div></div>
+    </div>
+    <div class="panel">
+      <h2>Study goals</h2>
+      <div id="sgBox"><p class="sub">Hours per week for each subject. Progress shows in the study log and Stats.</p><div id="sgList"></div>
+        <div class="addstudy" style="margin-top:10px"><input class="inp text" id="sgName" placeholder="Subject" maxlength="40" aria-label="Subject"><input class="inp" id="sgHours" type="number" inputmode="decimal" min="0.5" step="0.5" placeholder="h/week" aria-label="Hours per week"><button class="btn" type="button" id="sgAdd">Add goal</button></div></div>
     </div>
     <div class="panel">
       <h2>Appearance</h2>
@@ -819,6 +971,19 @@ select.inp{font-family:var(--font-body)}
     <p class="foot">Nutrition data from Open Food Facts, a free community database.</p>
   </div>
 </div>
+<div class="sheet" id="cardSheet" hidden role="dialog" aria-modal="true" aria-labelledby="cardTitle">
+  <div class="sheet-in">
+    <div class="sheet-head"><h2 id="cardTitle">Flashcards</h2><button class="x" type="button" id="cardClose" aria-label="Close flashcards"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+    <span class="seg" id="cardTabs"><button type="button" data-ct="review">Review</button><button type="button" data-ct="add">Add</button><button type="button" data-ct="all">All cards</button></span>
+    <div id="cardBody" style="display:flex;flex-direction:column;gap:12px"></div>
+  </div>
+</div>
+<div class="sheet" id="letterSheet" hidden role="dialog" aria-modal="true" aria-labelledby="letterTitle">
+  <div class="sheet-in">
+    <div class="sheet-head"><h2 id="letterTitle">Letter to future you</h2><button class="x" type="button" id="letterClose" aria-label="Close letter"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+    <div id="letterBody" style="display:flex;flex-direction:column;gap:12px"></div>
+  </div>
+</div>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <script>
@@ -845,8 +1010,10 @@ const DEFAULT_HABITS = [
   {id:'read',     name:'Read or journal',       type:'check', sub:'20 min reading or 2–3 lines', min:'5 minutes or 1 line', weight:1}
 ];
 const DEFAULT_MEALS = [
-  {name:'Protein shake', p:40, c:12, f:4, k:240}, {name:'Chicken rice bowl', p:45, c:75, f:15, k:615},
-  {name:'Greek yogurt bowl', p:25, c:40, f:8, k:330}, {name:'Eggs and toast', p:25, c:30, f:22, k:420}
+  {name:'Protein shake', p:40, c:12, f:4, k:240, ing:'1 scoop whey protein\n300 ml milk'},
+  {name:'Chicken rice bowl', p:45, c:75, f:15, k:615, ing:'200 g chicken breast\n150 g rice\n100 g broccoli\n1 tbsp olive oil'},
+  {name:'Greek yogurt bowl', p:25, c:40, f:8, k:330, ing:'200 g greek yogurt\n40 g granola\n100 g berries'},
+  {name:'Eggs and toast', p:25, c:30, f:22, k:420, ing:'3 eggs\n2 slices bread\n10 g butter'}
 ];
 const DEFAULT_LIFTS = {
   pull:['Lat pulldown','Pull-up','Chest-supported row','Seated cable row','Face pull','Barbell curl','Hammer curl'],
@@ -928,6 +1095,8 @@ function defaultSettings(){
     strict: true,
     pomo: {focus:25, brk:5},
     loc: null,
+    lib: {}, overrides: {}, studyGoals: {}, lockPast: true, freezeMin: 1, reschedSeen: {}, grocery: {},
+    chains: [{after:'gym', next:'meal:Protein shake'}, {after:'wake', next:'habit:sun'}, {after:'noscreen', next:'habit:read'}],
     ui: {open:{}, calSeg:'heat'}
   };
 }
@@ -939,13 +1108,13 @@ function cleanDay(v){
   for (const f of ['steps', 'protein', 'kcal']) { const n = intOrNull(v[f]); if (n != null) d.vals[f] = n; } // v1 format
   if (Array.isArray(v.water)) d.water = v.water.filter(x => typeof x === 'number' && x > 0 && x <= 5000);
   if (Array.isArray(v.meals)) d.meals = v.meals.filter(m => m && typeof m.n === 'string').map(m => ({n:m.n.slice(0, 40), p:posNum(m.p) || 0, c:posNum(m.c) || 0, f:posNum(m.f) || 0, k:posNum(m.k) || 0, t:isTime(m.t) ? m.t : '', tag:m.tag === 'pre' || m.tag === 'post' ? m.tag : ''}));
-  if (Array.isArray(v.study)) d.study = v.study.filter(s => s && typeof s.t === 'string' && s.t.trim() && typeof s.m === 'number' && s.m > 0).map(s => ({t:s.t.trim().slice(0, 40), m:Math.min(720, Math.round(s.m))}));
+  if (Array.isArray(v.study)) d.study = v.study.filter(s => s && typeof s.t === 'string' && s.t.trim() && typeof s.m === 'number' && s.m > 0).map(s => { const o = {t:s.t.trim().slice(0, 40), m:Math.min(720, Math.round(s.m))}; if (typeof s.dist === 'number' && s.dist >= 0) o.dist = Math.min(99, Math.round(s.dist)); return o; });
   d.weight = posNum(v.weight);
   if (isTime(v.wake)) d.wake = v.wake;
   if (isTime(v.bed)) d.bed = v.bed;
   if (v.run && typeof v.run === 'object') { d.run.dist = posNum(v.run.dist); d.run.sec = intOrNull(v.run.sec); }
   if (Array.isArray(v.lifts)) d.lifts = v.lifts.filter(L => L && typeof L.ex === 'string' && L.ex.trim() && typeof L.r === 'number' && L.r > 0 && L.r <= 200)
-    .map(L => ({ex:L.ex.trim().slice(0, 60), w:posNum(L.w) || 0, r:Math.floor(L.r)}));
+    .map(L => { const o = {ex:L.ex.trim().slice(0, 60), w:posNum(L.w) || 0, r:Math.floor(L.r)}; if (L.ss === true) o.ss = true; if ([0, 1, 2, 3, 4, 5].includes(L.rir)) o.rir = L.rir; return o; });
   d.dur = intOrNull(v.dur);
   if (typeof v.note === 'string') d.note = v.note.slice(0, 4000);
   if ([1, 2, 3, 4, 5].includes(v.sleepQ)) d.sleepQ = v.sleepQ;
@@ -956,6 +1125,11 @@ function cleanDay(v){
   const smn = intOrNull(v.sunMin); if (smn) d.sunMin = Math.min(smn, 600);
   if (v.vwake === true) d.vwake = true;
   if (v.vbed === true) d.vbed = true;
+  if (isTime(v.gymIn)) d.gymIn = v.gymIn;
+  if (v.cheat === true) d.cheat = true;
+  if ([1, 2, 3, 4, 5].includes(v.mood)) d.mood = v.mood;
+  const fcn = intOrNull(v.fc); if (fcn) d.fc = Math.min(fcn, 2000);
+  if (v.ct && typeof v.ct === 'object') { const ct = {}; for (const [k, t] of Object.entries(v.ct)) if (idOK(k) && isTime(t)) ct[k] = t; if (Object.keys(ct).length) d.ct = ct; }
   if (typeof v.u === 'number') d.u = v.u;
   return d;
 }
@@ -996,11 +1170,19 @@ function cleanSettings(s){
     if (['cm','in'].includes(s.units.meas)) out.units.meas = s.units.meas;
   }
   if (Array.isArray(s.meals)) out.meals = s.meals.filter(m => m && typeof m.name === 'string' && m.name.trim()).slice(0, 30)
-    .map(m => ({id:typeof m.id === 'string' && idOK(m.id) ? m.id : uid(), name:m.name.trim().slice(0, 40), p:posNum(m.p) || 0, c:posNum(m.c) || 0, f:posNum(m.f) || 0, k:posNum(m.k) || 0}));
+    .map(m => ({id:typeof m.id === 'string' && idOK(m.id) ? m.id : uid(), name:m.name.trim().slice(0, 40), p:posNum(m.p) || 0, c:posNum(m.c) || 0, f:posNum(m.f) || 0, k:posNum(m.k) || 0, ing:typeof m.ing === 'string' ? m.ing.slice(0, 600) : ''}));
   if (s.gym && typeof s.gym === 'object') { if ([60, 90, 120, 180].includes(s.gym.rest)) out.gym.rest = s.gym.rest; out.gym.autoRest = s.gym.autoRest !== false; }
   if (typeof s.strict === 'boolean') out.strict = s.strict;
   if (s.pomo && typeof s.pomo === 'object') { if ([25, 50].includes(s.pomo.focus)) out.pomo.focus = s.pomo.focus; if ([5, 10].includes(s.pomo.brk)) out.pomo.brk = s.pomo.brk; }
   if (s.loc && typeof s.loc.lat === 'number' && typeof s.loc.lon === 'number' && Math.abs(s.loc.lat) <= 90 && Math.abs(s.loc.lon) <= 180) out.loc = {lat:s.loc.lat, lon:s.loc.lon};
+  if (s.lib && typeof s.lib === 'object') for (const [k, v] of Object.entries(s.lib)) if (k.length <= 60 && v && typeof v === 'object') out.lib[k] = {name:String(v.name || '').slice(0, 60), m:MUSCLES.concat(['Other']).includes(v.m) ? v.m : '', cues:String(v.cues || '').slice(0, 300)};
+  if (s.overrides && typeof s.overrides === 'object') for (const [k, v] of Object.entries(s.overrides)) if (isKey(k) && typeof v === 'string') out.overrides[k] = v.slice(0, 24);
+  if (s.studyGoals && typeof s.studyGoals === 'object') for (const [k, v] of Object.entries(s.studyGoals)) if (v && typeof v.h === 'number' && v.h > 0) out.studyGoals[k.slice(0, 40)] = {name:String(v.name || k).slice(0, 40), h:Math.min(80, v.h)};
+  if (typeof s.lockPast === 'boolean') out.lockPast = s.lockPast;
+  if ([1, 0.9, 0.7].includes(s.freezeMin)) out.freezeMin = s.freezeMin;
+  if (s.reschedSeen && typeof s.reschedSeen === 'object') for (const k of Object.keys(s.reschedSeen)) if (isKey(k)) out.reschedSeen[k] = true;
+  if (s.grocery && typeof s.grocery === 'object') for (const [k, v] of Object.entries(s.grocery)) if (idOK(k) && typeof v === 'number' && v > 0) out.grocery[k] = Math.min(21, Math.floor(v));
+  if (Array.isArray(s.chains)) out.chains = s.chains.filter(c => c && typeof c.after === 'string' && typeof c.next === 'string' && /^(habit|meal):/.test(c.next)).slice(0, 20).map(c => ({after:c.after.slice(0, 40), next:c.next.slice(0, 60)}));
   if (s.remind && typeof s.remind === 'object') {
     out.remind.on = !!s.remind.on;
     if (isTime(s.remind.winddown) || s.remind.winddown === '') out.remind.winddown = s.remind.winddown;
@@ -1014,7 +1196,7 @@ function cleanSettings(s){
 }
 function clean(raw){
   if (!raw || typeof raw !== 'object' || !raw.days || typeof raw.days !== 'object') return null;
-  const out = {version:4, settings:cleanSettings(raw.settings), days:{}, reviews:{}, badges:{}, challenges:[]};
+  const out = {version:5, settings:cleanSettings(raw.settings), days:{}, reviews:{}, badges:{}, challenges:[], cards:cleanCards(raw.cards), letters:cleanLetters(raw.letters), freezes:cleanFreezes(raw.freezes)};
   for (const [k, v] of Object.entries(raw.days)) if (isKey(k) && v && typeof v === 'object') out.days[k] = cleanDay(v);
   if (Array.isArray(raw.challenges)) {
     const seen = new Set();
@@ -1038,7 +1220,7 @@ function clean(raw){
   }
   return out;
 }
-const freshData = () => ({version:4, settings:defaultSettings(), days:{}, reviews:{}, badges:{}, challenges:[Object.assign({}, DEFAULT_CHALLENGE)]});
+const freshData = () => ({version:5, settings:defaultSettings(), days:{}, reviews:{}, badges:{}, challenges:[Object.assign({}, DEFAULT_CHALLENGE)], cards:[], letters:{}, freezes:{}});
 let data = freshData();
 let lastSettingsSig = null;
 function settingsSig(){ const o = Object.assign({}, data.settings); delete o.ui; delete o.u; return JSON.stringify(o); }
@@ -1058,7 +1240,7 @@ let saveT;
 const saveSoon = () => { clearTimeout(saveT); saveT = setTimeout(save, 350); };
 const S = () => data.settings;
 const stamp = prev => Math.max(Date.now(), (prev || 0) + 1);
-const rec = (d, label) => { const k = key(d); snap(k, label); const r = data.days[k] || (data.days[k] = blankDay()); r.u = stamp(r.u); return r; };
+const rec = (d, label) => { const k = key(d); if (isLocked(d)) { lockedToast(); return JSON.parse(JSON.stringify(data.days[k] || blankDay())); } snap(k, label); const r = data.days[k] || (data.days[k] = blankDay()); r.u = stamp(r.u); return r; };
 const myBadges = () => data.badges[CHAL.id] || (data.badges[CHAL.id] = {});
 const liveChallenges = () => data.challenges.filter(c => !c.deleted).sort((a, b) => a.start.localeCompare(b.start));
 const badgeName = b => b.id === 'halfway' ? 'Halfway, ' + fMD.format(HALFWAY) : b.id === 'finish' ? 'Finished ' + endLabel() : b.name;
@@ -1066,12 +1248,12 @@ const peek = d => data.days[key(d)];
 const isLogged = r => r && (Object.keys(r.checks).length || Object.keys(r.vals).length || r.water.length || r.meals.length || r.study.length || r.weight != null || r.wake || r.bed || r.run.dist || r.lifts.length || r.dur || r.note);
 const loggedCount = (src) => Object.values((src || data).days).filter(isLogged).length;
 const hById = id => S().habits.find(h => h.id === id);
-const workoutFor = d => (S().schedule[d.getDay()] || '').trim();
+const workoutFor = d => { const o = S().overrides && S().overrides[key(d)]; return (o != null ? o : (S().schedule[d.getDay()] || '')).trim(); };
 const isDeload = wi => { const n = S().deloadEvery; return !!n && (wi + 1) % n === 0; };
 
 /* ---------- scoring ---------- */
 function inLife(h, d){ const k = key(d); if (h.added && k < h.added) return false; if (h.removed && k >= h.removed) return false; return h.on || !!h.removed; }
-const applies = (h, d) => inLife(h, d) && (h.type !== 'gym' || !!workoutFor(d));
+const applies = (h, d) => inLife(h, d) && (h.type !== 'gym' || !!workoutFor(d)) && !((h.id === 'protein' || h.id === 'kcal') && peek(d) && peek(d).cheat);
 const applicable = d => S().habits.filter(h => applies(h, d));
 const credit = (d, id) => { const r = peek(d); const v = r && r.checks[id]; return v === true ? 1 : v === 'min' ? 0.5 : 0; };
 function dayScore(d){
@@ -1086,7 +1268,7 @@ const studyTotal = r => r ? r.study.reduce((a, s) => a + s.m, 0) : 0;
 const hasRun = r => !!(r && r.run && r.run.dist > 0);
 const todayKeyClamped = () => key(clamp(TODAY));
 function finishedEnd(){ const last = lastElapsed(); if (!last) return null; const e = same(last, TODAY) ? addDays(last, -1) : last; return e < START ? null : e; }
-function setLevel(r, id, lv){ if (lv) r.checks[id] = lv; else delete r.checks[id]; }
+function setLevel(r, id, lv){ if (lv && !r.checks[id]) ctStamp(r, id); if (lv) r.checks[id] = lv; else delete r.checks[id]; }
 function levelFor(h, v){ if (v == null) return 0; if (v >= h.target) return true; if (h.minTarget && v >= h.minTarget) return 'min'; return 0; }
 function applyAuto(r, which, d){
   const strictNow = S().strict && d && same(d, TODAY);
@@ -1137,9 +1319,9 @@ function xpInfo(prs){
 function streak70(){
   const last = lastElapsed(); if (!last) return {cur:0, best:0};
   let run = 0, best = 0;
-  for (const d of days(START, last)) { if (dayScore(d).p >= 0.7) { run++; best = Math.max(best, run); } else if (!same(d, TODAY)) run = 0; }
+  for (const d of days(START, last)) { if (chainOK(d)) { run++; best = Math.max(best, run); } else if (!same(d, TODAY)) run = 0; }
   let cur = 0;
-  for (let d = last; d >= START; d = addDays(d, -1)) { if (dayScore(d).p >= 0.7) cur++; else if (same(d, TODAY)) continue; else break; }
+  for (let d = last; d >= START; d = addDays(d, -1)) { if (chainOK(d)) cur++; else if (same(d, TODAY)) continue; else break; }
   return {cur, best};
 }
 function gymCount(to){ let n = 0; const h = S().habits.find(x => x.type === 'gym'); if (!h || !to) return 0; for (const d of days(START, to)) if (applies(h, d) && credit(d, h.id) > 0) n++; return n; }
@@ -1214,8 +1396,8 @@ function renderChain(){
   const box = $('#dChain');
   if (!same(cur, TODAY) || !inRange(TODAY) || same(TODAY, START)) { box.innerHTML = ''; return; }
   const y = addDays(TODAY, -1), ys = dayScore(y), st = streak70();
-  const links = []; for (let i = 6; i >= 0; i--) { const d = addDays(TODAY, -i); links.push(d < START ? '<i class="lk" style="opacity:.3"></i>' : '<i class="lk ' + (i === 0 ? (dayScore(d).p >= 0.7 ? status(d) : 'now') : status(d)) + '"></i>'); }
-  const kept = ys.p >= 0.7;
+  const links = []; for (let i = 6; i >= 0; i--) { const d = addDays(TODAY, -i); links.push(d < START ? '<i class="lk" style="opacity:.3"></i>' : '<i class="lk ' + (i === 0 ? (chainOK(d) ? status(d) : 'now') : status(d)) + '"></i>'); }
+  const kept = chainOK(y);
   const msg = kept ? '<b>Yesterday ' + pct(ys.p) + '.</b> Chain at ' + st.cur + (st.cur === 1 ? ' day' : ' days') + '. Hit 70% today to keep it going.'
     : '<b>Yesterday ' + pct(ys.p) + '.</b> The chain reset. Start a new one today: 70% keeps it alive' + (S().habits.some(h => h.min || h.minTarget || h.minTime) ? ', and minimum versions count.' : '.');
   box.innerHTML = '<div class="chain' + (kept ? '' : ' broken') + '"><span class="links" aria-hidden="true">' + links.join('') + '</span><p>' + msg + '</p></div>';
@@ -1229,9 +1411,11 @@ function renderDay(){
   let msg = '';
   if (TODAY < START && same(d, START)) msg = 'Your ' + TOTAL + ' days start ' + (diffDays(TODAY, START) === 1 ? 'tomorrow, ' : 'on ') + fShort.format(START) + '. You can look around now.';
   else if (d > TODAY) msg = "This day hasn't happened yet. It stays gray on the calendar until it arrives.";
+  if (isLocked(d)) msg = "Locked: days more than 48 hours past can't be changed. You can turn this off in Setup → Accountability.";
+  dayRoot.classList.toggle('locked', isLocked(d));
   const n = $('#dNotice'); n.textContent = msg; n.hidden = !msg;
   $('#dReportCard').innerHTML = TODAY >= END && same(d, END) ? '<div class="notice" style="display:flex;align-items:center;justify-content:space-between;gap:12px"><span><b>Your 80-day report is ready.</b></span><button class="btn small primary" type="button" data-act="report">View report</button></div>' : '';
-  renderChain(); renderQuote(); renderCheckin();
+  renderChain(); renderQuote(); renderCheckin(); renderAlerts(); renderMood();
 
   const mealsOn = S().meals.length && (hById('protein') || hById('kcal'));
   const lastNutri = ['kcal', 'protein'].find(id => { const h = hById(id); return h && inLife(h, d); });
@@ -1289,7 +1473,7 @@ function renderReview(){
   for (const x of days(weekStart(wi), d)) { if (x > TODAY) break; for (const h of applicable(x)) { const c = credit(x, h.id); W += h.weight || 1; E += (h.weight || 1) * c; if (!c) miss[h.id] = (miss[h.id] || 0) + 1; } }
   const top = Object.entries(miss).sort((a, b) => b[1] - a[1])[0];
   const summ = W ? pct(E / W) + ' this week' + (top ? ' · most missed: ' + esc(hById(top[0]) ? hById(top[0]).name : top[0]) + ' (' + top[1] + '×)' : ' · nothing missed') : 'Your first review is on ' + fShort.format(firstSunday()) + '.';
-  reviewEl.innerHTML = '<div class="card review"><p class="eyebrow">Sunday review · Week ' + (wi + 1) + (isDeload(wi + 1) ? ' · deload next week' : '') + '</p><h2>' + summ + '</h2>' +
+  reviewEl.innerHTML = '<div class="card review"><p class="eyebrow">Sunday review · Week ' + (wi + 1) + (isDeload(wi + 1) ? ' · deload next week' : '') + '</p><h2>' + summ + '</h2><button class="linkbtn" type="button" data-act="weekly" style="align-self:flex-start">Open the week summary page</button>' +
     '<label class="field">What went well<textarea id="rvGood" data-rv="good" placeholder="Hit protein every day, 3 runs…">' + esc(rv.good) + '</textarea></label>' +
     '<label class="field">What to fix next week<textarea id="rvFix" data-rv="fix" placeholder="Phone out of the bedroom by 8:30…">' + esc(rv.fix) + '</textarea></label></div>';
 }
@@ -1307,14 +1491,14 @@ function renderExtras(){
   if (w) {
     html += det('gym', 'gym', esc(w) + ' log',
       (isDeload(weekOf(d)) ? '<p class="calc">Deload week: same exercises, about half the sets, and stop 3–4 reps short of failure.</p>' : '') +
-      '<label class="field" style="max-width:180px">Duration (min)<input class="inp" id="gDur" data-act="dur" type="number" inputmode="numeric" min="0" placeholder="0" value="' + (r.dur != null ? r.dur : '') + '"></label>' +
+      gymCheckinHtml(r, d) + '<label class="field" style="max-width:180px">Duration (min)<input class="inp" id="gDur" data-act="dur" type="number" inputmode="numeric" min="0" placeholder="0" value="' + (r.dur != null ? r.dur : '') + '"></label>' +
       '<ul class="lifts" id="liftList"></ul>' +
       '<datalist id="liftOpts">' + liftOptions(d, idx).map(n => '<option value="' + esc(n) + '"></option>').join('') + '</datalist>' +
       '<div class="addlift"><input class="inp text" id="lfEx" list="liftOpts" placeholder="Exercise" maxlength="60" aria-label="Exercise" autocomplete="off">' +
       '<input class="inp" id="lfW" type="number" inputmode="decimal" min="0" step="any" placeholder="' + U.lift + '" aria-label="Weight in ' + U.lift + '">' +
       '<input class="inp" id="lfR" type="number" inputmode="numeric" min="1" step="1" placeholder="reps" aria-label="Reps" enterkeyhint="done">' +
-      '<button class="btn primary" type="button" data-act="addlift">Add set</button></div><p class="lasthint" id="lfHint"></p>' +
-      '<div class="gtools"><span class="calc">Rest</span><span class="seg sm">' + [60, 90, 120, 180].map(x => '<button type="button" data-rest="' + x + '" aria-pressed="' + (S().gym.rest === x) + '">' + fmtRest(x) + '</button>').join('') + '</span><button class="btn small" type="button" data-act="plates">Plates</button></div><p class="calc" id="plateOut"></p>');
+      liftOptsHtml() + '<button class="btn primary" type="button" data-act="addlift">Add set</button></div><p class="lasthint" id="lfHint"></p><div class="cues" id="lfCues"></div>' +
+      '<div class="gtools"><span class="calc">Rest</span><span class="seg sm">' + [60, 90, 120, 180].map(x => '<button type="button" data-rest="' + x + '" aria-pressed="' + (S().gym.rest === x) + '">' + fmtRest(x) + '</button>').join('') + '</span><button class="btn small" type="button" data-act="plates">Plates</button><button class="btn small" type="button" data-act="warmup">Warm-up</button></div><p class="calc" id="plateOut"></p>');
   }
   if (S().habits.some(h => h.auto === 'study' && inLife(h, d)) || r.study.length) {
     html += det('study', 'study', 'Study log',
@@ -1323,7 +1507,7 @@ function renderExtras(){
       '<div class="addstudy"><input class="inp text" id="stT" list="topicOpts" placeholder="Subject, e.g. System design" maxlength="40" aria-label="Study subject" autocomplete="off">' +
       '<input class="inp" id="stM" type="number" inputmode="numeric" min="1" placeholder="min" aria-label="Minutes" enterkeyhint="done">' +
       '<button class="btn primary" type="button" data-act="addstudy">Add session</button></div>' +
-      '<div class="gtools"><button class="btn small primary" type="button" data-act="pomo">' + (timers.pomo ? 'Stop focus' : 'Start ' + S().pomo.focus + '-min focus') + '</button><span class="calc">Logs to the subject above when the timer ends.</span></div>');
+      '<div id="studyExtra"></div><div class="gtools"><button class="btn small primary" type="button" data-act="pomo">' + (timers.pomo ? 'Stop focus' : 'Start ' + S().pomo.focus + '-min focus') + '</button><span class="calc">Logs to the subject above when the timer ends.</span></div>');
   }
   const sec = r.run.sec;
   html += det('run', 'run', 'Run',
@@ -1340,7 +1524,7 @@ function renderExtras(){
   if (w) renderLifts(idx);
   renderStudy();
 }
-function renderLifts(idx){
+function renderLiftsV3(idx){
   idx = idx || liftIndex();
   const list = $('#liftList'); if (!list) return;
   const r = peek(cur), prs = idx.prs[key(cur)] || new Set(), U = S().units;
@@ -1348,11 +1532,11 @@ function renderLifts(idx){
   list.innerHTML = r.lifts.map((L, i) => '<li><span class="ex">' + esc(L.ex) + '</span>' + (prs.has(i) ? '<span class="pr">PR</span>' : '') +
     '<span class="set">' + (L.w ? fmtN(L.w, 2) + ' ' + U.lift + ' × ' : 'BW × ') + L.r + '</span><button class="x" type="button" data-act="dellift" data-i="' + i + '" aria-label="Remove ' + esc(L.ex) + ' set">' + X_SVG + '</button></li>').join('');
 }
-function renderStudy(){
+function renderStudyV3(){
   const list = $('#studyList'); if (!list) return;
   const r = peek(cur);
   if (!r || !r.study.length) { list.innerHTML = '<li class="empty">No sessions yet. Add what you studied and for how long.</li>'; return; }
-  list.innerHTML = r.study.map((s, i) => '<li><span class="ex">' + esc(s.t) + '</span><span class="set">' + s.m + ' min</span><button class="x" type="button" data-act="delstudy" data-i="' + i + '" aria-label="Remove ' + esc(s.t) + ' session">' + X_SVG + '</button></li>').join('');
+  list.innerHTML = r.study.map((s, i) => '<li><span class="ex">' + esc(s.t) + '</span><span class="set">' + s.m + ' min' + (s.dist != null ? ' · focus ' + focusScore(s) : '') + '</span><button class="x" type="button" data-act="delstudy" data-i="' + i + '" aria-label="Remove ' + esc(s.t) + ' session">' + X_SVG + '</button></li>').join('');
 }
 function updateLiftHintV3(){
   const el = $('#lfHint'), ex = $('#lfEx'); if (!el || !ex) return;
@@ -1430,9 +1614,9 @@ function relevelNum(r, id){ const h = hById(id); if (h && h.type === 'num') setL
 function syncNumInput(id){ const el = $('#in-' + id), r = peek(cur); if (el) el.value = r && r.vals[id] != null ? r.vals[id] : ''; }
 dayRoot.addEventListener('click', e => {
   const t = e.target.closest('[data-toggle]');
-  if (t) { const id = t.dataset.toggle; if (strictBlocked(id)) return; const h = hById(id), on = !(peek(cur) && peek(cur).checks[id] === true); const r = rec(cur, (on ? 'Checked ' : 'Unchecked ') + (h ? h.name : id)); if (on) r.checks[id] = true; else delete r.checks[id]; save(); buzz(); updateDay(); return; }
+  if (t) { const id = t.dataset.toggle; if (strictBlocked(id)) return; const h = hById(id), on = !(peek(cur) && peek(cur).checks[id] === true); const r = rec(cur, (on ? 'Checked ' : 'Unchecked ') + (h ? h.name : id)); if (on) { r.checks[id] = true; ctStamp(r, id); } else delete r.checks[id]; save(); buzz(); updateDay(); if (on) chainHint(id); return; }
   const mb = e.target.closest('[data-min]');
-  if (mb) { const id = mb.dataset.min; if (strictBlocked(id)) return; const r = rec(cur, 'Minimum: ' + (hById(id) ? hById(id).name : id)); if (r.checks[id] === 'min') delete r.checks[id]; else r.checks[id] = 'min'; save(); buzz(); updateDay(); return; }
+  if (mb) { const id = mb.dataset.min; if (strictBlocked(id)) return; const r = rec(cur, 'Minimum: ' + (hById(id) ? hById(id).name : id)); if (r.checks[id] === 'min') delete r.checks[id]; else { r.checks[id] = 'min'; ctStamp(r, id); } save(); buzz(); updateDay(); if (r.checks[id]) chainHint(id); return; }
   const wb = e.target.closest('[data-water]');
   if (wb) { const r = rec(cur, 'Added ' + (Number(wb.dataset.water) >= 1000 ? Number(wb.dataset.water) / 1000 + ' L' : wb.dataset.water + ' ml') + ' water'); r.water.push(Number(wb.dataset.water)); setWaterCheck(r); save(); buzz(); updateDay(); return; }
   if (e.target.closest('#wUndo')) { const r = rec(cur); if (r.water.length) { r.water.pop(); setWaterCheck(r); save(); buzz(); updateDay(); } return; }
@@ -1453,13 +1637,13 @@ function addLift(){
   if (!ex) { toast('Enter an exercise'); $('#lfEx').focus(); return; }
   if (!(reps > 0)) { toast('Enter reps'); $('#lfR').focus(); return; }
   const r = rec(cur, 'Added set');
-  r.lifts.push({ex:ex.slice(0, 60), w:isFinite(w) && w > 0 ? Math.round(w * 100) / 100 : 0, r:Math.min(200, reps)});
+  r.lifts.push(newLiftEntry(ex, w, reps));
   save();
   const idx = liftIndex(), prs = idx.prs[key(cur)];
   if (prs && prs.has(r.lifts.length - 1)) { toast('New PR on ' + ex + ' · +25 XP'); buzz(); }
   renderLifts(idx); updateDay(); updateLiftHint();
   $('#lfR').value = ''; $('#lfR').focus();
-  if (S().gym.autoRest) startRest();
+  if (S().gym.autoRest && !linkNext) startRest();
 }
 function addStudy(){
   const t = $('#stT').value.trim(), m = parseInt($('#stM').value, 10);
@@ -1547,13 +1731,13 @@ function renderCal(){
       if (!inRange(d)) { cells += '<span class="cell out">' + i + '</span>'; continue; }
       const st = status(d), sc = dayScore(d), pr = !!prs[key(d)];
       const label = fMD.format(d) + ', ' + (st === 'future' ? 'upcoming' : pct(sc.p) + ' complete') + (pr ? ', new PR' : '');
-      cells += '<button type="button" class="cell ' + st + (same(d, TODAY) ? ' today' : '') + '" data-k="' + key(d) + '" aria-label="' + label + '">' + i + (pr ? '<i class="dot"></i>' : '') + '</button>';
+      cells += '<button type="button" class="cell ' + st + (data.freezes[key(d)] ? ' frozen' : '') + (same(d, TODAY) ? ' today' : '') + '" data-k="' + key(d) + '" aria-label="' + label + '">' + i + (pr ? '<i class="dot"></i>' : '') + '</button>';
     }
     html += '<div class="month"><h3>' + fMonth.format(first) + (multiYear ? ' ' + first.getFullYear() : '') + '</h3><div class="grid7">' + dows + cells + '</div></div>';
   }
   $('#cMonths').innerHTML = html;
 }
-function renderPlan(){
+function renderPlanV4(){
   const gymH = S().habits.find(h => h.type === 'gym'), from = clamp(TODAY), n = S().deloadEvery;
   const rows = [];
   for (let i = 0; i < 7; i++) {
@@ -1834,7 +2018,7 @@ function renderStats(){
   const ins = insights();
   $('#sInsights').innerHTML = ins.items.map(t => '<li>' + t + '</li>').join('') + (ins.note ? '<li>' + esc(ins.note) + '</li>' : '');
   renderConnections();
-  weightChart(); wkcChart(); sleepChart(); studyChart(); runChart(); renderNutrition(); renderVolume(); renderBodyStats();
+  weightChart(); wkcChart(); sleepChart(); studyChart(); runChart(); renderNutrition(); renderVolume(); renderBodyStats(); renderFreeze(); renderPixels(); renderTod(); renderGymTiming(); renderStudyGoalsStats();
 
   const bests = Object.values(idx.best).filter(b => b.w > 0).sort((a, b) => b.k.localeCompare(a.k));
   $('#sPRs').innerHTML = bests.length ? '<div class="strow prrow head"><span>Exercise</span><span class="n">Best set</span><span class="n">e1RM</span></div>' +
@@ -2004,12 +2188,13 @@ $('#nhAdd').addEventListener('click', () => {
 function renderMealsEditor(){
   $('#mealList').innerHTML = S().meals.map(m => '<div class="mtpl" data-mid="' + m.id + '"><input class="inp text" data-mf="name" maxlength="40" value="' + esc(m.name) + '" aria-label="Meal name">' +
     '<div class="mnums">' + [['p', 'Protein'], ['c', 'Carbs'], ['f', 'Fat'], ['k', 'kcal']].map(([f, l]) => '<label>' + l + '<input class="inp" data-mf="' + f + '" type="number" inputmode="decimal" min="0" value="' + (m[f] || 0) + '"></label>').join('') +
-    '<button class="x" type="button" data-mdel aria-label="Delete ' + esc(m.name) + '">' + X_SVG + '</button></div></div>').join('') || '<p class="empty" style="padding:6px 0">No meals yet.</p>';
+    '<button class="x" type="button" data-mdel aria-label="Delete ' + esc(m.name) + '">' + X_SVG + '</button></div><textarea class="ing" data-mf="ing" rows="2" placeholder="Ingredients for the grocery list, one per line: 200 g chicken breast" aria-label="Ingredients for ' + esc(m.name) + '">' + esc(m.ing || '') + '</textarea></div>').join('') || '<p class="empty" style="padding:6px 0">No meals yet.</p>';
 }
 $('#mealList').addEventListener('change', e => {
   const t = e.target, row = t.closest('[data-mid]'); if (!row) return;
   const m = S().meals.find(x => x.id === row.dataset.mid); if (!m) return;
   if (t.dataset.mf === 'name') { const v = t.value.trim(); if (v) m.name = v.slice(0, 40); else t.value = m.name; }
+  else if (t.dataset.mf === 'ing') m.ing = t.value.slice(0, 600);
   else { const v = parseFloat(t.value); if (v >= 0) m[t.dataset.mf] = Math.round(v * 10) / 10; else t.value = m[t.dataset.mf]; }
   save(); toast('Saved');
 });
@@ -2113,7 +2298,7 @@ $('#instBox').addEventListener('click', e => { if (e.target.id !== 'instBtn' || 
 window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); installEvt = e; if (view === 'set') renderInstall(); });
 
 /* backup */
-const exportObj = () => ({app:'80-day-block', version:4, exported:new Date().toISOString(), settings:data.settings, challenges:data.challenges, days:data.days, reviews:data.reviews, badges:data.badges});
+const exportObj = () => ({app:'80-day-block', version:5, cards:data.cards, letters:data.letters, freezes:data.freezes, exported:new Date().toISOString(), settings:data.settings, challenges:data.challenges, days:data.days, reviews:data.reviews, badges:data.badges});
 const exportJSON = () => JSON.stringify(exportObj(), null, 1);
 let dlNs = null;
 try { if (window.claude && window.claude.use) window.claude.use('downloads').then(ns => { dlNs = ns; if (view === 'set') renderBackup(); }, () => {}); } catch (e) {}
@@ -2124,7 +2309,7 @@ function renderBackup(){
   st.className = 'status' + (storageOK ? '' : ' warn');
   st.textContent = storageOK ? 'Saved in this browser · ' + n + (n === 1 ? ' day' : ' days') + ' logged' : "This browser isn't saving data. Copy a backup before you close the page.";
 }
-function renderSettings(){ renderBackup(); renderHabitsEditor(); renderMealsEditor(); renderSchedule(); renderUnits(); renderReminders(); renderInstall(); renderSync(); renderChallenges(); renderAppearance(); renderCheckins(); renderGymTools(); renderTimersLoc(); renderHealth(); renderPrivacy(); }
+function renderSettings(){ renderBackup(); renderHabitsEditor(); renderMealsEditor(); renderSchedule(); renderUnits(); renderReminders(); renderInstall(); renderSync(); renderChallenges(); renderAppearance(); renderCheckins(); renderGymTools(); renderTimersLoc(); renderHealth(); renderPrivacy(); renderAccountability(); renderChainsEd(); renderLibrary(); renderStudyGoals(); }
 $('#copyBtn').addEventListener('click', () => {
   const txt = exportJSON(), ta = $('#exportTa'); ta.value = txt;
   const fallback = () => { ta.focus(); ta.select(); toast('Selected. Copy it from the box.'); };
@@ -2238,7 +2423,7 @@ const toCSV = rows => '﻿' + rows.map(r => r.map(csvEsc).join(',')).join('\r\n'
 function dailyRows(){
   const U = S().units, hs = S().habits, nums = hs.filter(h => h.type === 'num'), idx = liftIndex(), saved = CHAL;
   const rows = [['date', 'challenge', 'day', 'weekday', 'workout', 'deload_week', 'score_pct'].concat(hs.map(h => h.name), nums.map(h => h.name + ' (' + h.unit + ')'),
-    ['water_l', 'weight_' + U.body, 'wake', 'bed', 'sleep_hours', 'run_' + U.dist, 'run_time', 'run_pace_per_' + U.dist, 'gym_minutes', 'sets', 'prs', 'study_minutes', 'study_subjects', 'meals', 'note', 'sleep_quality', 'resting_hr', 'carbs_g', 'fat_g', 'sun_minutes', 'wake_verified', 'bed_verified', 'soreness'].concat(MEAS.map(m => m + '_' + U.meas)))];
+    ['water_l', 'weight_' + U.body, 'wake', 'bed', 'sleep_hours', 'run_' + U.dist, 'run_time', 'run_pace_per_' + U.dist, 'gym_minutes', 'sets', 'prs', 'study_minutes', 'study_subjects', 'meals', 'note', 'sleep_quality', 'resting_hr', 'carbs_g', 'fat_g', 'sun_minutes', 'wake_verified', 'bed_verified', 'soreness', 'mood', 'gym_checkin', 'cheat_meal', 'freeze_used'].concat(MEAS.map(m => m + '_' + U.meas)))];
   try {
     for (const c of liveChallenges()) {
       setPeriod(c); const last = lastElapsed(); if (!last) continue;
@@ -2248,15 +2433,15 @@ function dailyRows(){
           .concat(hs.map(h => applies(h, d) ? credit(d, h.id) : ''), nums.map(h => r.vals[h.id] != null ? r.vals[h.id] : ''),
           [r.water.length ? waterTotal(r) / 1000 : '', r.weight != null ? r.weight : '', r.wake, r.bed, sl != null ? Math.round(sl / 6) / 10 : '',
            r.run.dist != null ? r.run.dist : '', r.run.sec ? fmtClock(r.run.sec) : '', r.run.dist && r.run.sec ? fmtClock(r.run.sec / r.run.dist) : '',
-           r.dur != null ? r.dur : '', r.lifts.length || '', idx.prs[k] ? idx.prs[k].size : '', studyTotal(r) || '', [...new Set(r.study.map(x => x.t))].join('; '), r.meals.map(m => (m.t ? m.t + ' ' : '') + m.n + (m.tag ? ' (' + m.tag + '-workout)' : '')).join('; '), r.note, r.sleepQ || '', r.rhr || '', r.vals.carbs != null ? r.vals.carbs : '', r.vals.fat != null ? r.vals.fat : '', r.sunMin || '', r.vwake ? 'yes' : '', r.vbed ? 'yes' : '', r.sore ? Object.entries(r.sore).map(([p, l]) => p + ' ' + l).join('; ') : ''].concat(MEAS.map(m => (r.meas && r.meas[m]) || ''))));
+           r.dur != null ? r.dur : '', r.lifts.length || '', idx.prs[k] ? idx.prs[k].size : '', studyTotal(r) || '', [...new Set(r.study.map(x => x.t))].join('; '), r.meals.map(m => (m.t ? m.t + ' ' : '') + m.n + (m.tag ? ' (' + m.tag + '-workout)' : '')).join('; '), r.note, r.sleepQ || '', r.rhr || '', r.vals.carbs != null ? r.vals.carbs : '', r.vals.fat != null ? r.vals.fat : '', r.sunMin || '', r.vwake ? 'yes' : '', r.vbed ? 'yes' : '', r.sore ? Object.entries(r.sore).map(([p, l]) => p + ' ' + l).join('; ') : '', r.mood || '', r.gymIn || '', r.cheat ? 'yes' : '', data.freezes[k] ? 'yes' : ''].concat(MEAS.map(m => (r.meas && r.meas[m]) || ''))));
       }
     }
   } finally { setPeriod(saved); }
   return rows;
 }
 function liftRows(){
-  const U = S().units, idx = liftIndex(), rows = [['date', 'exercise', 'weight_' + U.lift, 'reps', 'est_1rm_' + U.lift, 'pr', 'set_number']];
-  for (const k of idx.keys) { const prs = idx.prs[k] || new Set(), count = {}; data.days[k].lifts.forEach((L, i) => { const n = norm(L.ex); count[n] = (count[n] || 0) + 1; rows.push([k, L.ex, L.w || 0, L.r, L.w ? Math.round(liftScore(L.w, L.r) * 10) / 10 : '', prs.has(i) ? 'yes' : '', count[n]]); }); }
+  const U = S().units, idx = liftIndex(), rows = [['date', 'exercise', 'weight_' + U.lift, 'reps', 'est_1rm_' + U.lift, 'pr', 'set_number', 'rir', 'superset']];
+  for (const k of idx.keys) { const prs = idx.prs[k] || new Set(), count = {}; data.days[k].lifts.forEach((L, i) => { const n = norm(L.ex); count[n] = (count[n] || 0) + 1; rows.push([k, L.ex, L.w || 0, L.r, L.w ? Math.round(liftScore(L.w, L.r) * 10) / 10 : '', prs.has(i) ? 'yes' : '', count[n], L.rir != null ? L.rir : '', L.ss ? 'linked to previous' : '']); }); }
   return rows;
 }
 function offerFile(name, text, mime){
@@ -2320,7 +2505,7 @@ async function rpc(cfg, fn, body){
   }
   return t ? JSON.parse(t) : null;
 }
-function stampAll(){ const now = Date.now(); for (const r of Object.values(data.days)) r.u = now; for (const r of Object.values(data.reviews)) r.u = now; for (const c of data.challenges) c.u = now; data.settings.u = now; }
+function stampAll(){ const now = Date.now(); for (const r of Object.values(data.days)) r.u = now; for (const r of Object.values(data.reviews)) r.u = now; for (const c of data.challenges) c.u = now; data.settings.u = now; for (const c of data.cards || []) c.u = now; for (const l of Object.values(data.letters || {})) l.u = now; }
 function mergeRemote(rem){
   let changed = false;
   for (const [k, v] of Object.entries(rem.days)) { const l = data.days[k]; if (!l || (v.u || 0) > (l.u || 0)) { data.days[k] = v; changed = true; } }
@@ -2328,6 +2513,7 @@ function mergeRemote(rem){
   for (const [k, v] of Object.entries(rem.reviews)) { const l = data.reviews[k]; if (!l || (v.u || 0) > (l.u || 0)) { data.reviews[k] = v; changed = true; } }
   for (const c of rem.challenges) { const i = data.challenges.findIndex(x => x.id === c.id); if (i < 0) { data.challenges.push(c); changed = true; } else if ((c.u || 0) > (data.challenges[i].u || 0)) { data.challenges[i] = c; changed = true; } }
   for (const [cid, bs] of Object.entries(rem.badges)) { const mine = data.badges[cid] || (data.badges[cid] = {}); for (const [b, dt] of Object.entries(bs)) if (!mine[b] || dt < mine[b]) { mine[b] = dt; changed = true; } }
+  changed = mergeV6(rem) || changed;
   return changed;
 }
 async function syncNow(manual){
@@ -2435,7 +2621,7 @@ const MUSCLE_RULES = [
   [/tricep|pushdown|skull|extension|close-?grip|kickback/i, 'Triceps'],
   [/crunch|plank|\babs?\b|core|leg raise|woodchop|sit-?up|pallof/i, 'Core']
 ];
-const muscleOf = ex => { for (const [re, m] of MUSCLE_RULES) if (re.test(ex)) return m; return 'Other'; };
+const muscleOfRule = ex => { for (const [re, m] of MUSCLE_RULES) if (re.test(ex)) return m; return 'Other'; };
 const cap = s => s.charAt(0).toUpperCase() + s.slice(1);
 const nowHM = () => { const n = new Date(); return pad(n.getHours()) + ':' + pad(n.getMinutes()); };
 const nowMin = () => { const n = new Date(); return n.getHours() * 60 + n.getMinutes(); };
@@ -2496,7 +2682,7 @@ function renderQuote(){
 
 /* ================= UNDO ================= */
 const undoStack = [];
-let snackT = null;
+let snackT = null, snackFn = null;
 function snap(k, label){
   const now = Date.now(), last = undoStack[undoStack.length - 1];
   if (!label && last && last.k === k && !last.labeled && now - last.at < 1500) { last.at = now; return; }
@@ -2506,6 +2692,7 @@ function snap(k, label){
   refreshUndoChip();
 }
 function showSnack(label){
+  snackFn = null; $('#snackUndo').textContent = 'Undo';
   const s = $('#snack'); $('#snackTxt').textContent = label; s.hidden = false;
   requestAnimationFrame(() => s.classList.add('show'));
   clearTimeout(snackT); snackT = setTimeout(hideSnack, 4500);
@@ -2514,6 +2701,7 @@ function hideSnack(){ const s = $('#snack'); s.classList.remove('show'); clearTi
 function undo(){
   const u = undoStack.pop(); hideSnack();
   if (!u) { toast('Nothing to undo'); refreshUndoChip(); return; }
+  if (isLocked(parseKey(u.k))) { toast("That day is locked now, so it can't be undone."); refreshUndoChip(); return; }
   const curU = data.days[u.k] ? data.days[u.k].u : 0;
   data.days[u.k] = u.before ? u.before : blankDay();
   data.days[u.k].u = stamp(Math.max(curU || 0, (u.before && u.before.u) || 0));
@@ -2525,7 +2713,7 @@ function undo(){
   refreshUndoChip();
 }
 function refreshUndoChip(){ const c = $('#undoChip'); if (!c) return; const u = undoStack[undoStack.length - 1]; c.hidden = !u; if (u) c.title = 'Undo: ' + u.label; }
-$('#snackUndo').addEventListener('click', undo);
+$('#snackUndo').addEventListener('click', () => { if (snackFn) { const f = snackFn; snackFn = null; hideSnack(); f(); } else undo(); });
 $('#undoChip').addEventListener('click', undo);
 
 /* ================= CELEBRATION ================= */
@@ -2592,7 +2780,7 @@ function checkIn(kind){
   if (!w || nm < w.open || nm > w.close) { toast('The check-in window is closed.'); renderCheckin(); return; }
   const t = nowHM(), r = rec(TODAY, (kind === 'wake' ? 'Wake' : 'Bedtime') + ' check-in ' + fmtTime(t));
   if (kind === 'wake') { r.wake = t; r.vwake = true; applyAuto(r, 'wake', TODAY); } else { r.bed = t; r.vbed = true; applyAuto(r, 'bed', TODAY); }
-  save(); vib([20, 40, 20]); chime(1); renderDay();
+  save(); vib([20, 40, 20]); chime(1); renderDay(); chainHint(kind === 'wake' ? 'wake' : 'sleep');
 }
 
 /* ================= TIMERS ================= */
@@ -2629,7 +2817,7 @@ function renderTimerBar(){
   const el = $('#tbar'), now = Date.now(), items = [];
   if (timers.rest) items.push('<span class="tpill"><b>Rest</b> ' + mmss(timers.rest.end - now) + '<button type="button" data-tstop="rest">Skip</button></span>');
   if (timers.sun) items.push('<span class="tpill"><b>Sunlight</b> ' + mmss(now - timers.sun.start + timers.sun.base * 60000) + ' / 30:00<button type="button" data-tstop="sun">Stop</button></span>');
-  if (timers.pomo) items.push('<span class="tpill"><b>' + (timers.pomo.phase === 'focus' ? 'Focus' : 'Break') + '</b> ' + mmss(timers.pomo.start + timers.pomo.dur * 60000 - now) + (timers.pomo.phase === 'focus' ? ' · ' + esc(timers.pomo.topic) : '') + '<button type="button" data-tstop="pomo">Stop</button></span>');
+  if (timers.pomo) items.push('<span class="tpill"><b>' + (timers.pomo.phase === 'focus' ? 'Focus' : 'Break') + '</b> ' + mmss(timers.pomo.start + timers.pomo.dur * 60000 - now) + (timers.pomo.phase === 'focus' ? ' · ' + esc(timers.pomo.topic) : '') + (timers.pomo.phase === 'focus' ? '<button type="button" data-tdist="1">Distracted' + (timers.pomo.dist ? ' ' + timers.pomo.dist : '') + '</button>' : '') + '<button type="button" data-tstop="pomo">Stop</button></span>');
   el.hidden = !items.length; el.innerHTML = items.join('');
 }
 $('#tbar').addEventListener('click', e => {
@@ -2662,7 +2850,7 @@ function togglePomo(){
   renderTimerBar(); refreshPomoBtn(); toast('Focus started: ' + S().pomo.focus + ' min of ' + topic);
 }
 function logPomo(p, mins){
-  const r = rawRec(p.k); r.study.push({t:p.topic, m:mins}); applyAuto(r, 'study'); save();
+  const r = rawRec(p.k); r.study.push({t:p.topic, m:mins, dist:p.dist || 0}); applyAuto(r, 'study'); save();
   if (view === 'day' && key(cur) === p.k) { renderStudy(); updateDay(); }
 }
 function stopPomo(){
@@ -2715,7 +2903,7 @@ function plateText(target){
   const txt = Object.keys(counts).map(Number).sort((a, b) => b - a).map(p => fmtN(p, 2) + (counts[p] > 1 ? ' ×' + counts[p] : '')).join(', ');
   return 'Per side: ' + txt + ' on a ' + bar + ' ' + u + ' bar' + (Math.abs(loaded - target) > 1e-6 ? ' (closest you can load is ' + fmtN(loaded, 2) + ' ' + u + ')' : '') + '.';
 }
-function updateLiftHint(){
+function updateLiftHintV5(){
   const el = $('#lfHint'), ex = $('#lfEx'); if (!el || !ex) return;
   const name = ex.value.trim(), U = S().units, w = parseFloat($('#lfW').value), rp = parseInt($('#lfR').value, 10), parts = [];
   if (name) {
@@ -2751,7 +2939,7 @@ function bodyExtras(r, d){
 
 /* ================= FOOD ================= */
 const canScan = () => !inFrame && !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia);
-function renderMeals(){
+function renderMealsV5(){
   const el = $('#mealRow'); if (!el) return;
   const r = peek(cur), ms = S().meals;
   el.innerHTML = '<div class="mhead"><b>Food</b><span>' + (r && r.meals.length ? r.meals.length + ' logged' : 'tap a meal to add its macros') + '</span></div>' +
@@ -3121,15 +3309,555 @@ document.addEventListener('visibilitychange', () => {
   onTick();
 });
 
+/* ================= v6: EXERCISE LIBRARY ================= */
+const LIB_DEFAULTS = {
+  'bench press':['Chest', 'Pinch shoulder blades down and back · lower to the bottom of the chest · drive your feet into the floor'],
+  'incline db press':['Chest', 'Bench at about 30° · elbows roughly 45° from your sides · press up and slightly in'],
+  'incline bench press':['Chest', 'Low incline · touch the upper chest · wrists stacked over elbows'],
+  'machine chest press':['Chest', 'Handles level with mid-chest · control the stretch · stop just short of lockout'],
+  'overhead press':['Shoulders', 'Squeeze glutes and brace · bar travels close to your face · push your head through at the top'],
+  'machine shoulder press':['Shoulders', 'Seat so handles start at chin height · no back arch'],
+  'lateral raise':['Shoulders', 'Lead with the elbows · stop at shoulder height · lower slowly'],
+  'face pull':['Shoulders', 'Rope toward your forehead · pull the ends apart · elbows high'],
+  'triceps pushdown':['Triceps', 'Elbows pinned to your sides · full lockout · slow return'],
+  'overhead triceps extension':['Triceps', 'Elbows point forward · deep stretch behind the head'],
+  'lat pulldown':['Back', 'Chest up · pull elbows down toward your ribs · no swinging'],
+  'pull-up':['Back', 'Start from a dead hang · chest toward the bar · full range every rep'],
+  'weighted pull-up':['Back', 'Same as a pull-up · control the way down · chin over the bar'],
+  'chest-supported row':['Back', 'Chest stays on the pad · drive elbows back · pause at the top'],
+  'seated cable row':['Back', 'Sit tall · pull to the belly button · let the shoulders reach forward on the stretch'],
+  'cable row':['Back', 'Sit tall · pull to the belly button · squeeze the shoulder blades'],
+  'barbell curl':['Biceps', 'Elbows stay still · no hip swing · squeeze at the top'],
+  'ez-bar curl':['Biceps', 'Elbows stay still · full stretch at the bottom'],
+  'hammer curl':['Biceps', 'Neutral grip · elbows tucked · lower slowly'],
+  'squat':['Quads', 'Brace before you descend · knees track over toes · reach depth with a neutral spine'],
+  'hack squat':['Quads', 'Feet mid-platform · deep knee bend · hips and shoulders rise together'],
+  'leg press':['Quads', 'Lower until your hips start to tuck · knees in line with toes · do not lock out'],
+  'leg extension':['Quads', 'Pause at the top · control the lowering · hips stay on the seat'],
+  'romanian deadlift':['Hamstrings', 'Soft knees · push the hips back · bar close to the legs · stop when the hips stop'],
+  'seated leg curl':['Hamstrings', 'Lean forward slightly · full squeeze · slow return'],
+  'lying leg curl':['Hamstrings', 'Hips pressed into the pad · curl all the way · slow return'],
+  'deadlift':['Back', 'Bar over mid-foot · lats tight · push the floor away · finish with the glutes'],
+  'hip thrust':['Glutes', 'Chin tucked · shins vertical at the top · pause and squeeze'],
+  'hip adductor':['Quads', 'Sit tall · control the stretch · squeeze for a beat'],
+  'calf raise':['Calves', 'Full stretch at the bottom · pause · rise high onto the big toe']
+};
+const muscleOf = ex => { const n = norm(ex), u = S().lib && S().lib[n]; if (u && u.m) return u.m; const d = LIB_DEFAULTS[n]; return d ? d[0] : muscleOfRule(ex); };
+function displayName(n){ for (const list of Object.values(DEFAULT_LIFTS)) for (const x of list) if (norm(x) === n) return x; return n.replace(/\b\w/g, c => c.toUpperCase()); }
+function libEntry(name){ const n = norm(name), u = S().lib[n], d = LIB_DEFAULTS[n]; if (!u && !d) return null; return {name:(u && u.name) || name, m:(u && u.m) || (d ? d[0] : muscleOfRule(name)), cues:u && u.cues != null ? u.cues : (d ? d[1] : '')}; }
+function renderCues(){ const el = $('#lfCues'), ex = $('#lfEx'); if (!el || !ex) return; const e = ex.value.trim() ? libEntry(ex.value.trim()) : null; el.innerHTML = e && e.cues ? '<b>Form</b> ' + esc(e.cues) : ''; }
+function updateLiftHint(){ updateLiftHintV5(); renderCues(); }
+
+/* ================= v6: SETS, SUPERSETS, WARM-UPS ================= */
+let linkNext = false;
+const LINK_SVG = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/></svg>';
+function liftOptsHtml(){
+  return '<div class="lopts"><label class="field">RIR<select class="inp" id="lfRir" aria-label="Reps in reserve"><option value="">—</option>' + [0, 1, 2, 3, 4, 5].map(n => '<option value="' + n + '">' + n + (n === 0 ? ' (failure)' : '') + '</option>').join('') + '</select></label>' +
+    '<label class="ss"><input type="checkbox" id="lfSS"' + (linkNext ? ' checked' : '') + '> Superset: go straight to the next exercise</label></div>';
+}
+function newLiftEntry(ex, w, reps){
+  const o = {ex:ex.slice(0, 60), w:isFinite(w) && w > 0 ? Math.round(w * 100) / 100 : 0, r:Math.min(200, reps)};
+  if (linkNext) o.ss = true;
+  const rir = $('#lfRir') ? $('#lfRir').value : ''; if (rir !== '') o.rir = Number(rir);
+  linkNext = !!($('#lfSS') && $('#lfSS').checked);
+  return o;
+}
+function renderLifts(idx){
+  idx = idx || liftIndex();
+  const list = $('#liftList'); if (!list) return;
+  const r = peek(cur), prs = idx.prs[key(cur)] || new Set(), U = S().units;
+  if (!r || !r.lifts.length) { list.innerHTML = '<li class="empty">No sets yet. Pick an exercise, enter weight and reps, then Add set.</li>'; return; }
+  let g = -1, n = 0;
+  const lab = r.lifts.map((L, i) => { if (!L.ss || i === 0) { g++; n = 1; } else n++; return {g, n, sup:(L.ss && i > 0) || !!(r.lifts[i + 1] && r.lifts[i + 1].ss)}; });
+  list.innerHTML = r.lifts.map((L, i) => { const b = lab[i];
+    return '<li class="' + (b.sup ? 'sup' : '') + '">' + (b.sup ? '<span class="sslbl">' + String.fromCharCode(65 + b.g % 26) + b.n + '</span>' : '') +
+      '<span class="ex">' + esc(L.ex) + '</span>' + (prs.has(i) ? '<span class="pr">PR</span>' : '') +
+      '<span class="set">' + (L.w ? fmtN(L.w, 2) + ' ' + U.lift + ' × ' : 'BW × ') + L.r + (L.rir != null ? '<small> RIR ' + L.rir + '</small>' : '') + '</span>' +
+      (i ? '<button class="x linkb' + (L.ss ? ' on' : '') + '" type="button" data-act="liftlink" data-i="' + i + '" aria-pressed="' + !!L.ss + '" aria-label="Superset with the set above" title="Superset with the set above">' + LINK_SVG + '</button>' : '') +
+      '<button class="x" type="button" data-act="dellift" data-i="' + i + '" aria-label="Remove ' + esc(L.ex) + ' set">' + X_SVG + '</button></li>'; }).join('');
+}
+function warmupText(w){
+  const kg = S().units.lift === 'kg', bar = kg ? 20 : 45, inc = kg ? 2.5 : 5, u = kg ? 'kg' : 'lb';
+  if (!(w > bar)) return 'Enter a working weight above the empty ' + bar + ' ' + u + ' bar, then tap Warm-up.';
+  const rnd = x => Math.max(bar, Math.round(x / inc) * inc), out = [];
+  for (const [x, rp] of [[bar, 10], [rnd(w * 0.4), 8], [rnd(w * 0.6), 5], [rnd(w * 0.8), 3], [rnd(w * 0.9), 1]]) if (x < w && (!out.length || x > out[out.length - 1][0])) out.push([x, rp]);
+  return 'Warm-up: ' + out.map(([x, rp]) => (x === bar ? 'empty bar' : fmtN(x, 2)) + ' × ' + rp).join(', ') + ', then ' + fmtN(w, 2) + ' ' + u + ' for your working sets.';
+}
+function gymCheckinHtml(r, d){
+  if (same(d, TODAY)) return r.gymIn ? '<p class="calc">Checked in at the gym at <strong>' + fmtTime(r.gymIn) + '</strong></p>' : '<div class="gtools"><button class="btn small" type="button" data-act="gymin">Check in at the gym</button><span class="calc">Records your start time</span></div>';
+  return r.gymIn ? '<p class="calc">Started at <strong>' + fmtTime(r.gymIn) + '</strong></p>' : '';
+}
+
+/* ================= v6: RESCHEDULER ================= */
+const gymHabit = () => S().habits.find(h => h.type === 'gym');
+function missedWorkout(){
+  if (!inRange(TODAY)) return null;
+  const gh = gymHabit(); if (!gh) return null;
+  const seen = S().reschedSeen || {};
+  for (let i = 1; i <= 3; i++) {
+    const d = addDays(TODAY, -i); if (d < START) break;
+    const w = workoutFor(d); if (!w || !applies(gh, d)) continue;
+    if (credit(d, gh.id) > 0 || seen[key(d)]) return null;
+    return {d, w};
+  }
+  return null;
+}
+function shiftSplit(){
+  const m = missedWorkout(), gh = gymHabit(); if (!m || !gh) return;
+  const startD = credit(TODAY, gh.id) > 0 ? addDays(TODAY, 1) : TODAY, end = weekEnd(weekOf(TODAY));
+  S().reschedSeen[key(m.d)] = true;
+  if (startD > end) { save(); toast('No days left this week to move it to. The plan stays as is.'); renderDay(); return; }
+  const slots = [...days(startD, end)], queue = [m.w].concat(slots.map(workoutFor).filter(Boolean)), dropped = queue.slice(slots.length);
+  slots.forEach((d, i) => { S().overrides[key(d)] = queue[i] || ''; });
+  save();
+  toast(m.w + ' moved to ' + (same(startD, TODAY) ? 'today' : fWeekday.format(startD)) + (dropped.length ? '. ' + dropped.join(' and ') + ' dropped this week.' : '. Rest days moved to the end of the week.'));
+  renderDay();
+}
+function resetOverrides(){ const tk = key(TODAY); let n = 0; for (const k of Object.keys(S().overrides)) if (k >= tk) { delete S().overrides[k]; n++; } save(); toast(n ? 'Back to your normal schedule' : 'No moved workouts to reset'); renderCal(); }
+
+/* ================= v6: FOOD ================= */
+function refreshRemain(){
+  const el = $('#mRemain'); if (!el) return;
+  const r = peek(cur) || blankDay(), kh = hById('kcal'), ph = hById('protein'), parts = [];
+  if (kh) { const left = kh.target - (r.vals.kcal || 0); parts.push(left > 0 ? '<b>' + fmtN(left, 0) + '</b> kcal to go' : '<b>Calories done</b> (+' + fmtN(-left, 0) + ')'); }
+  if (ph) { const left = ph.target - (r.vals.protein || 0); parts.push(left > 0 ? '<b>' + fmtN(left, 0) + ' g</b> protein to go' : '<b>Protein done</b>'); }
+  el.innerHTML = r.cheat ? '<b>Cheat meal day.</b> Protein and calories are excused today.' : parts.join(' · ');
+}
+function proteinDistHtml(r){
+  if (!r || !r.meals.length) return '';
+  const hits = r.meals.filter(m => m.p >= 30).length;
+  return '<p class="mlog">Protein per meal: ' + r.meals.map(m => fmtN(m.p, 0) + ' g').join(' · ') + '. ' + hits + ' of 4 meals at 30 g or more (aim for about 35–40 g × 4).</p>';
+}
+function cheatThisWeek(d){ const wi = weekOf(d); for (const x of days(weekStart(wi), weekEnd(wi))) { if (same(x, d)) continue; const r = peek(x); if (r && r.cheat) return x; } return null; }
+function cheatHtml(r){
+  const on = !!(r && r.cheat), other = cheatThisWeek(cur);
+  return '<div class="gtools" style="padding-inline:14px"><button class="btn small' + (on ? ' primary' : '') + '" type="button" data-act="cheat" aria-pressed="' + on + '">' + (on ? 'Cheat meal logged' : 'Cheat meal') + '</button><span class="calc">' +
+    (on ? 'Protein and calories don\'t count against today.' : other ? 'Used this week on ' + fWeekday.format(other) + '.' : 'One per week. Protein and calories won\'t count against that day.') + '</span></div>';
+}
+function renderMeals(){
+  renderMealsV5();
+  const el = $('#mealRow'); if (!el) return;
+  const r = peek(cur);
+  el.insertAdjacentHTML('afterbegin', '<div class="remain" id="mRemain"></div>');
+  el.insertAdjacentHTML('beforeend', proteinDistHtml(r) + cheatHtml(r));
+  if (r) el.querySelectorAll('.mlist li').forEach((li, i) => { if (r.meals[i] && r.meals[i].p >= 30) li.classList.add('pgood'); });
+  refreshRemain();
+}
+const GKEY = 'block80.groc';
+function parseIng(line){
+  const m = line.trim().match(/^(\d+(?:[.,]\d+)?)\s*(g|kg|ml|l|oz|lb|tbsp|tsp|cups?|slices?|scoops?|cans?|pcs?)?\s+(.+)$/i);
+  if (!m) return {q:null, u:'', item:line.trim()};
+  return {q:parseFloat(m[1].replace(',', '.')), u:(m[2] || '').toLowerCase().replace(/s$/, ''), item:m[3].trim()};
+}
+function groceryItems(){
+  const counts = S().grocery || {}, agg = new Map();
+  for (const m of S().meals) {
+    const n = counts[m.id] || 0; if (!n || !m.ing) continue;
+    for (const line of m.ing.split('\n')) {
+      if (!line.trim()) continue;
+      const p = parseIng(line), k = p.item.toLowerCase() + '|' + p.u, e = agg.get(k) || {item:p.item, u:p.u, q:0, times:0};
+      if (p.q != null) e.q += p.q * n; else e.times += n;
+      agg.set(k, e);
+    }
+  }
+  return [...agg.values()].sort((a, b) => a.item.localeCompare(b.item));
+}
+const gLabel = e => e.item + ' — ' + (e.q ? fmtN(e.q, 1) + (e.u ? ' ' + e.u : '') : '') + (e.times ? (e.q ? ' + ' : '') + '×' + e.times : '');
+function renderGroceries(){
+  const box = $('#pGroc'); if (!box) return;
+  const counts = S().grocery || {}, checked = lsGet(GKEY, {}), items = groceryItems(), noIng = S().meals.filter(m => !m.ing).length;
+  box.innerHTML = '<div class="gsteps">' + S().meals.map(m => '<div class="urow"><span>' + esc(m.name) + (m.ing ? '' : ' <small class="calc">no ingredients yet</small>') + '</span><span class="stepper"><button type="button" data-gm="' + m.id + '" data-gd="-1" aria-label="Fewer">−</button><b>' + (counts[m.id] || 0) + '</b><button type="button" data-gm="' + m.id + '" data-gd="1" aria-label="More">+</button></span></div>').join('') + '</div>' +
+    (items.length ? '<ul class="glist">' + items.map(e => { const k = e.item.toLowerCase() + '|' + e.u; return '<li><label><input type="checkbox" data-gk="' + esc(k) + '"' + (checked[k] ? ' checked' : '') + '> <span>' + esc(gLabel(e)) + '</span></label></li>'; }).join('') + '</ul>' +
+      '<div class="btnrow"><button class="btn small primary" type="button" id="gCopy">Copy list</button><button class="btn small" type="button" id="gClear">Clear checks</button><button class="btn small" type="button" id="gZero">Reset counts</button></div>'
+      : '<p class="empty">Set how many times you\'ll eat each meal this week to build the list.</p>') +
+    (noIng ? '<p class="foot">Add ingredients to meal templates in Setup, one per line, like "200 g chicken breast". Matching lines are added up.</p>' : '');
+}
+function renderPlan(){
+  renderPlanV4();
+  const ov = Object.keys(S().overrides || {}).filter(k => k >= key(TODAY) && k <= key(END)).sort();
+  const note = $('#pNextSub');
+  if (ov.length) note.innerHTML = 'Moved workouts: ' + ov.map(k => fWeekday.format(parseKey(k)).slice(0, 3) + ' ' + (S().overrides[k] || 'rest')).join(', ') + ' · <button class="linkbtn" type="button" id="pReset">Reset</button>';
+  renderGroceries();
+}
+$('#calPlan').addEventListener('click', e => {
+  const t = e.target;
+  if (t.id === 'pReset') { resetOverrides(); return; }
+  const g = t.closest('[data-gm]');
+  if (g) { const c = S().grocery || (S().grocery = {}), n = Math.max(0, Math.min(21, (c[g.dataset.gm] || 0) + Number(g.dataset.gd))); if (n) c[g.dataset.gm] = n; else delete c[g.dataset.gm]; save(); renderGroceries(); return; }
+  if (t.id === 'gCopy') { const txt = groceryItems().map(e => '- ' + gLabel(e)).join('\n'); try { navigator.clipboard.writeText(txt).then(() => toast('Grocery list copied'), () => toast("Couldn't copy here")); } catch (x) { toast("Couldn't copy here"); } }
+  else if (t.id === 'gClear') { lsSet(GKEY, {}); renderGroceries(); }
+  else if (t.id === 'gZero') { S().grocery = {}; save(); renderGroceries(); }
+});
+$('#calPlan').addEventListener('change', e => { const k = e.target.dataset.gk; if (!k) return; const c = lsGet(GKEY, {}); if (e.target.checked) c[k] = 1; else delete c[k]; lsSet(GKEY, c); });
+
+/* ================= v6: STUDY ================= */
+const focusScore = s => Math.max(0, 100 - 10 * (s.dist || 0));
+function studyMinsByTopic(wi){ const out = {}; for (const d of days(weekStart(wi), weekEnd(wi))) { const r = peek(d); if (!r) continue; for (const s of r.study) out[s.t.toLowerCase()] = (out[s.t.toLowerCase()] || 0) + s.m; } return out; }
+function goalsHtml(wi){
+  const goals = Object.values(S().studyGoals || {}); if (!goals.length) return '';
+  const mins = studyMinsByTopic(wi);
+  return '<div class="goals">' + goals.map(g => { const m = mins[g.name.toLowerCase()] || 0, p = Math.min(1, m / 60 / g.h); return '<div class="wkrow"><span>' + esc(g.name) + '</span><span class="bar"><i style="width:' + p * 100 + '%;background:' + (p >= 1 ? 'var(--good)' : 'var(--accent)') + '"></i></span><span class="n">' + fmtN(m / 60, 1) + '/' + fmtN(g.h, 1) + 'h</span></div>'; }).join('') + '</div>';
+}
+function renderStudy(){
+  renderStudyV3();
+  const ex = $('#studyExtra'); if (!ex) return;
+  const due = dueCards().length, total = liveCards().length;
+  ex.innerHTML = goalsHtml(weekOf(cur)) + '<div class="gtools"><button class="btn small" type="button" data-act="cards">' + (due ? 'Review ' + due + ' flashcard' + (due === 1 ? '' : 's') : 'Flashcards') + '</button><span class="calc">' + (total ? total + ' cards · ' + due + ' due today' : 'Add cards and review what\'s due each day.') + '</span></div>';
+}
+const liveCards = () => (data.cards || []).filter(c => !c.deleted);
+const dueCards = () => liveCards().filter(c => c.due <= key(TODAY));
+function cleanCards(a){
+  if (!Array.isArray(a)) return [];
+  const seen = new Set(), out = [];
+  for (const c of a) {
+    if (!c || typeof c.id !== 'string' || !idOK(c.id) || seen.has(c.id) || typeof c.q !== 'string') continue;
+    seen.add(c.id);
+    const o = {id:c.id, q:c.q.slice(0, 1000), a:String(c.a || '').slice(0, 2000), s:String(c.s || '').slice(0, 40), due:isKey(c.due) ? c.due : key(TODAY), ivl:intOrNull(c.ivl) || 0, ef:typeof c.ef === 'number' && c.ef >= 1.3 && c.ef <= 3 ? c.ef : 2.5, reps:intOrNull(c.reps) || 0, rv:intOrNull(c.rv) || 0, ok:intOrNull(c.ok) || 0};
+    if (c.deleted) o.deleted = true; if (typeof c.u === 'number') o.u = c.u;
+    out.push(o);
+  }
+  return out;
+}
+function cleanLetters(o){ const out = {}; if (o && typeof o === 'object') for (const [k, v] of Object.entries(o)) if (idOK(k) && v && typeof v.text === 'string') { out[k] = {text:v.text.slice(0, 20000), sealed:!!v.sealed, at:isKey(v.at) ? v.at : ''}; if (typeof v.u === 'number') out[k].u = v.u; } return out; }
+function cleanFreezes(o){ const out = {}; if (o && typeof o === 'object') for (const [k, v] of Object.entries(o)) if (isKey(k)) out[k] = typeof v === 'number' ? v : 1; return out; }
+function mergeV6(rem){
+  let ch = false;
+  data.cards = data.cards || [];
+  for (const c of rem.cards || []) { const i = data.cards.findIndex(x => x.id === c.id); if (i < 0) { data.cards.push(c); ch = true; } else if ((c.u || 0) > (data.cards[i].u || 0)) { data.cards[i] = c; ch = true; } }
+  for (const [k, v] of Object.entries(rem.letters || {})) { const l = data.letters[k]; if (!l || (v.u || 0) > (l.u || 0)) { data.letters[k] = v; ch = true; } }
+  for (const k of Object.keys(rem.freezes || {})) if (!data.freezes[k]) { data.freezes[k] = rem.freezes[k]; ch = true; }
+  return ch;
+}
+function gradeCard(c, g){
+  c.rv = (c.rv || 0) + 1; if (g >= 3) c.ok = (c.ok || 0) + 1;
+  if (g < 3) { c.reps = 0; c.ivl = 0; }
+  else { c.reps = (c.reps || 0) + 1; c.ivl = c.reps === 1 ? (g === 5 ? 3 : 1) : c.reps === 2 ? (g === 3 ? 3 : g === 5 ? 8 : 6) : Math.max(1, Math.round((c.ivl || 1) * (c.ef || 2.5) * (g === 3 ? 0.8 : g === 5 ? 1.3 : 1))); }
+  c.ef = Math.max(1.3, (c.ef || 2.5) + (0.1 - (5 - g) * (0.08 + (5 - g) * 0.02)));
+  c.due = key(addDays(TODAY, g < 3 ? 0 : c.ivl)); c.u = stamp(c.u);
+}
+const previewIvl = (c, g) => { const t = JSON.parse(JSON.stringify(c)); gradeCard(t, g); return g < 3 ? 'again today' : t.ivl === 1 ? '1 day' : t.ivl + ' days'; };
+let cardTab = 'review', cq = [], cqShow = false, cqStart = 0, cqDone = 0, cqSubj = {};
+function openCards(tab){ cardTab = tab || (dueCards().length ? 'review' : liveCards().length ? 'all' : 'add'); if (cardTab === 'review') startReview(); $('#cardSheet').hidden = false; document.querySelector('.app').inert = true; renderCards(); }
+function closeCards(){ finishReview(); $('#cardSheet').hidden = true; document.querySelector('.app').inert = false; if (view === 'day') { renderStudy(); updateDay(); } }
+function startReview(){ cq = dueCards().sort((a, b) => a.due.localeCompare(b.due)).map(c => c.id); cqShow = false; cqStart = Date.now(); cqDone = 0; cqSubj = {}; }
+function finishReview(){
+  if (!cqDone) return;
+  const mins = Math.round((Date.now() - cqStart) / 60000), r = rawRec(key(TODAY));
+  r.fc = (r.fc || 0) + cqDone;
+  if (mins >= 1) { const top = Object.entries(cqSubj).sort((a, b) => b[1] - a[1])[0]; r.study.push({t:'Flashcards' + (top && top[0] ? ': ' + top[0] : ''), m:mins}); applyAuto(r, 'study'); }
+  save(); toast(cqDone + ' card' + (cqDone === 1 ? '' : 's') + ' reviewed' + (mins >= 1 ? ', ' + mins + ' min logged to Study' : ''));
+  cqDone = 0;
+}
+function renderCards(){
+  $('#cardTabs').querySelectorAll('button').forEach(b => b.setAttribute('aria-pressed', b.dataset.ct === cardTab));
+  const body = $('#cardBody');
+  if (cardTab === 'review') {
+    const id = cq[0], c = id && data.cards.find(x => x.id === id);
+    if (!c) { body.innerHTML = '<p class="sub">' + (cqDone ? 'All done for today. ' + cqDone + ' reviewed.' : 'Nothing due right now.') + ' ' + liveCards().length + ' cards in total.</p>' + (dueCards().length ? '<button class="btn primary" type="button" id="cqRestart">Review again</button>' : ''); return; }
+    body.innerHTML = '<p class="calc">' + cq.length + ' left' + (c.s ? ' · ' + esc(c.s) : '') + '</p><div class="fcard"><p class="fq">' + esc(c.q) + '</p>' + (cqShow ? '<hr><p class="fa">' + esc(c.a) + '</p>' : '') + '</div>' +
+      (cqShow ? '<div class="grades">' + [[0, 'Again'], [3, 'Hard'], [4, 'Good'], [5, 'Easy']].map(([g, l]) => '<button type="button" data-g="' + g + '"><b>' + l + '</b><small>' + previewIvl(c, g) + '</small></button>').join('') + '</div>' : '<button class="btn primary" type="button" id="cqShow" style="width:100%">Show answer</button>');
+  } else if (cardTab === 'add') {
+    body.innerHTML = '<datalist id="subjOpts">' + studyTopics().concat(Object.values(S().studyGoals || {}).map(g => g.name)).filter((v, i, a) => a.indexOf(v) === i).map(t => '<option value="' + esc(t) + '"></option>').join('') + '</datalist>' +
+      '<label class="field">Subject<input class="inp text" id="ncS" list="subjOpts" maxlength="40" placeholder="e.g. System design"></label>' +
+      '<label class="field">Question<textarea id="ncQ" rows="2" placeholder="What does CAP stand for?"></textarea></label>' +
+      '<label class="field">Answer<textarea id="ncA" rows="3" placeholder="Consistency, availability, partition tolerance"></textarea></label>' +
+      '<button class="btn primary" type="button" id="ncAddCard" style="width:100%">Add card</button>' +
+      '<details class="howto"><summary>Add many at once</summary><p class="calc">One card per line: question | answer</p><textarea id="ncBulk" rows="5" placeholder="Big-O of binary search | O(log n)"></textarea><button class="btn" type="button" id="ncBulkAdd">Add these cards</button></details>';
+  } else {
+    const q = (($('#cqSearch') || {}).value || '').toLowerCase(), list = liveCards().filter(c => !q || (c.q + ' ' + c.a + ' ' + c.s).toLowerCase().includes(q));
+    body.innerHTML = '<input class="inp text" id="cqSearch" placeholder="Search cards" value="' + esc(q) + '" aria-label="Search cards">' +
+      (list.length ? '<ul class="lifts">' + list.slice(0, 200).map(c => '<li><span class="ex">' + esc(c.q) + '<br><small class="calc">' + esc(c.s || 'No subject') + ' · due ' + (c.due <= key(TODAY) ? 'today' : fMD.format(parseKey(c.due))) + '</small></span><button class="x" type="button" data-cdel="' + c.id + '" aria-label="Delete card">' + X_SVG + '</button></li>').join('') + '</ul>' : '<p class="empty">No cards yet.</p>');
+  }
+}
+$('#cardTabs').addEventListener('click', e => { const b = e.target.closest('[data-ct]'); if (!b) return; if (cardTab === 'review') finishReview(); cardTab = b.dataset.ct; if (cardTab === 'review') startReview(); renderCards(); });
+$('#cardClose').addEventListener('click', closeCards);
+$('#cardBody').addEventListener('click', e => {
+  const t = e.target;
+  if (t.id === 'cqShow') { cqShow = true; renderCards(); return; }
+  if (t.id === 'cqRestart') { startReview(); renderCards(); return; }
+  const g = t.closest('[data-g]');
+  if (g) { const c = data.cards.find(x => x.id === cq[0]); if (!c) return; const gv = Number(g.dataset.g); gradeCard(c, gv); cqDone++; if (c.s) cqSubj[c.s] = (cqSubj[c.s] || 0) + 1; cq.shift(); if (gv < 3) cq.push(c.id); cqShow = false; save(); vib(8); renderCards(); return; }
+  if (t.id === 'ncAddCard') { const q = $('#ncQ').value.trim(), a = $('#ncA').value.trim(), s = $('#ncS').value.trim(); if (!q || !a) { toast('Add a question and an answer'); return; } data.cards.push({id:uid(), q:q.slice(0, 1000), a:a.slice(0, 2000), s:s.slice(0, 40), due:key(TODAY), ivl:0, ef:2.5, reps:0, rv:0, ok:0, u:stamp()}); save(); $('#ncQ').value = ''; $('#ncA').value = ''; $('#ncQ').focus(); toast('Card added · ' + liveCards().length + ' total'); return; }
+  if (t.id === 'ncBulkAdd') { const s = $('#ncS').value.trim(); let n = 0; for (const line of $('#ncBulk').value.split('\n')) { const i = line.indexOf('|'); if (i < 1) continue; const q = line.slice(0, i).trim(), a = line.slice(i + 1).trim(); if (!q || !a) continue; data.cards.push({id:uid(), q:q.slice(0, 1000), a:a.slice(0, 2000), s:s.slice(0, 40), due:key(TODAY), ivl:0, ef:2.5, reps:0, rv:0, ok:0, u:stamp()}); n++; } save(); $('#ncBulk').value = ''; toast(n ? n + ' cards added' : 'Use one card per line: question | answer'); return; }
+  const del = t.closest('[data-cdel]');
+  if (del) { const c = data.cards.find(x => x.id === del.dataset.cdel); if (c) { c.deleted = true; c.u = stamp(c.u); save(); renderCards(); toast('Card deleted'); } }
+});
+$('#cardBody').addEventListener('input', e => { if (e.target.id === 'cqSearch') { const pos = e.target.selectionStart; renderCards(); const s = $('#cqSearch'); s.focus(); try { s.setSelectionRange(pos, pos); } catch (x) {} } });
+$('#tbar').addEventListener('click', e => { if (!e.target.closest('[data-tdist]') || !timers.pomo) return; timers.pomo.dist = (timers.pomo.dist || 0) + 1; saveTimers(); vib(10); renderTimerBar(); });
+
+/* ================= v6: FREEZES, CHAINS, ALERTS ================= */
+const chainOK = d => dayScore(d).p >= 0.7 || !!(data.freezes && data.freezes[key(d)]);
+function chainLenEnding(d){ let n = 0; for (let x = d; x >= START; x = addDays(x, -1)) { if (chainOK(x)) n++; else break; } return n; }
+function freezeInfo(){
+  const thr = S().freezeMin || 1, last = lastElapsed(); let earned = 0, spent = 0;
+  if (last) for (let wi = 0; wi < WEEKS; wi++) {
+    const we = weekEnd(wi); if (we >= TODAY || we > last) break;
+    let ok = true; for (const d of days(weekStart(wi), we)) if (dayScore(d).p < thr - 1e-9) { ok = false; break; }
+    if (ok) earned++;
+  }
+  for (const k of Object.keys(data.freezes || {})) if (k >= key(START) && k <= key(END)) spent++;
+  return {earned, spent, left:Math.max(0, earned - spent)};
+}
+function chainHint(id){
+  if (!same(cur, TODAY)) return;
+  const rule = (S().chains || []).find(c => c.after === id); if (!rule || !rule.next) return;
+  const i = rule.next.indexOf(':'), kind = rule.next.slice(0, i), ref = rule.next.slice(i + 1);
+  setTimeout(() => {
+    if (kind === 'habit') {
+      const h = hById(ref); if (!h || !applies(h, cur) || credit(cur, ref) > 0) return;
+      showHint('Next: ' + h.name, h.id === 'sun' && !timers.sun ? 'Start timer' : 'Done', () => {
+        if (h.id === 'sun' && !timers.sun) { toggleSun(); return; }
+        if (strictBlocked(h.id)) return;
+        const r = rec(cur, 'Checked ' + h.name); r.checks[h.id] = true; ctStamp(r, h.id); save(); buzz(); updateDay(); chainHint(h.id);
+      });
+    } else if (kind === 'meal') {
+      const m = S().meals.find(x => x.id === ref || x.name.toLowerCase() === ref.toLowerCase()); if (!m) return;
+      showHint('Next: ' + m.name, 'Add', () => addMealEntry({n:m.name, p:m.p, c:m.c || 0, f:m.f || 0, k:m.k}));
+    }
+  }, 700);
+}
+function showHint(text, btn, fn){ showSnack(text); snackFn = fn; $('#snackUndo').textContent = btn; clearTimeout(snackT); snackT = setTimeout(hideSnack, 7000); }
+function ctStamp(r, id){ if (r === data.days[key(TODAY)]) { r.ct = r.ct || {}; r.ct[id] = nowHM(); } }
+const alertCard = (title, text, a1, l1, a2, l2) => '<div class="alert"><b>' + title + '</b><p>' + text + '</p><div class="btnrow"><button class="btn small primary" type="button" data-act="' + a1 + '">' + l1 + '</button>' + (a2 ? '<button class="btn small" type="button" data-act="' + a2 + '">' + l2 + '</button>' : '') + '</div></div>';
+function renderAlerts(){
+  const box = $('#dAlerts'); if (!box) return;
+  if (!same(cur, TODAY) || !inRange(TODAY)) { box.innerHTML = ''; return; }
+  let h = '';
+  const y = addDays(TODAY, -1);
+  if (y >= START && !chainOK(y)) { const fi = freezeInfo(), prev = chainLenEnding(addDays(y, -1)); if (fi.left > 0 && prev > 0) h += alertCard('Save your ' + prev + '-day chain?', 'Yesterday was ' + pct(dayScore(y).p) + '. Spend a freeze token (' + fi.left + ' left) to keep the chain going.', 'freeze', 'Use a token'); }
+  const m = missedWorkout(), gh = gymHabit();
+  if (m && gh) h += alertCard('Missed ' + esc(m.w) + ' on ' + fWeekday.format(m.d), 'Shift the rest of this week so ' + esc(m.w) + ' happens ' + (credit(TODAY, gh.id) > 0 ? 'tomorrow' : 'today') + '? Rest days move to the end of the week.', 'resched-shift', 'Shift the split', 'resched-keep', 'Keep the plan');
+  const L = data.letters[CHAL.id];
+  if (TODAY >= END && L && L.sealed) h += alertCard('Your letter is unlocked', 'You wrote it on ' + fMD.format(parseKey(L.at || key(START))) + '.', 'letter', 'Read it');
+  else if (dayNum(TODAY) <= 7 && !(L && L.sealed)) h += alertCard('Write to future you', 'Seal a letter now. It stays locked until ' + fShort.format(END) + '.', 'letter', L && L.text ? 'Finish the letter' : 'Write it');
+  box.innerHTML = h;
+}
+
+/* ================= v6: LETTER ================= */
+function openLetter(){ $('#letterSheet').hidden = false; document.querySelector('.app').inert = true; renderLetter(); }
+function closeLetter(){ $('#letterSheet').hidden = true; document.querySelector('.app').inert = false; if (view === 'day') renderAlerts(); }
+function renderLetter(){
+  const L = data.letters[CHAL.id], box = $('#letterBody'), open = TODAY >= END;
+  if (L && L.sealed && !open) { box.innerHTML = '<p class="sub">Sealed on ' + fMD.format(parseKey(L.at || key(START))) + '. It opens on ' + fShort.format(END) + ', ' + END.getFullYear() + '. No peeking until then.</p>'; return; }
+  if (L && L.sealed && open) { box.innerHTML = '<p class="calc">Written ' + fShort.format(parseKey(L.at || key(START))) + '</p><div class="letter">' + esc(L.text) + '</div>'; return; }
+  box.innerHTML = '<p class="sub">Write to the version of you who finishes ' + esc(CHAL.name) + ' on ' + fShort.format(END) + '. Why you started, what you hope changes, what to remember on hard days. Once sealed, you can\'t read or edit it until then.</p>' +
+    '<textarea id="letterTa" rows="12" placeholder="Dear me on ' + fMD.format(END) + ',">' + esc(L ? L.text : '') + '</textarea>' +
+    '<div class="btnrow"><button class="btn" type="button" id="letterSave">Save draft</button><button class="btn primary" type="button" id="letterSeal">Seal until ' + fMD.format(END) + '</button></div><p class="status" id="letterMsg"></p>';
+}
+$('#letterClose').addEventListener('click', closeLetter);
+$('#letterBody').addEventListener('click', e => {
+  const t = e.target, txt = ($('#letterTa') || {}).value || '';
+  if (t.id === 'letterSave') { data.letters[CHAL.id] = {text:txt.slice(0, 20000), sealed:false, at:key(TODAY), u:stamp((data.letters[CHAL.id] || {}).u)}; save(); toast('Draft saved'); }
+  else if (t.id === 'letterSeal') {
+    if (txt.trim().length < 20) { $('#letterMsg').textContent = 'Write a little more before sealing it.'; return; }
+    if (t.dataset.armed !== '1') { t.dataset.armed = '1'; t.textContent = 'Tap again to seal'; $('#letterMsg').textContent = "After sealing you can't read or change it until " + fShort.format(END) + '.'; return; }
+    data.letters[CHAL.id] = {text:txt.slice(0, 20000), sealed:true, at:key(TODAY), u:stamp((data.letters[CHAL.id] || {}).u)}; save(); toast('Sealed until ' + fMD.format(END)); renderLetter();
+  }
+});
+
+/* ================= v6: MOOD ================= */
+const MOODS = ['Rough', 'Low', 'Okay', 'Good', 'Great'];
+function renderMood(){
+  const box = $('#dMood'); if (!box) return;
+  const r = peek(cur), v = r && r.mood;
+  box.innerHTML = '<div class="moodrow"><span class="eyebrow">Mood</span><div class="moods" role="radiogroup" aria-label="Mood today">' + MOODS.map((l, i) => '<button type="button" class="m' + (i + 1) + '" data-act="mood" data-v="' + (i + 1) + '" role="radio" aria-checked="' + (v === i + 1) + '"><i></i>' + l + '</button>').join('') + '</div></div>';
+}
+
+/* ================= v6: LOCK ================= */
+const isLocked = d => !!(data && data.settings && data.settings.lockPast) && diffDays(d, TODAY) >= 3;
+let lockToastAt = 0;
+function lockedToast(){ if (Date.now() - lockToastAt > 1500) { lockToastAt = Date.now(); toast('This day is locked. Days older than 48 hours can\'t be changed.'); } }
+
+/* ================= v6: DAY HANDLERS ================= */
+dayRoot.addEventListener('click', e => {
+  const a = e.target.closest('[data-act]'); if (!a) return;
+  const act = a.dataset.act;
+  if (act === 'gymin') { const t = nowHM(), r = rec(cur, 'Gym check-in ' + fmtTime(t)); r.gymIn = t; save(); renderExtras(); updateDay(); }
+  else if (act === 'warmup') { const w = parseFloat($('#lfW').value) || parseFloat($('#lfW').placeholder); $('#plateOut').textContent = warmupText(w); }
+  else if (act === 'liftlink') { const i = Number(a.dataset.i), r = rec(cur, 'Superset change'); if (!r.lifts[i]) return; if (r.lifts[i].ss) delete r.lifts[i].ss; else r.lifts[i].ss = true; save(); renderLifts(); }
+  else if (act === 'cheat') {
+    const r0 = peek(cur), on = !(r0 && r0.cheat);
+    if (on) { const other = cheatThisWeek(cur); if (other) { toast('You already used this week\'s cheat meal on ' + fWeekday.format(other) + '.'); return; } }
+    const r = rec(cur, on ? 'Cheat meal' : 'Removed cheat meal'); if (on) r.cheat = true; else delete r.cheat; save(); renderMeals(); updateDay();
+  }
+  else if (act === 'mood') { const v = Number(a.dataset.v), r = rec(cur); if (r.mood === v) delete r.mood; else r.mood = v; save(); renderMood(); }
+  else if (act === 'resched-shift') shiftSplit();
+  else if (act === 'resched-keep') { const m = missedWorkout(); if (m) { S().reschedSeen[key(m.d)] = true; save(); } renderAlerts(); }
+  else if (act === 'freeze') { const y = addDays(TODAY, -1), fi = freezeInfo(); if (fi.left < 1 || chainOK(y)) return; data.freezes[key(y)] = Date.now(); save(); vib([20, 40, 20]); toast('Freeze token used. Your chain is safe.'); renderDay(); }
+  else if (act === 'letter') openLetter();
+  else if (act === 'cards') openCards();
+  else if (act === 'weekly') { wkSel = weekOf(cur); setView('week'); }
+});
+
+/* ================= v6: STATS ================= */
+function renderFreeze(){
+  const fi = freezeInfo(), thr = S().freezeMin || 1, used = Object.keys(data.freezes || {}).filter(k => k >= key(START) && k <= key(END)).sort();
+  $('#sFz').innerHTML = '<div class="kv"><div><b>' + fi.left + '</b><small>available</small></div><div><b>' + fi.earned + '</b><small>earned</small></div><div><b>' + fi.spent + '</b><small>used</small></div></div>' +
+    '<p class="foot">Earn one for every full week where every day hits ' + pct(thr) + '. Spend it from the Day screen the morning after a day that would break your chain.' + (used.length ? ' Used on: ' + used.map(k => fMD.format(parseKey(k))).join(', ') + '.' : '') + '</p>';
+}
+let pixYear = null;
+function renderPixels(){
+  const yrs = new Set(Object.keys(data.days).filter(k => data.days[k].mood).map(k => +k.slice(0, 4))); yrs.add(TODAY.getFullYear());
+  const ys = [...yrs].sort(); if (pixYear == null || !yrs.has(pixYear)) pixYear = ys[ys.length - 1];
+  $('#sPixChips').innerHTML = ys.length > 1 ? ys.map(y => '<button type="button" class="chip" data-py="' + y + '" aria-pressed="' + (y === pixYear) + '">' + y + '</button>').join('') : '';
+  let h = '<div class="pix"><span></span>' + Array.from({length:31}, (_, i) => '<span class="pd">' + ((i + 1) % 5 === 0 || i === 0 ? i + 1 : '') + '</span>').join('');
+  let sum = 0, n = 0;
+  for (let m = 0; m < 12; m++) {
+    h += '<span class="pm">' + 'JFMAMJJASOND'[m] + '</span>';
+    const dim = new Date(pixYear, m + 1, 0).getDate();
+    for (let d = 1; d <= 31; d++) {
+      if (d > dim) { h += '<i class="na"></i>'; continue; }
+      const dt = new Date(pixYear, m, d), k = key(dt), r = data.days[k], md = r && r.mood;
+      if (md) { sum += md; n++; }
+      h += '<i class="' + (md ? 'm' + md : '') + (inRange(dt) ? ' cd' : '') + '" data-pk="' + k + '"></i>';
+    }
+  }
+  $('#sPix').innerHTML = h + '</div><div class="legend">' + MOODS.map((l, i) => '<span><i class="sw m' + (i + 1) + '"></i>' + l + '</span>').join('') + '<span><i class="sw cdk"></i>Challenge day</span></div>';
+  $('#sPixRo').textContent = n ? n + ' days rated · average ' + MOODS[Math.round(sum / n) - 1].toLowerCase() + ' (' + fmtN(sum / n, 1) + ' of 5)' : 'Rate your mood on the Day screen to fill in the grid.';
+}
+$('#sPixChips').addEventListener('click', e => { const c = e.target.closest('[data-py]'); if (!c) return; pixYear = Number(c.dataset.py); renderPixels(); });
+$('#sPix').addEventListener('click', e => { const c = e.target.closest('[data-pk]'); if (!c) return; const r = data.days[c.dataset.pk]; $('#sPixRo').textContent = fShort.format(parseKey(c.dataset.pk)) + ' · ' + (r && r.mood ? MOODS[r.mood - 1] : 'no mood logged'); });
+function renderTod(){
+  const last = lastElapsed(), counts = {}; let max = 0, lo = 23, hi = 0;
+  if (last) for (const d of days(START, last)) { const r = peek(d); if (!r || !r.ct) continue; for (const [id, t] of Object.entries(r.ct)) { const hr = Math.floor(toMin(t) / 60); (counts[id] = counts[id] || Array(24).fill(0))[hr]++; max = Math.max(max, counts[id][hr]); lo = Math.min(lo, hr); hi = Math.max(hi, hr); } }
+  const box = $('#sTod'), ro = $('#sTodRo');
+  if (!max) { box.innerHTML = '<p class="empty">As you check things off, this shows the hour you actually do each habit.</p>'; ro.textContent = ''; return; }
+  lo = Math.min(lo, 5); hi = Math.max(hi, 22);
+  const hrs = []; for (let x = lo; x <= hi; x++) hrs.push(x);
+  const rows = S().habits.filter(h => counts[h.id]);
+  const lbl = x => (x % 12 || 12) + (x < 12 ? 'a' : 'p');
+  let h = '<div class="tod" style="grid-template-columns:minmax(0,96px) repeat(' + hrs.length + ',minmax(0,1fr))"><span></span>' + hrs.map(x => '<span class="th">' + (x % 3 === 0 ? lbl(x) : '') + '</span>').join('');
+  const tot = Array(24).fill(0);
+  for (const hb of rows) { h += '<span class="tl">' + esc(hb.name) + '</span>' + hrs.map(x => { const c = counts[hb.id][x]; tot[x] += c; return '<i' + (c ? ' style="--a:' + (0.2 + 0.8 * c / max).toFixed(2) + '"' : ' class="z"') + ' data-t="' + esc(hb.name) + ' · ' + fmtTime(pad(x) + ':00') + ' · ' + c + (c === 1 ? ' time' : ' times') + '"></i>'; }).join(''); }
+  box.innerHTML = h + '</div>';
+  const peak = tot.indexOf(Math.max(...tot));
+  ro.textContent = 'Busiest hour: ' + fmtTime(pad(peak) + ':00') + ' to ' + fmtTime(pad((peak + 1) % 24) + ':00') + '. Tap a cell for details.';
+}
+$('#sTod').addEventListener('click', e => { const c = e.target.closest('[data-t]'); if (c) $('#sTodRo').textContent = c.dataset.t; });
+function renderGymTiming(){
+  const kv = $('#sGtKv'), ro = $('#sGtRo'), wrap = $('#sGtChart'), gh = gymHabit(), pts = [];
+  for (let i = 0; i < TOTAL; i++) { const d = addDays(START, i), r = data.days[key(d)]; if (r && r.gymIn) pts.push({i, m:toMin(r.gymIn), p:dayScore(d).p, done:gh ? credit(d, gh.id) : 0}); }
+  if (!pts.length) { kv.innerHTML = ''; ro.textContent = ''; wrap.innerHTML = '<p class="empty">Tap "Check in at the gym" in the gym log to record start times.</p>'; return; }
+  const avg = pts.reduce((a, p) => a + p.m, 0) / pts.length, early = pts.filter(p => p.m < 540), late = pts.filter(p => p.m >= 540);
+  const avgP = a => a.length ? a.reduce((x, p) => x + p.p, 0) / a.length : null;
+  kv.innerHTML = '<div><b>' + fmtTime(hmOf(Math.round(avg))) + '</b><small>average start</small></div><div><b>' + pct(early.length / pts.length) + '</b><small>before 9 AM</small></div><div><b>' + pts.length + '</b><small>check-ins</small></div>';
+  const lo = Math.floor((Math.min(...pts.map(p => p.m)) - 30) / 120) * 120, hi = Math.ceil((Math.max(...pts.map(p => p.m)) + 30) / 120) * 120;
+  const y = m => PT + (CH - PT - PB) * (m - lo) / (hi - lo), ticks = []; for (let t = lo; t <= hi; t += 120) ticks.push(t);
+  wrap.innerHTML = '<svg viewBox="0 0 ' + CW + ' ' + CH + '" role="img" aria-label="Gym start times">' + ticks.map(t => '<line class="gl" x1="' + PL + '" x2="' + (CW - PR_) + '" y1="' + y(t) + '" y2="' + y(t) + '"/><text x="' + (PL - 6) + '" y="' + (y(t) + 3) + '" text-anchor="end">' + ((Math.floor(t / 60) % 12) || 12) + (t < 720 ? 'a' : 'p') + '</text>').join('') + axisDays() +
+    pts.map(p => '<circle cx="' + xDay(p.i) + '" cy="' + y(p.m) + '" r="4" fill="' + (p.done === 1 ? 'var(--accent)' : 'var(--warn)') + '" stroke="var(--surface)" stroke-width="1.5"/>').join('') + '<line class="guide" x1="0" x2="0" y1="' + PT + '" y2="' + (CH - PB) + '"/></svg>';
+  const xs = Array(TOTAL).fill(null), texts = Array(TOTAL).fill('');
+  pts.forEach(p => { xs[p.i] = xDay(p.i); texts[p.i] = fMD.format(addDays(START, p.i)) + ' · started ' + fmtTime(hmOf(p.m)) + ' · day score ' + pct(p.p); });
+  const eP = avgP(early), lP = avgP(late);
+  ro.textContent = eP != null && lP != null ? 'Days you trained before 9 AM averaged ' + pct(eP) + ', later sessions ' + pct(lP) + '.' : texts[pts[pts.length - 1].i];
+  bindChart(wrap, ro, xs, texts);
+}
+function renderStudyGoalsStats(){
+  const last = lastElapsed(), wi = last ? Math.min(WEEKS - 1, weekOf(last)) : 0, g = goalsHtml(wi);
+  $('#sStGoals').innerHTML = g ? '<p class="sub" style="margin:14px 0 4px">Weekly goals, this week</p>' + g : '';
+  const cs = liveCards(), rv = cs.reduce((a, c) => a + (c.rv || 0), 0), ok = cs.reduce((a, c) => a + (c.ok || 0), 0);
+  let wkRev = 0, fsum = 0, fn = 0; if (last) for (const d of days(weekStart(wi), weekEnd(wi))) { const r = peek(d); if (r && r.fc) wkRev += r.fc; }
+  if (last) for (const d of days(START, last)) { const r = peek(d); if (r) for (const s of r.study) if (s.dist != null) { fsum += focusScore(s); fn++; } }
+  $('#sStCards').innerHTML = (cs.length || fn) ? '<div class="kv" style="margin-top:12px"><div><b>' + cs.length + '</b><small>flashcards · ' + dueCards().length + ' due</small></div><div><b>' + (rv ? pct(ok / rv) : '—') + '</b><small>recall rate · ' + wkRev + ' this week</small></div><div><b>' + (fn ? Math.round(fsum / fn) : '—') + '</b><small>avg focus score</small></div></div>' : '';
+}
+
+/* ================= v6: WEEKLY SUMMARY ================= */
+let wkSel = null;
+function renderWeekly(){
+  const last = lastElapsed();
+  if (wkSel == null) wkSel = last ? Math.min(WEEKS - 1, weekOf(last)) : 0;
+  wkSel = Math.max(0, Math.min(WEEKS - 1, wkSel));
+  $('#wkPrev').disabled = wkSel === 0; $('#wkNext').disabled = wkSel === WEEKS - 1;
+  const ws = weekStart(wkSel), we = weekEnd(wkSel), box = $('#wkBody'), U = S().units;
+  if (!last || ws > last) { box.innerHTML = '<article class="mail"><p class="eyebrow">Weekly summary</p><h1>Week ' + (wkSel + 1) + '</h1><p class="sub">' + fMD.format(ws) + ' – ' + fMD.format(we) + ' hasn\'t started yet.</p></article>'; return; }
+  const end = we > last ? last : we, idx = liftIndex();
+  let E = 0, W = 0, perfect = 0, best = null, gymDone = 0, gymPlan = 0, run = 0, stM = 0, prs = 0, wts = [], prot = 0, protN = 0, moods = 0, moodN = 0, sl = 0, slN = 0;
+  const dayRows = [], subj = {};
+  for (const d of days(ws, end)) {
+    const s = dayScore(d), r = peek(d) || blankDay(); dayRows.push([d, s.p]);
+    for (const h of applicable(d)) { W += h.weight || 1; E += (h.weight || 1) * credit(d, h.id); }
+    if (s.t && s.p >= 0.999) perfect++; if (!best || s.p > best[1]) best = [d, s.p];
+    const gh = gymHabit(); if (gh && applies(gh, d)) { gymPlan++; if (credit(d, gh.id) > 0) gymDone++; }
+    if (hasRun(r)) run += r.run.dist; for (const x of r.study) { stM += x.m; subj[x.t] = (subj[x.t] || 0) + x.m; }
+    if (idx.prs[key(d)]) prs += idx.prs[key(d)].size; if (r.weight) wts.push(r.weight);
+    if (r.vals.protein != null) { prot += r.vals.protein; protN++; } if (r.mood) { moods += r.mood; moodN++; }
+    const m = sleepMins(d); if (m != null) { sl += m; slN++; }
+  }
+  const rates = S().habits.filter(h => h.on || h.removed).map(h => { let cr = 0, a = 0; for (const d of days(ws, end)) if (applies(h, d)) { a++; cr += credit(d, h.id); } return {h, p:a ? cr / a : null}; }).filter(x => x.p != null).sort((a, b) => b.p - a.p);
+  const rv = data.reviews[rKey(wkSel)], tile = (l, v) => '<div><small>' + l + '</small><b>' + v + '</b></div>';
+  box.innerHTML = '<article class="mail"><p class="eyebrow">Weekly summary · ' + esc(CHAL.name) + '</p><h1>Week ' + (wkSel + 1) + '</h1><p class="sub">' + fShort.format(ws) + ' – ' + fShort.format(we) + (isDeload(wkSel) ? ' · deload week' : '') + (end < we ? ' · in progress' : '') + '</p>' +
+    '<div class="mscore"><b>' + pct(W ? E / W : 0) + '</b><span>weighted score<br>' + perfect + ' perfect ' + (perfect === 1 ? 'day' : 'days') + ' · chain ' + chainLenEnding(end) + ' days</span></div>' +
+    '<div class="mdays">' + dayRows.map(([d, p]) => '<span class="' + status(d) + (data.freezes[key(d)] ? ' frozen' : '') + '"><b>' + DOW_SHORT[d.getDay()][0] + '</b>' + Math.round(p * 100) + '</span>').join('') + '</div>' +
+    '<div class="mtiles">' + tile('Gym', gymDone + '/' + gymPlan) + tile('Study', fmtN(stM / 60, 1) + ' h') + tile('Run', fmtN(run, 1) + ' ' + U.dist) + tile('Lift PRs', prs) + tile('Avg protein', protN ? fmtN(prot / protN, 0) + ' g' : '—') + tile('Avg sleep', slN ? fmtHM(sl / slN) : '—') + tile('Weight', wts.length > 1 ? (wts[wts.length - 1] - wts[0] >= 0 ? '+' : '') + fmtN(wts[wts.length - 1] - wts[0], 1) + ' ' + U.body : wts.length ? fmtN(wts[0], 1) + ' ' + U.body : '—') + tile('Mood', moodN ? MOODS[Math.round(moods / moodN) - 1] : '—') + '</div>' +
+    '<h2>Habits</h2>' + rates.map(x => '<div class="wkrow"><span>' + esc(x.h.name) + '</span><span class="bar"><i style="width:' + x.p * 100 + '%;background:' + rateColor(x.p) + '"></i></span><span class="n">' + pct(x.p) + '</span></div>').join('') +
+    (best ? '<p class="foot">Best day: ' + fWeekday.format(best[0]) + ' at ' + pct(best[1]) + '.' + (Object.keys(subj).length ? ' Studied ' + Object.entries(subj).sort((a, b) => b[1] - a[1]).map(([t, m]) => t + ' ' + fmtN(m / 60, 1) + ' h').join(', ') + '.' : '') + '</p>' : '') +
+    (rv && (rv.good.trim() || rv.fix.trim()) ? '<h2>Review</h2><div class="revnote">' + (rv.good.trim() ? '<b>Went well</b>' + esc(rv.good) : '') + (rv.fix.trim() ? '<b>To fix</b>' + esc(rv.fix) : '') + '</div>' : '') +
+    '<p class="mfoot">80-Day Block · saivamsivarma.github.io/80-day-block</p></article>';
+}
+$('#wkPrev').addEventListener('click', () => { wkSel--; renderWeekly(); });
+$('#wkNext').addEventListener('click', () => { wkSel++; renderWeekly(); });
+$('#wkBack').addEventListener('click', () => setView('stats'));
+$('#openWeekly').addEventListener('click', () => { wkSel = weekSel; setView('week'); });
+
+/* ================= v6: SETTINGS ================= */
+function renderAccountability(){
+  const fi = freezeInfo(), thr = S().freezeMin || 1;
+  $('#acBox').innerHTML = '<div class="urow"><span>Lock days after 48 hours</span><label class="switch" style="margin-top:0"><input type="checkbox" id="lockPastOn"' + (S().lockPast ? ' checked' : '') + ' aria-label="Lock past days"><span></span></label></div>' +
+    '<p class="foot">When on, a day can\'t be changed once it\'s more than 48 hours past, so no backfilling last week.</p>' +
+    '<div class="urow" style="margin-top:10px"><span>Freeze token rule</span><span class="seg sm">' + [[1, '100%'], [0.9, '90%'], [0.7, '70%']].map(([v, l]) => '<button type="button" data-fz="' + v + '" aria-pressed="' + (thr === v) + '">' + l + '</button>').join('') + '</span></div>' +
+    '<p class="foot">Earn a token for every full week where every day reaches that score. You have ' + fi.left + ' available (' + fi.earned + ' earned, ' + fi.spent + ' used).</p>';
+}
+$('#acBox').addEventListener('change', e => { if (e.target.id === 'lockPastOn') { S().lockPast = e.target.checked; save(); toast(S().lockPast ? 'Past days lock after 48 hours' : 'Past days stay editable'); } });
+$('#acBox').addEventListener('click', e => { const b = e.target.closest('[data-fz]'); if (!b) return; S().freezeMin = Number(b.dataset.fz); save(); renderAccountability(); });
+function libNames(){
+  const m = new Map();
+  for (const k of Object.keys(LIB_DEFAULTS)) m.set(k, displayName(k));
+  for (const [k, v] of Object.entries(S().lib)) m.set(k, v.name || displayName(k));
+  for (const r of Object.values(data.days)) for (const L of r.lifts) if (!m.has(norm(L.ex))) m.set(norm(L.ex), L.ex);
+  return [...m.entries()].sort((a, b) => a[1].localeCompare(b[1]));
+}
+function renderLibrary(){
+  const q = (($('#libQ') || {}).value || '').toLowerCase(), list = libNames().filter(([, n]) => !q || n.toLowerCase().includes(q));
+  const opts = sel => MUSCLES.concat(['Other']).map(m => '<option' + (m === sel ? ' selected' : '') + '>' + m + '</option>').join('');
+  $('#libList').innerHTML = list.slice(0, 120).map(([k, n]) => { const e = libEntry(n) || {m:muscleOfRule(n), cues:''};
+    return '<details class="librow" data-lk="' + esc(k) + '"><summary><span>' + esc(n) + '</span><small>' + e.m + (e.cues ? ' · cues' : '') + '</small></summary><div class="libbody"><label class="field">Main muscle<select class="inp" data-lf="m">' + opts(e.m) + '</select></label><label class="field">Form cues<textarea data-lf="cues" rows="2" placeholder="Short reminders you want to see while lifting">' + esc(e.cues) + '</textarea></label></div></details>'; }).join('') || '<p class="empty">No exercises match.</p>';
+}
+$('#libBox').addEventListener('input', e => { if (e.target.id === 'libQ') renderLibrary(); });
+$('#libBox').addEventListener('change', e => {
+  const t = e.target, row = t.closest('[data-lk]'); if (!row || !t.dataset.lf) return;
+  const k = row.dataset.lk, name = row.querySelector('summary span').textContent, cur0 = libEntry(name) || {m:muscleOfRule(name), cues:''};
+  const u = S().lib[k] || {name, m:cur0.m, cues:cur0.cues}; u[t.dataset.lf] = t.dataset.lf === 'cues' ? t.value.slice(0, 300) : t.value; S().lib[k] = u; save(); toast('Saved');
+  row.querySelector('summary small').textContent = u.m + (u.cues ? ' · cues' : '');
+});
+$('#libAdd').addEventListener('click', () => { const n = $('#libNew').value.trim(); if (!n) { toast('Name the exercise'); return; } const k = norm(n); S().lib[k] = Object.assign({name:n, m:muscleOfRule(n), cues:''}, S().lib[k] || {}); save(); $('#libNew').value = ''; $('#libQ').value = n; renderLibrary(); const row = $('#libList details'); if (row) row.open = true; });
+function chainOptions(sel){
+  const hs = S().habits.filter(h => h.on).map(h => ['habit:' + h.id, h.name]), ms = S().meals.map(m => ['meal:' + m.name, 'Meal: ' + m.name]);
+  return hs.concat(ms).map(([v, l]) => '<option value="' + esc(v) + '"' + (v === sel || (sel && v.toLowerCase() === sel.toLowerCase()) ? ' selected' : '') + '>' + esc(l) + '</option>').join('');
+}
+function renderChainsEd(){
+  const cs = S().chains || [];
+  $('#hcList').innerHTML = cs.map((c, i) => '<div class="chrule" data-ci="' + i + '"><select class="inp" data-cf="after" aria-label="After">' + S().habits.filter(h => h.on).map(h => '<option value="' + h.id + '"' + (h.id === c.after ? ' selected' : '') + '>' + esc(h.name) + '</option>').join('') + '</select><span>then</span><select class="inp" data-cf="next" aria-label="Then">' + chainOptions(c.next) + '</select><button class="x" type="button" data-cdel aria-label="Remove chain">' + X_SVG + '</button></div>').join('') || '<p class="empty">No chains yet.</p>';
+}
+$('#hcBox').addEventListener('change', e => { const row = e.target.closest('[data-ci]'); if (!row) return; S().chains[Number(row.dataset.ci)][e.target.dataset.cf] = e.target.value; save(); toast('Saved'); });
+$('#hcBox').addEventListener('click', e => {
+  if (e.target.closest('[data-cdel]')) { S().chains.splice(Number(e.target.closest('[data-ci]').dataset.ci), 1); save(); renderChainsEd(); }
+  else if (e.target.id === 'hcAdd') { const hs = S().habits.filter(h => h.on); if (hs.length < 2) return; S().chains.push({after:hs[0].id, next:'habit:' + hs[1].id}); save(); renderChainsEd(); }
+});
+function renderStudyGoals(){
+  const goals = S().studyGoals || {}, names = new Map(); Object.values(goals).forEach(g => names.set(g.name.toLowerCase(), g.name)); studyTopics().forEach(t => { if (!names.has(t.toLowerCase())) names.set(t.toLowerCase(), t); });
+  $('#sgList').innerHTML = [...names.entries()].map(([k, n]) => '<div class="urow"><span>' + esc(n) + '</span><span class="sgin"><input class="inp" data-sg="' + esc(k) + '" data-sn="' + esc(n) + '" type="number" inputmode="decimal" min="0" step="0.5" placeholder="0" value="' + (goals[k] ? goals[k].h : '') + '" aria-label="Hours per week for ' + esc(n) + '"> h/week</span></div>').join('') || '<p class="empty">Subjects appear here once you log study sessions, or add one below.</p>';
+}
+$('#sgBox').addEventListener('change', e => { const t = e.target; if (!t.dataset.sg) return; const v = parseFloat(t.value); if (v > 0) S().studyGoals[t.dataset.sg] = {name:t.dataset.sn, h:Math.round(v * 2) / 2}; else delete S().studyGoals[t.dataset.sg]; save(); toast('Saved'); });
+$('#sgAdd').addEventListener('click', () => { const n = $('#sgName').value.trim(), h = parseFloat($('#sgHours').value); if (!n || !(h > 0)) { toast('Add a subject and hours per week'); return; } S().studyGoals[n.toLowerCase()] = {name:n.slice(0, 40), h:Math.round(h * 2) / 2}; save(); $('#sgName').value = ''; $('#sgHours').value = ''; renderStudyGoals(); });
+
 /* ================= views ================= */
-const VIEWS = {day:'#v-day', cal:'#v-cal', stats:'#v-stats', set:'#v-set', report:'#v-report'};
+const VIEWS = {day:'#v-day', cal:'#v-cal', stats:'#v-stats', set:'#v-set', report:'#v-report', week:'#v-week'};
 function setView(v, keepScroll){
   view = v;
   for (const [k, sel] of Object.entries(VIEWS)) $(sel).hidden = k !== v;
-  const tabFor = v === 'report' ? 'stats' : v;
+  const tabFor = v === 'report' || v === 'week' ? 'stats' : v;
   document.querySelectorAll('.tab').forEach(t => { if (t.dataset.view === tabFor) t.setAttribute('aria-current', 'page'); else t.removeAttribute('aria-current'); });
   $('#daynav').hidden = v !== 'day';
-  if (v === 'day') renderDay(); else if (v === 'cal') renderCal(); else if (v === 'stats') renderStats(); else if (v === 'report') renderReport(); else renderSettings();
+  if (v === 'day') renderDay(); else if (v === 'cal') renderCal(); else if (v === 'stats') renderStats(); else if (v === 'report') renderReport(); else if (v === 'week') renderWeekly(); else renderSettings();
   if (!keepScroll) window.scrollTo(0, 0);
 }
 document.querySelectorAll('.tab').forEach(t => t.addEventListener('click', () => setView(t.dataset.view)));
