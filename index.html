@@ -1092,7 +1092,7 @@ function defaultSettings(){
     meals: DEFAULT_MEALS.map(m => Object.assign({id:uid()}, m)),
     remind: {on:false, winddown:'20:30', water:['10:00','13:00','16:00']},
     gym: {rest:120, autoRest:true},
-    strict: true,
+    strictCI: false,
     pomo: {focus:25, brk:5},
     loc: null,
     lib: {}, overrides: {}, studyGoals: {}, lockPast: true, freezeMin: 1, reschedSeen: {}, grocery: {},
@@ -1172,7 +1172,7 @@ function cleanSettings(s){
   if (Array.isArray(s.meals)) out.meals = s.meals.filter(m => m && typeof m.name === 'string' && m.name.trim()).slice(0, 30)
     .map(m => ({id:typeof m.id === 'string' && idOK(m.id) ? m.id : uid(), name:m.name.trim().slice(0, 40), p:posNum(m.p) || 0, c:posNum(m.c) || 0, f:posNum(m.f) || 0, k:posNum(m.k) || 0, ing:typeof m.ing === 'string' ? m.ing.slice(0, 600) : ''}));
   if (s.gym && typeof s.gym === 'object') { if ([60, 90, 120, 180].includes(s.gym.rest)) out.gym.rest = s.gym.rest; out.gym.autoRest = s.gym.autoRest !== false; }
-  if (typeof s.strict === 'boolean') out.strict = s.strict;
+  if (typeof s.strictCI === 'boolean') out.strictCI = s.strictCI;
   if (s.pomo && typeof s.pomo === 'object') { if ([25, 50].includes(s.pomo.focus)) out.pomo.focus = s.pomo.focus; if ([5, 10].includes(s.pomo.brk)) out.pomo.brk = s.pomo.brk; }
   if (s.loc && typeof s.loc.lat === 'number' && typeof s.loc.lon === 'number' && Math.abs(s.loc.lat) <= 90 && Math.abs(s.loc.lon) <= 180) out.loc = {lat:s.loc.lat, lon:s.loc.lon};
   if (s.lib && typeof s.lib === 'object') for (const [k, v] of Object.entries(s.lib)) if (k.length <= 60 && v && typeof v === 'object') out.lib[k] = {name:String(v.name || '').slice(0, 60), m:MUSCLES.concat(['Other']).includes(v.m) ? v.m : '', cues:String(v.cues || '').slice(0, 300)};
@@ -1271,7 +1271,7 @@ function finishedEnd(){ const last = lastElapsed(); if (!last) return null; cons
 function setLevel(r, id, lv){ if (lv && !r.checks[id]) ctStamp(r, id); if (lv) r.checks[id] = lv; else delete r.checks[id]; }
 function levelFor(h, v){ if (v == null) return 0; if (v >= h.target) return true; if (h.minTarget && v >= h.minTarget) return 'min'; return 0; }
 function applyAuto(r, which, d){
-  const strictNow = S().strict && d && same(d, TODAY);
+  const strictNow = S().strictCI && d && same(d, TODAY);
   const w = hById('wake');
   if ((!which || which === 'wake') && w && w.auto === 'wake' && r.wake && (!strictNow || r.vwake)) setLevel(r, 'wake', r.wake <= w.time ? true : (w.minTime && r.wake <= w.minTime ? 'min' : 0));
   const s = hById('sleep');
@@ -2752,10 +2752,11 @@ function windowFor(kind){
   return kind === 'wake' ? {open:t - 5, close:Math.max(t + 10, h.minTime ? toMin(h.minTime) : t + 10), h} : {open:t - 30, close:t + 30, h};
 }
 function strictBlocked(id){
-  if (!S().strict || !same(cur, TODAY)) return false;
+  if (!S().strictCI || !same(cur, TODAY)) return false;
   const h = hById(id); if (!h || (h.auto !== 'wake' && h.auto !== 'bed')) return false;
-  const w = windowFor(h.auto === 'wake' ? 'wake' : 'bed');
-  toast('Strict check-ins are on: use the ' + (h.auto === 'wake' ? 'wake' : 'bedtime') + ' check-in between ' + fmtTime(hmOf(w.open)) + ' and ' + fmtTime(hmOf(w.close)) + '.');
+  const w = windowFor(h.auto === 'wake' ? 'wake' : 'bed'), nm = nowMin(), name = h.auto === 'wake' ? 'wake' : 'bedtime';
+  if (nm > w.close) toast("Strict check-ins are on and today's " + name + ' window closed at ' + fmtTime(hmOf(w.close)) + '. Turn strict off in Setup → Check-ins to log it by hand.');
+  else toast('Strict check-ins are on: use the ' + name + ' check-in button between ' + fmtTime(hmOf(w.open)) + ' and ' + fmtTime(hmOf(w.close)) + '.');
   return true;
 }
 let lastCheckinRender = 0;
@@ -2771,6 +2772,8 @@ function renderCheckin(){
       html += '<button class="checkin" type="button" data-act="checkin" data-kind="' + kind + '"><span class="ci-t">' + (kind === 'wake' ? "I'm up" : 'Going to bed') + '</span><span class="ci-s">Tap to check in at ' + fmtTime(nowHM()) + ' · open until ' + fmtTime(hmOf(w.close)) + '</span></button>';
     } else if (nm < w.open && w.open - nm <= 90) {
       html += '<p class="cinote">' + (kind === 'wake' ? 'Wake' : 'Bedtime') + ' check-in opens at ' + fmtTime(hmOf(w.open)) + '.</p>';
+    } else if (S().strictCI && nm > w.close && !credit(TODAY, w.h.id)) {
+      html += '<div class="cinote">Today\'s ' + (kind === 'wake' ? 'wake' : 'bedtime') + ' check-in closed at ' + fmtTime(hmOf(w.close)) + ', and strict check-ins block logging it by hand. <button class="linkbtn" type="button" data-act="strictoff">Turn strict off</button></div>';
     }
   }
   box.innerHTML = html;
@@ -3203,12 +3206,12 @@ $('#gtBox').addEventListener('click', e => { const b = e.target.closest('[data-g
 $('#gtBox').addEventListener('change', e => { if (e.target.id === 'autoRest') { S().gym.autoRest = e.target.checked; save(); } });
 function renderCheckins(){
   const w = windowFor('wake'), b = windowFor('bed');
-  $('#ciBox').innerHTML = '<div class="urow"><span>Strict check-ins</span><label class="switch" style="margin-top:0"><input type="checkbox" id="strictOn"' + (S().strict ? ' checked' : '') + ' aria-label="Strict check-ins"><span></span></label></div>' +
-    '<p class="foot">When on, today\'s wake-up and bedtime habits can only be ticked with the check-in button, which records the real time. ' +
+  $('#ciBox').innerHTML = '<div class="urow"><span>Strict check-ins</span><label class="switch" style="margin-top:0"><input type="checkbox" id="strictOn"' + (S().strictCI ? ' checked' : '') + ' aria-label="Strict check-ins"><span></span></label></div>' +
+    '<p class="foot">The check-in buttons always record the real time and mark the day ✓ verified. Off (the default): you can still tick wake-up and bedtime by hand, or type the times in Body and sleep. On: today\'s wake-up and bedtime can only be ticked with the check-in button. ' +
     (w ? 'Wake check-in is open ' + fmtTime(hmOf(w.open)) + ' to ' + fmtTime(hmOf(w.close)) + '. ' : '') + (b ? 'Bedtime check-in is open ' + fmtTime(hmOf(b.open)) + ' to ' + fmtTime(hmOf(b.close)) + '. ' : '') +
     'The windows follow the times set on those habits above. Past days can still be fixed by hand.</p>';
 }
-$('#ciBox').addEventListener('change', e => { if (e.target.id === 'strictOn') { S().strict = e.target.checked; save(); toast(S().strict ? 'Strict check-ins on' : 'Strict check-ins off'); } });
+$('#ciBox').addEventListener('change', e => { if (e.target.id === 'strictOn') { S().strictCI = e.target.checked; save(); toast(S().strictCI ? 'Strict check-ins on' : 'Strict check-ins off'); } });
 function renderTimersLoc(){
   const p = S().pomo, loc = S().loc, st = loc ? sunTimesFor(TODAY) : null;
   $('#tlBox').innerHTML = '<div class="urow"><span>Focus length</span><span class="seg sm">' + [25, 50].map(v => '<button type="button" data-pf="' + v + '" aria-pressed="' + (p.focus === v) + '">' + v + ' min</button>').join('') + '</span></div>' +
@@ -3680,6 +3683,7 @@ dayRoot.addEventListener('click', e => {
     if (on) { const other = cheatThisWeek(cur); if (other) { toast('You already used this week\'s cheat meal on ' + fWeekday.format(other) + '.'); return; } }
     const r = rec(cur, on ? 'Cheat meal' : 'Removed cheat meal'); if (on) r.cheat = true; else delete r.cheat; save(); renderMeals(); updateDay();
   }
+  else if (act === 'strictoff') { S().strictCI = false; save(); toast('Strict check-ins off. Tap Wake up at 5:30 or enter your wake time.'); renderDay(); }
   else if (act === 'mood') { const v = Number(a.dataset.v), r = rec(cur); if (r.mood === v) delete r.mood; else r.mood = v; save(); renderMood(); }
   else if (act === 'resched-shift') shiftSplit();
   else if (act === 'resched-keep') { const m = missedWorkout(); if (m) { S().reschedSeen[key(m.d)] = true; save(); } renderAlerts(); }
