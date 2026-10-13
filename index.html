@@ -2749,7 +2749,7 @@ function celebrate(){
 function windowFor(kind){
   const h = hById(kind === 'wake' ? 'wake' : 'sleep'); if (!h || !h.time || !h.auto) return null;
   const t = toMin(h.time);
-  return kind === 'wake' ? {open:t - 5, close:Math.max(t + 10, h.minTime ? toMin(h.minTime) : t + 10), h} : {open:t - 30, close:t + 30, h};
+  return kind === 'wake' ? {open:Math.max(0, t - 120), close:Math.max(t + 10, h.minTime ? toMin(h.minTime) : t + 10), h} : {open:t - 120, close:Math.max(t + 30, h.minTime ? toMin(h.minTime) : t + 30), h};
 }
 function strictBlocked(id){
   if (!S().strictCI || !same(cur, TODAY)) return false;
