@@ -1007,9 +1007,7 @@ const DEFAULT_HABITS = [
   {id:'sun',      name:'Sunlight',              type:'check', sub:'30 minutes outside', min:'10 minutes', weight:1},
   {id:'face',     name:'Face routine',          type:'check', sub:'Skincare', min:'Cleanse only', weight:1},
   {id:'noscreen', name:'No screens before bed', type:'check', sub:'30 minutes screen-free', min:'15 minutes', weight:1},
-  {id:'creatine', name:'Creatine',              type:'check', sub:'5 g', weight:1},
-  {id:'mobility', name:'Mobility',              type:'check', sub:'10 minutes stretching', min:'5 minutes', weight:1},
-  {id:'read',     name:'Read or journal',       type:'check', sub:'20 min reading or 2–3 lines', min:'5 minutes or 1 line', weight:1}
+  {id:'creatine', name:'Creatine',              type:'check', sub:'5 g', weight:1}
 ];
 const DEFAULT_MEALS = [
   {name:'Protein shake', p:40, c:12, f:4, k:240, ing:'1 scoop whey protein\n300 ml milk'},
@@ -1092,7 +1090,8 @@ const uid = () => 'x' + Date.now().toString(36) + Math.random().toString(36).sli
 function defaultSettings(){
   return {
     habits: DEFAULT_HABITS.map(h => Object.assign({sub:'', on:true}, h)),
-    schedule: ['', 'Pull', 'Push', 'Legs', 'Upper', 'Lower', ''],
+    schedule: ['Push', 'Legs', 'Upper', 'Lower', '', '', 'Pull'],
+    mig1017: true,
     deloadEvery: 5,
     units: {body:'kg', lift:'lb', dist:'mi', meas:'cm'},
     meals: DEFAULT_MEALS.map(m => Object.assign({id:uid()}, m)),
@@ -1102,7 +1101,7 @@ function defaultSettings(){
     pomo: {focus:25, brk:5},
     loc: null,
     lib: {}, overrides: {}, studyGoals: {}, lockPast: true, freezeMin: 1, reschedSeen: {}, grocery: {},
-    chains: [{after:'gym', next:'meal:Protein shake'}, {after:'wake', next:'habit:sun'}, {after:'noscreen', next:'habit:read'}],
+    chains: [{after:'gym', next:'meal:Protein shake'}, {after:'wake', next:'habit:sun'}],
     ui: {open:{}, calSeg:'heat'}
   };
 }
@@ -1199,6 +1198,15 @@ function cleanSettings(s){
     if (s.ui.open && typeof s.ui.open === 'object') for (const [k, b] of Object.entries(s.ui.open)) if (idOK(k)) out.ui.open[k] = !!b;
     if (s.ui.calSeg === 'plan') out.ui.calSeg = 'plan';
   }
+  // Oct 17 restart: Sat Pull, Sun Push, Mon Legs, Tue Upper, Wed Lower; Mobility and Read or journal removed
+  if (s.mig1017 !== true) {
+    const gone = ['mobility', 'read'];
+    out.schedule = ['Push', 'Legs', 'Upper', 'Lower', '', '', 'Pull'];
+    out.habits = out.habits.filter(h => !gone.includes(h.id));
+    out.chains = out.chains.filter(c => !gone.includes(c.after) && !gone.some(g => c.next === 'habit:' + g));
+    out.overrides = {}; out.reschedSeen = {};
+  }
+  out.mig1017 = true;
   return out;
 }
 function clean(raw){
