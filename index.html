@@ -77,7 +77,9 @@ h1,h2,h3,p{margin:0}
 .ring .lbl{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
 .ring b{font-family:var(--font-display);font-size:23px;font-weight:700;line-height:1}
 .ring small{font-family:var(--font-data);font-size:11px;color:var(--muted);margin-top:3px}
-.chiprow{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.chiprow{display:flex;gap:8px;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;margin:0 -16px 12px;padding-inline:16px}
+.chiprow::-webkit-scrollbar{display:none}
+.chiprow>*{flex:none}
 .schip{display:inline-flex;align-items:center;gap:7px;height:34px;padding:0 12px;border-radius:999px;background:var(--surface);border:1px solid var(--line);font-size:13px;font-weight:600;font-variant-numeric:tabular-nums}
 .schip svg{width:16px;height:16px}
 .schip .flame{color:var(--flame)}
@@ -88,16 +90,17 @@ h1,h2,h3,p{margin:0}
 .notice{margin-bottom:12px;padding:10px 14px;border-radius:14px;background:var(--accent-soft);color:var(--fg);font-size:14px}
 
 /* Chain banner */
-.chain{display:flex;align-items:center;gap:14px;margin-bottom:12px;padding:12px 14px;border-radius:16px;background:var(--surface);border:1px solid var(--line)}
+.chain{display:flex;flex-direction:column;align-items:flex-start;gap:10px;margin-bottom:12px;padding:12px 14px;border-radius:16px;background:var(--surface);border:1px solid var(--line)}
 .chain .links{display:flex;gap:4px;flex:none}
-.chain .lk{width:12px;height:22px;border-radius:6px;border:2px solid var(--line);background:transparent}
+.chain .links{gap:5px}
+.chain .lk{width:15px;height:15px;border-radius:5px;border:1.5px solid var(--line);background:var(--surface-2)}
 .chain .lk.good{background:var(--good);border-color:var(--good)}
 .chain .lk.warn{background:var(--warn);border-color:var(--warn)}
-.chain .lk.bad{background:transparent;border-color:var(--bad)}
-.chain .lk.now{border-style:dashed;border-color:var(--muted)}
+.chain .lk.bad{background:var(--bad-soft);border-color:color-mix(in srgb,var(--bad) 55%,transparent)}
+.chain .lk.now{border-style:dashed;border-color:var(--muted);background:transparent}
 .chain p{font-size:14px;line-height:1.35;min-width:0}
 .chain b{font-weight:600}
-.chain.broken{border-color:var(--bad)}
+.chain.broken{border-color:color-mix(in srgb,var(--bad) 45%,var(--line))}
 
 /* Habit list */
 .habits{list-style:none;margin:0;padding:0;background:var(--surface);border:1px solid var(--line);border-radius:18px;overflow:hidden}
@@ -343,6 +346,11 @@ button.cell:active{transform:scale(.92)}
 .hfields{display:flex;flex-direction:column;gap:8px;min-width:0}
 .hmeta{display:flex;gap:6px 8px;align-items:center;flex-wrap:wrap;font-size:13px;color:var(--muted)}
 .hmeta .inp{height:40px;width:96px}
+.hmeta:has(.hf){display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.hf{display:flex;flex-direction:column;gap:4px;min-width:0;font-size:12px;color:var(--muted)}
+.hfin{display:flex;align-items:center;gap:6px;min-width:0;font-size:13px}
+.hfin .inp,.hmeta .hfin .inp[type=time]{width:100%;min-width:0;flex:1}
+.hfin span:empty{display:none}
 .hmeta .inp.wide{width:100%}
 .hmeta .inp[type=time]{width:118px}
 .hmove{display:flex;flex-direction:column;gap:4px}
@@ -378,12 +386,25 @@ select.inp{font-family:var(--font-body)}
 #v-set .panel[data-sec]>h2:first-child{display:none}
 #v-set .panel[data-sec]{margin-top:16px}
 .setrow>span.ico{flex:none;display:grid;width:34px}
+.subbar{position:sticky;top:0;z-index:12;display:flex;align-items:center;gap:12px;margin:-16px -16px 0;padding:calc(env(safe-area-inset-top,0px) + 10px) 16px 10px;background:color-mix(in srgb,var(--bg) 84%,transparent);-webkit-backdrop-filter:saturate(1.5) blur(14px);backdrop-filter:saturate(1.5) blur(14px);border-bottom:1px solid transparent;transition:border-color .2s}
+.subbar.scrolled{border-bottom-color:var(--line)}
+.subbar-t{flex:1;min-width:0;font-weight:600;font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;opacity:0;transform:translateY(4px);transition:opacity .18s,transform .18s}
+.subbar.scrolled .subbar-t{opacity:1;transform:none}
+.subhead{padding-top:10px}
+.subin{animation:subin .24s cubic-bezier(.2,.8,.2,1)}
+.subout{animation:subout .24s cubic-bezier(.2,.8,.2,1)}
+@keyframes subin{from{opacity:0;transform:translateX(18px)}}
+@keyframes subout{from{opacity:0;transform:translateX(-18px)}}
+#v-stats .panel[data-ssec]>h2:first-child,#v-stats .panel[data-ssec]>.titlebar>h2{display:none}
+#v-stats .panel[data-ssec]>.titlebar{justify-content:flex-end}
+#v-stats .panel[data-ssec]{margin-top:16px}
+.setrow .sval{font-family:var(--font-data);font-size:13px;color:var(--fg);flex:none;font-variant-numeric:tabular-nums}
 .logpage .meals{padding:0}
 .logpage .meals .mhead,.logpage .mchips,.logpage .mlog,.logpage .remain{padding-inline:0}
 .logpage .meals .mhead b{display:none}
 .logpage .mchips{margin-inline:-14px;padding-inline:14px}
 .logmenu{margin-top:18px}
-#v-day[data-sub]>:not(#dSubHead):not(#dExtras){display:none!important}
+#v-day[data-sub]>:not(#dSubHead):not(#dSubBar):not(#dExtras){display:none!important}
 #v-day[data-sub] .logmenu{display:none}
 .logpage{margin-top:16px}
 .logpage .card-body{padding-top:16px}
@@ -617,9 +638,9 @@ textarea.ing{min-height:52px;font-size:13px}
 <div class="app">
   <!-- DAY -->
   <section id="v-day">
-    <div id="dSubHead" hidden>
-      <button class="backbtn" type="button" id="dSubBack"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>Day</button>
-      <p class="eyebrow" style="margin-top:16px" id="dSubEyebrow"></p>
+    <div class="subbar" id="dSubBar" hidden><button class="backbtn" type="button" id="dSubBack"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>Day</button><span class="subbar-t" id="dSubBarT"></span></div>
+    <div class="subhead" id="dSubHead" hidden>
+      <p class="eyebrow" id="dSubEyebrow"></p>
       <h1 class="page-title" id="dSubTitle"></h1>
     </div>
     <header class="dayhead">
@@ -691,6 +712,9 @@ textarea.ing{min-height:52px;font-size:13px}
 
   <!-- STATS -->
   <section id="v-stats" hidden>
+    <div class="subbar" id="stSubBar" hidden><button class="backbtn" type="button" id="stBack"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>Stats</button><span class="subbar-t" id="stSubBarT"></span></div>
+    <div class="subhead" id="stSubHead" hidden><p class="eyebrow" id="stSubEyebrow"></p><h1 class="page-title" id="stSubTitle"></h1></div>
+    <div id="stHead">
     <p class="eyebrow" id="sEyebrow"></p>
     <div class="titlebar"><h1 class="page-title">Stats</h1><button class="btn small primary" type="button" id="openReport">Report</button></div>
     <div class="kpis">
@@ -705,46 +729,48 @@ textarea.ing{min-height:52px;font-size:13px}
         <div><b id="sStreakBest">0</b><small>longest chain</small></div>
       </div>
     </div>
-    <div class="panel">
+    <div id="stMenu"></div>
+    </div>
+    <div class="panel" data-ssec="badges" hidden>
       <h2>Badges</h2>
       <p class="sub" id="sBadgeSub"></p>
       <div class="badges" id="sBadges"></div>
     </div>
-    <div class="panel">
+    <div class="panel" data-ssec="freezes" hidden>
       <h2>Freeze tokens</h2>
       <div id="sFz"></div>
     </div>
-    <div class="panel">
+    <div class="panel" data-ssec="pixels" hidden>
       <h2>Year in pixels</h2>
       <p class="sub">Your mood for every day of the year</p>
       <div class="chips" id="sPixChips"></div>
       <div id="sPix"></div>
       <p class="readout" id="sPixRo" style="margin-top:8px"></p>
     </div>
-    <div class="panel">
+    <div class="panel" data-ssec="patterns" hidden>
       <h2>Patterns</h2>
       <p class="sub">Where days slip, based on finished days.</p>
       <ul class="insights" id="sInsights"></ul>
     </div>
-    <div class="panel">
+    <div class="panel" data-ssec="connections" hidden>
       <h2>Connections</h2>
       <p class="sub">How one habit lines up with another. These are patterns in your log, not proof of cause.</p>
       <div id="sConn"></div>
     </div>
-    <div class="panel">
+    <div class="panel" data-ssec="timing" hidden>
       <h2>When you check things off</h2>
       <p class="sub">The hour each habit gets ticked, from taps on the day itself</p>
       <p class="readout" id="sTodRo"></p>
       <div id="sTod"></div>
     </div>
-    <div class="panel">
+    <div class="panel" data-ssec="weight" hidden>
       <h2>Bodyweight</h2>
       <p class="sub">Morning weigh-ins with a 7-day average</p>
       <div class="kv" id="sWtKv"></div>
       <p class="readout" id="sWtRo"></p>
       <div class="chart" id="sWtChart"></div>
     </div>
-    <div class="panel">
+    <div class="panel" data-ssec="calories" hidden>
       <h2>Calories vs. bodyweight</h2>
       <p class="sub" id="sWkcSub">Weekly average intake above, weekly average weight below</p>
       <div class="kv" id="sWkcKv"></div>
@@ -752,33 +778,33 @@ textarea.ing{min-height:52px;font-size:13px}
       <div class="chart" id="sWkcChart"></div>
       <p class="foot" id="sWkcFoot"></p>
     </div>
-    <div class="panel">
+    <div class="panel" data-ssec="nutrition" hidden>
       <h2>Nutrition</h2>
       <p class="sub">Average macros and meal timing</p>
       <div class="kv" id="sNuKv"></div>
       <div id="sNuBody"></div>
     </div>
-    <div class="panel">
+    <div class="panel" data-ssec="volume" hidden>
       <h2>Weekly volume</h2>
       <p class="sub" id="sVolSub"></p>
       <div class="chips" id="sVolChips"></div>
       <div id="sVol" style="margin-top:8px"></div>
     </div>
-    <div class="panel">
+    <div class="panel" data-ssec="gymtimes" hidden>
       <h2>Gym start times</h2>
       <p class="sub">From gym check-ins. Dots are full sessions; amber ones were short.</p>
       <div class="kv" id="sGtKv"></div>
       <p class="readout" id="sGtRo"></p>
       <div class="chart" id="sGtChart"></div>
     </div>
-    <div class="panel">
+    <div class="panel" data-ssec="sleep" hidden>
       <h2>Sleep</h2>
       <p class="sub" id="sSlSub"></p>
       <div class="kv" id="sSlKv"></div>
       <p class="readout" id="sSlRo"></p>
       <div class="chart" id="sSlChart"></div>
     </div>
-    <div class="panel">
+    <div class="panel" data-ssec="recovery" hidden>
       <h2>Body and recovery</h2>
       <p class="sub">Resting heart rate, measurements and soreness</p>
       <div class="kv" id="sBoKv"></div>
@@ -786,7 +812,7 @@ textarea.ing{min-height:52px;font-size:13px}
       <div class="chart" id="sBoChart"></div>
       <div id="sBoExtra"></div>
     </div>
-    <div class="panel">
+    <div class="panel" data-ssec="study" hidden>
       <h2>Study</h2>
       <p class="sub">Logged hours by week and by subject</p>
       <div class="kv" id="sStKv"></div>
@@ -796,25 +822,25 @@ textarea.ing{min-height:52px;font-size:13px}
       <div id="sStGoals"></div>
       <div id="sStCards"></div>
     </div>
-    <div class="panel">
+    <div class="panel" data-ssec="running" hidden>
       <h2>Running</h2>
       <p class="sub">Distance by week</p>
       <div class="kv" id="sRunKv"></div>
       <p class="readout" id="sRunRo"></p>
       <div class="chart" id="sRunChart"></div>
     </div>
-    <div class="panel">
+    <div class="panel" data-ssec="lifts" hidden>
       <h2>Lift records</h2>
       <p class="sub">Best set per exercise by estimated 1-rep max</p>
       <div id="sPRs"></div>
     </div>
-    <div class="panel">
+    <div class="panel" data-ssec="streaks" hidden>
       <h2>Streaks</h2>
       <p class="sub">Minimum versions keep a streak alive. Rest days don't break the gym streak.</p>
       <div class="strow head"><span>Habit</span><span class="n">Now</span><span class="n">Best</span><span class="n">Rate</span></div>
       <div id="sStreaks"></div>
     </div>
-    <div class="panel">
+    <div class="panel" data-ssec="weeks" hidden>
       <div class="titlebar"><h2>By week</h2><button class="btn small" type="button" id="openWeekly">Summary page</button></div>
       <p class="sub" id="sWeekSub"></p>
       <div class="chips" id="sChips"></div>
@@ -846,9 +872,9 @@ textarea.ing{min-height:52px;font-size:13px}
       <p class="status" id="storeStatus"></p>
       <div id="setMenu"></div>
     </div>
-    <div id="setSubHead" hidden>
-      <button class="backbtn" type="button" id="setBack"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>Setup</button>
-      <p class="eyebrow" style="margin-top:16px" id="setSubEyebrow"></p>
+    <div class="subbar" id="setSubBar" hidden><button class="backbtn" type="button" id="setBack"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>Setup</button><span class="subbar-t" id="setSubBarT"></span></div>
+    <div class="subhead" id="setSubHead" hidden>
+      <p class="eyebrow" id="setSubEyebrow"></p>
       <h1 class="page-title" id="setSubTitle"></h1>
     </div>
     <div class="panel" data-sec="habits" hidden>
@@ -2241,12 +2267,12 @@ function renderHabitsEditor(){
   const hs = S().habits;
   $('#hList').innerHTML = hs.map((h, i) => {
     let meta = '';
-    if (h.type === 'num') meta = '<span>Target</span><input class="inp" data-hact="target" type="number" inputmode="decimal" min="0" step="any" value="' + h.target + '" aria-label="Target for ' + esc(h.name) + '">' +
-      (h.custom ? '<input class="inp text" data-hact="unit" maxlength="12" value="' + esc(h.unit) + '" aria-label="Unit" style="width:84px">' : '<span>' + esc(h.unit) + '</span>') +
-      '<span>Min</span><input class="inp" data-hact="minTarget" type="number" inputmode="decimal" min="0" step="any" value="' + (h.minTarget || '') + '" placeholder="none" aria-label="Minimum for ' + esc(h.name) + '">';
-    else if (h.type === 'water') meta = '<span>Target</span><input class="inp" data-hact="waterL" type="number" inputmode="decimal" min="0.25" step="0.25" value="' + (h.target / 1000) + '" aria-label="Water target in liters"><span>L · Min</span><input class="inp" data-hact="waterMinL" type="number" inputmode="decimal" min="0" step="0.25" value="' + (h.minTarget ? h.minTarget / 1000 : '') + '" placeholder="none" aria-label="Water minimum in liters"><span>L</span>';
-    else if (h.auto === 'wake' || h.auto === 'bed') meta = '<span>' + (h.auto === 'wake' ? 'Up by' : 'In bed by') + '</span><input class="inp" data-hact="time" type="time" value="' + h.time + '" aria-label="Time target"><span>Partial by</span><input class="inp" data-hact="minTime" type="time" value="' + (h.minTime || '') + '" aria-label="Partial-credit time">' + (h.auto === 'wake' ? '<span>Weekends up by</span><input class="inp" data-hact="weTime" type="time" value="' + (h.weTime || '') + '" aria-label="Weekend wake time"><span>partial by</span><input class="inp" data-hact="weMinTime" type="time" value="' + (h.weMinTime || '') + '" aria-label="Weekend partial-credit time">' : '');
-    else if (h.auto === 'study') meta = '<span>Full at</span><input class="inp" data-hact="target" type="number" inputmode="numeric" min="1" value="' + h.target + '" aria-label="Minutes for full credit"><span>min · partial at</span><input class="inp" data-hact="minTarget" type="number" inputmode="numeric" min="0" value="' + (h.minTarget || '') + '" placeholder="none" aria-label="Minutes for partial credit"><span>min</span>';
+    if (h.type === 'num') meta = '<label class="hf"><span>Target</span><span class="hfin"><input class="inp" data-hact="target" type="number" inputmode="decimal" min="0" step="any" value="' + h.target + '" aria-label="Target for ' + esc(h.name) + '">' +
+      (h.custom ? '<input class="inp text" data-hact="unit" maxlength="12" value="' + esc(h.unit) + '" aria-label="Unit" style="width:84px">' : '<span>' + esc(h.unit) + '</span>') + '</span></label>' +
+      '<label class="hf"><span>Minimum</span><span class="hfin"><input class="inp" data-hact="minTarget" type="number" inputmode="decimal" min="0" step="any" value="' + (h.minTarget || '') + '" placeholder="none" aria-label="Minimum for ' + esc(h.name) + '"><span>' + esc(h.custom ? '' : h.unit) + '</span></span></label>';
+    else if (h.type === 'water') meta = '<label class="hf"><span>Target</span><span class="hfin"><input class="inp" data-hact="waterL" type="number" inputmode="decimal" min="0.25" step="0.25" value="' + (h.target / 1000) + '" aria-label="Water target in liters"><span>L</span></span></label><label class="hf"><span>Minimum</span><span class="hfin"><input class="inp" data-hact="waterMinL" type="number" inputmode="decimal" min="0" step="0.25" value="' + (h.minTarget ? h.minTarget / 1000 : '') + '" placeholder="none" aria-label="Water minimum in liters"><span>L</span></span></label>';
+    else if (h.auto === 'wake' || h.auto === 'bed') meta = '<label class="hf"><span>' + (h.auto === 'wake' ? 'Up by' : 'In bed by') + '</span><span class="hfin"><input class="inp" data-hact="time" type="time" value="' + h.time + '" aria-label="Time target"></span></label><label class="hf"><span>Partial by</span><span class="hfin"><input class="inp" data-hact="minTime" type="time" value="' + (h.minTime || '') + '" aria-label="Partial-credit time"></span></label>' + (h.auto === 'wake' ? '<label class="hf"><span>Weekends up by</span><span class="hfin"><input class="inp" data-hact="weTime" type="time" value="' + (h.weTime || '') + '" aria-label="Weekend wake time"></span></label><label class="hf"><span>Weekend partial by</span><span class="hfin"><input class="inp" data-hact="weMinTime" type="time" value="' + (h.weMinTime || '') + '" aria-label="Weekend partial-credit time"></span></label>' : '');
+    else if (h.auto === 'study') meta = '<label class="hf"><span>Full credit at</span><span class="hfin"><input class="inp" data-hact="target" type="number" inputmode="numeric" min="1" value="' + h.target + '" aria-label="Minutes for full credit"><span>min</span></span></label><label class="hf"><span>Partial at</span><span class="hfin"><input class="inp" data-hact="minTarget" type="number" inputmode="numeric" min="0" value="' + (h.minTarget || '') + '" placeholder="none" aria-label="Minutes for partial credit"><span>min</span></span></label>';
     else if (h.type === 'gym') meta = '<span>Follows your weekly schedule</span><input class="inp text wide" data-hact="min" maxlength="60" value="' + esc(h.min || '') + '" placeholder="Minimum version, e.g. Short session" aria-label="Minimum version for ' + esc(h.name) + '">';
     else meta = '<input class="inp text wide" data-hact="sub" maxlength="80" value="' + esc(h.sub) + '" placeholder="Detail (optional)" aria-label="Detail for ' + esc(h.name) + '"><input class="inp text wide" data-hact="min" maxlength="60" value="' + esc(h.min || '') + '" placeholder="Minimum version (optional)" aria-label="Minimum version for ' + esc(h.name) + '">';
     const wseg = '<span>Weight</span><span class="seg sm">' + [1, 2, 3].map(v => '<button type="button" data-hact="weight" data-v="' + v + '" aria-pressed="' + ((h.weight || 1) === v) + '">×' + v + '</button>').join('') + '</span>';
@@ -4026,6 +4052,50 @@ function renderStudyGoals(){
 $('#sgBox').addEventListener('change', e => { const t = e.target; if (!t.dataset.sg) return; const v = parseFloat(t.value); if (v > 0) S().studyGoals[t.dataset.sg] = {name:t.dataset.sn, h:Math.round(v * 2) / 2}; else delete S().studyGoals[t.dataset.sg]; save(); toast('Saved'); });
 $('#sgAdd').addEventListener('click', () => { const n = $('#sgName').value.trim(), h = parseFloat($('#sgHours').value); if (!n || !(h > 0)) { toast('Add a subject and hours per week'); return; } S().studyGoals[n.toLowerCase()] = {name:n.slice(0, 40), h:Math.round(h * 2) / 2}; save(); $('#sgName').value = ''; $('#sgHours').value = ''; renderStudyGoals(); });
 
+/* ================= sub-page helpers ================= */
+function slide(el, dir){ el.classList.remove('subin', 'subout'); void el.offsetWidth; el.classList.add(dir > 0 ? 'subin' : 'subout'); }
+document.addEventListener('animationend', e => { if (e.target.classList) e.target.classList.remove('subin', 'subout'); });
+if ('IntersectionObserver' in window) for (const [bar, h] of [['#setSubBar', '#setSubTitle'], ['#dSubBar', '#dSubTitle'], ['#stSubBar', '#stSubTitle']]) {
+  new IntersectionObserver(es => { for (const e of es) $(bar).classList.toggle('scrolled', !e.isIntersecting && e.boundingClientRect.top < 80); }, {rootMargin:'-56px 0px 0px 0px'}).observe($(h));
+}
+
+/* ================= stats sections ================= */
+const ST_GROUPS = [
+  ['Progress', [['badges', 'Badges', 'Milestones worth 100 XP each'], ['streaks', 'Streaks', 'Current and best run for each habit'], ['weeks', 'By week', 'Score and habits week by week'], ['pixels', 'Year in pixels', 'Every day by score or mood'], ['freezes', 'Freeze tokens', 'Saved and used streak freezes']]],
+  ['Habits', [['patterns', 'Patterns', 'Which days and habits slip most'], ['connections', 'Connections', 'How one habit affects another'], ['timing', 'When you check things off', 'Time of day for each habit']]],
+  ['Body', [['weight', 'Bodyweight', '7-day average and weekly trend'], ['calories', 'Calories vs. bodyweight', 'Intake against weight change'], ['nutrition', 'Nutrition', 'Protein, carbs and fat'], ['sleep', 'Sleep', 'Hours, bedtime and wake time'], ['recovery', 'Body and recovery', 'Resting heart rate and measurements']]],
+  ['Training', [['volume', 'Weekly volume', 'Sets per muscle each week'], ['lifts', 'Lift records', 'Best estimated 1RM per lift'], ['gymtimes', 'Gym start times', 'When your sessions begin'], ['running', 'Running', 'Distance and pace']]],
+  ['Study', [['study', 'Study', 'Hours by subject and goals']]]
+];
+const ST_SECS = {}; for (const [g, rows] of ST_GROUPS) for (const [id, t] of rows) ST_SECS[id] = {t, g};
+function renderStatsMenu(){
+  const val = {badges:(($('#sBadgeSub') && $('#sBadgeSub').textContent) || '').split(' · ')[0]};
+  $('#stMenu').innerHTML = ST_GROUPS.map(([g, rows]) => '<div class="setgroup"><p class="eyebrow">' + g + '</p><div class="setlist">' +
+    rows.map(([id, t, d]) => '<button class="setrow" type="button" data-sopen="' + id + '"><span><b>' + t + '</b><small>' + d + '</small></span>' + (val[id] ? '<span class="sval">' + esc(val[id].replace(/ earned$/, '')) + '</span>' : '') + SET_CHEV + '</button>').join('') + '</div></div>').join('');
+}
+let stSec = null, stMenuY = 0;
+function applyStSec(sec){
+  stSec = sec;
+  $('#stHead').hidden = !!sec; $('#stSubHead').hidden = !sec; $('#stSubBar').hidden = !sec;
+  document.querySelectorAll('#v-stats .panel[data-ssec]').forEach(p => { p.hidden = p.dataset.ssec !== sec; });
+  if (sec) { $('#stSubTitle').textContent = $('#stSubBarT').textContent = ST_SECS[sec].t; $('#stSubEyebrow').textContent = 'Stats · ' + ST_SECS[sec].g; }
+}
+function openStSec(sec, how){
+  if (sec && !ST_SECS[sec]) sec = null;
+  const into = !!sec;
+  if (sec && !stSec) stMenuY = window.scrollY;
+  applyStSec(sec);
+  try { if (how === 'push') history.pushState({ssec:sec}, '', '#stats/' + sec); else if (how === 'replace') history.replaceState({ssec:sec}, '', sec ? '#stats/' + sec : location.pathname + location.search); } catch (e) {}
+  if (how !== 'silent') { window.scrollTo(0, sec ? 0 : stMenuY); slide($('#v-stats'), into ? 1 : -1); }
+}
+$('#v-stats').addEventListener('click', e => { const b = e.target.closest('[data-sopen]'); if (b) openStSec(b.dataset.sopen, 'push'); });
+$('#stBack').addEventListener('click', () => { if (history.state && history.state.ssec) history.back(); else openStSec(null, 'replace'); });
+window.addEventListener('popstate', () => {
+  const m = /^#stats\/([a-z]+)$/.exec(location.hash || '');
+  if (m) { if (view !== 'stats') setView('stats'); openStSec(m[1], 'none'); }
+  else if (view === 'stats' && stSec) openStSec(null, 'none');
+});
+
 /* ================= day log pages ================= */
 let daySub = null, dayMenuY = 0;
 function applyDaySub(sub){
@@ -4033,13 +4103,13 @@ function applyDaySub(sub){
   if (sub && !pg) sub = null;
   daySub = sub;
   if (sub) dayRoot.dataset.sub = sub; else delete dayRoot.dataset.sub;
-  $('#dSubHead').hidden = !sub;
+  $('#dSubHead').hidden = !sub; $('#dSubBar').hidden = !sub;
   extrasEl.querySelectorAll('[data-dpage]').forEach(p => { p.hidden = p.dataset.dpage !== sub; });
-  if (sub) { $('#dSubTitle').textContent = pg.dataset.title.replace(/&amp;/g, '&'); $('#dSubEyebrow').textContent = fShort.format(cur) + ' · Day ' + dayNum(cur); }
+  if (sub) { $('#dSubTitle').textContent = $('#dSubBarT').textContent = pg.dataset.title; $('#dSubEyebrow').textContent = fShort.format(cur) + ' · Day ' + dayNum(cur); }
 }
 function openDaySub(sub, how){
   if (sub && !daySub) dayMenuY = window.scrollY;
-  applyDaySub(sub); sub = daySub;
+  applyDaySub(sub); sub = daySub; slide(dayRoot, sub ? 1 : -1);
   const url = sub ? '#day/' + sub : location.pathname + location.search;
   try { if (how === 'push') history.pushState({dsub:sub}, '', url); else if (how === 'replace') history.replaceState({dsub:sub}, '', url); } catch (e) {}
   window.scrollTo(0, sub ? 0 : dayMenuY);
@@ -4066,15 +4136,15 @@ $('#setMenu').innerHTML = SET_GROUPS.map(([g, rows]) => '<div class="setgroup"><
 let setSec = null, setMenuY = 0;
 function applySec(sec){
   setSec = sec;
-  $('#setHead').hidden = !!sec; $('#setSubHead').hidden = !sec;
+  $('#setHead').hidden = !!sec; $('#setSubHead').hidden = !sec; $('#setSubBar').hidden = !sec;
   document.querySelectorAll('#v-set .panel[data-sec]').forEach(p => { p.hidden = p.dataset.sec !== sec; });
-  if (sec) { $('#setSubTitle').textContent = SET_SECS[sec].t; $('#setSubEyebrow').textContent = 'Setup · ' + SET_SECS[sec].g; }
+  if (sec) { $('#setSubTitle').textContent = $('#setSubBarT').textContent = SET_SECS[sec].t; $('#setSubEyebrow').textContent = 'Setup · ' + SET_SECS[sec].g; }
 }
 const baseUrl = () => location.pathname + location.search;
 function openSec(sec, how){
   if (sec && !SET_SECS[sec]) sec = null;
   if (sec && !setSec) setMenuY = window.scrollY;
-  applySec(sec);
+  applySec(sec); slide($('#v-set'), sec ? 1 : -1);
   const url = sec ? '#set/' + sec : baseUrl() + '#set';
   try { if (how === 'push') history.pushState({sec}, '', url); else if (how === 'replace') history.replaceState({sec}, '', url); } catch (e) {}
   window.scrollTo(0, sec ? 0 : setMenuY);
@@ -4094,16 +4164,17 @@ window.addEventListener('popstate', () => {
 const VIEWS = {day:'#v-day', cal:'#v-cal', stats:'#v-stats', set:'#v-set', report:'#v-report', week:'#v-week'};
 function setView(v, keepScroll){
   view = v;
+  if (v !== 'stats' && v !== 'report' && v !== 'week' && stSec) { applyStSec(null); if (/^#stats\//.test(location.hash)) try { history.replaceState(null, '', baseUrl()); } catch (e) {} }
   if (v !== 'day' && daySub) { applyDaySub(null); if (/^#day\//.test(location.hash)) try { history.replaceState(null, '', baseUrl()); } catch (e) {} }
   if (v !== 'set') { if (setSec) applySec(null); if (/^#set/.test(location.hash)) try { history.replaceState(null, '', baseUrl()); } catch (e) {} }
   for (const [k, sel] of Object.entries(VIEWS)) $(sel).hidden = k !== v;
   const tabFor = v === 'report' || v === 'week' ? 'stats' : v;
   document.querySelectorAll('.tab').forEach(t => { if (t.dataset.view === tabFor) t.setAttribute('aria-current', 'page'); else t.removeAttribute('aria-current'); });
   $('#daynav').hidden = v !== 'day';
-  if (v === 'day') renderDay(); else if (v === 'cal') renderCal(); else if (v === 'stats') renderStats(); else if (v === 'report') renderReport(); else if (v === 'week') renderWeekly(); else renderSettings();
+  if (v === 'day') renderDay(); else if (v === 'cal') renderCal(); else if (v === 'stats') { renderStats(); renderStatsMenu(); } else if (v === 'report') renderReport(); else if (v === 'week') renderWeekly(); else renderSettings();
   if (!keepScroll) window.scrollTo(0, 0);
 }
-document.querySelectorAll('.tab').forEach(t => t.addEventListener('click', () => { if (t.dataset.view === 'set' && view === 'set' && setSec) { openSec(null, 'replace'); return; } if (t.dataset.view === 'day' && view === 'day' && daySub) { openDaySub(null, 'replace'); return; } setView(t.dataset.view); }));
+document.querySelectorAll('.tab').forEach(t => t.addEventListener('click', () => { if (t.dataset.view === 'set' && view === 'set' && setSec) { openSec(null, 'replace'); return; } if (t.dataset.view === 'day' && view === 'day' && daySub) { openDaySub(null, 'replace'); return; } if (t.dataset.view === 'stats' && view === 'stats' && stSec) { openStSec(null, 'replace'); return; } setView(t.dataset.view); }));
 document.addEventListener('visibilitychange', () => {
   if (document.hidden) { save(); return; }
   const now = sod(new Date());
@@ -4124,7 +4195,7 @@ activate(pickActive(), false);
 scheduleReminders();
 const h0 = (location.hash || '').slice(1), m0 = /^set\/([a-z]+)$/.exec(h0);
 const d0 = /^day\/([a-z]+)$/.exec(h0);
-if (m0 && SET_SECS[m0[1]]) { setView('set'); openSec(m0[1], 'replace'); } else if (d0) { setView('day'); openDaySub(d0[1], 'replace'); } else setView(VIEWS[h0] ? h0 : 'day');
+if (m0 && SET_SECS[m0[1]]) { setView('set'); openSec(m0[1], 'replace'); } else if (d0) { setView('day'); openDaySub(d0[1], 'replace'); } else if (/^stats\/[a-z]+$/.test(h0) && ST_SECS[h0.slice(6)]) { setView('stats'); openStSec(h0.slice(6), 'replace'); } else setView(VIEWS[h0] ? h0 : 'day');
 handleHealthHash();
 initLock();
 startTicker();
