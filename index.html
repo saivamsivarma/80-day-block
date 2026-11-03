@@ -1973,7 +1973,7 @@ function habitStreak(h){
 }
 function insights(){
   const end = finishedEnd();
-  if (!end || dayNum(end) < 7) return {items:[], note:'Patterns show up after your first full week (from Oct 19).'};
+  if (!end || dayNum(end) < 7) return {items:[], note:'Patterns show up after your first full week, from ' + fShort.format(addDays(START, 7)) + '.'};
   const cands = [], rates = [];
   for (const h of S().habits) {
     const occ = Array(7).fill(0), miss = Array(7).fill(0); let a = 0, cr = 0;
@@ -3506,7 +3506,7 @@ $('#tlBox').addEventListener('click', e => {
 function renderHealth(){
   $('#hkBox').innerHTML = '<p class="sub">An iOS Shortcut reads today\'s steps, sleep and resting heart rate from Apple Health and copies them. Then tap Import here or in Body and sleep.</p>' +
     '<div class="btnrow"><button class="btn primary" type="button" id="hkClip">Import from clipboard</button></div>' +
-    '<textarea id="hkTa" placeholder=\'{"date":"2026-10-17","steps":6234,"sleep_hours":7.6,"rhr":58}\' aria-label="Paste Health data" style="font-family:var(--font-data);font-size:12px;min-height:70px;margin-top:10px"></textarea>' +
+    '<textarea id="hkTa" placeholder=\'{"date":"2026-11-03","steps":6234,"sleep_hours":7.6,"rhr":58}\' aria-label="Paste Health data" style="font-family:var(--font-data);font-size:12px;min-height:70px;margin-top:10px"></textarea>' +
     '<div class="btnrow"><button class="btn" type="button" id="hkPasteBtn">Import pasted data</button></div>' +
     '<details class="howto"><summary>Build the Shortcut (about 3 minutes)</summary><ol class="steps">' +
     '<li>Open Shortcuts, tap +, and name it "Health to Blocks".</li>' +
