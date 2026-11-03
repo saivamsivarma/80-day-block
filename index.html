@@ -365,6 +365,18 @@ button.cell:active{transform:scale(.92)}
 .mrow .inp{height:42px}
 .mhdr{display:grid;grid-template-columns:minmax(0,1fr) 64px 76px 38px;gap:6px;font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;font-weight:600}
 select.inp{font-family:var(--font-body)}
+.setgroup{margin-top:22px}
+.setgroup>.eyebrow{margin:0 4px 8px}
+.setlist{background:var(--surface);border:1px solid var(--line);border-radius:18px;overflow:hidden}
+.setrow{display:flex;align-items:center;gap:12px;width:100%;min-height:56px;padding:10px 14px 10px 16px;text-align:left;color:var(--fg);background:none;border:0;font:inherit;cursor:pointer}
+.setrow+.setrow{border-top:1px solid var(--line)}
+.setrow:active{background:var(--surface-2)}
+.setrow>span{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.setrow b{font-size:15px;font-weight:600}
+.setrow small{font-size:13px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.setrow .chev{transform:rotate(-90deg)}
+#v-set .panel[data-sec]>h2:first-child{display:none}
+#v-set .panel[data-sec]{margin-top:16px}
 .minihead{font-size:13px;font-weight:600;margin-top:16px;color:var(--fg)}
 .chrow{display:flex;align-items:center;gap:10px;padding:10px 0;border-top:1px solid var(--line)}
 .chrow:first-child{border-top:0}
@@ -796,10 +808,18 @@ textarea.ing{min-height:52px;font-size:13px}
 
   <!-- SETTINGS -->
   <section id="v-set" hidden>
-    <p class="eyebrow">Settings</p>
-    <h1 class="page-title">Setup</h1>
-    <p class="status" id="storeStatus"></p>
-    <div class="panel">
+    <div id="setHead">
+      <p class="eyebrow">Settings</p>
+      <h1 class="page-title">Setup</h1>
+      <p class="status" id="storeStatus"></p>
+      <div id="setMenu"></div>
+    </div>
+    <div id="setSubHead" hidden>
+      <button class="backbtn" type="button" id="setBack"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>Setup</button>
+      <p class="eyebrow" style="margin-top:16px" id="setSubEyebrow"></p>
+      <h1 class="page-title" id="setSubTitle"></h1>
+    </div>
+    <div class="panel" data-sec="habits" hidden>
       <h2>Habits and targets</h2>
       <p class="sub">Weight sets how much a habit counts in the daily score. A minimum version earns half credit and keeps streaks alive. Turning a habit off or adding one takes effect from today.</p>
       <div id="hList"></div>
@@ -811,7 +831,7 @@ textarea.ing{min-height:52px;font-size:13px}
         <button class="btn primary" id="nhAdd" type="button">Add habit</button>
       </div>
     </div>
-    <div class="panel">
+    <div class="panel" data-sec="meals" hidden>
       <h2>Meal templates</h2>
       <p class="sub">Tap a meal on the Day screen to add its macros. Leave kcal empty to work it out from protein, carbs and fat.</p>
       <div id="mealList"></div>
@@ -819,74 +839,74 @@ textarea.ing{min-height:52px;font-size:13px}
         <div class="mnums"><label>Protein<input class="inp" id="nmP" type="number" inputmode="decimal" min="0" placeholder="g"></label><label>Carbs<input class="inp" id="nmC" type="number" inputmode="decimal" min="0" placeholder="g"></label><label>Fat<input class="inp" id="nmF" type="number" inputmode="decimal" min="0" placeholder="g"></label><label>kcal<input class="inp" id="nmK" type="number" inputmode="numeric" min="0" placeholder="auto"></label></div>
         <button class="btn primary small" type="button" id="nmAdd">Add meal</button></div>
     </div>
-    <div class="panel">
+    <div class="panel" data-sec="schedule" hidden>
       <h2>Weekly schedule</h2>
       <p class="sub">Workout name for each day. Leave blank for a rest day.</p>
       <div id="schedList"></div>
       <div class="urow" style="margin-top:8px"><span>Deload week every</span><span class="seg sm" id="deloadSeg"></span></div>
     </div>
-    <div class="panel">
+    <div class="panel" data-sec="units" hidden>
       <h2>Units</h2>
       <p class="sub">Changing a unit doesn't convert numbers you've already logged.</p>
       <div id="unitList"></div>
     </div>
-    <div class="panel">
+    <div class="panel" data-sec="reminders" hidden>
       <h2>Reminders</h2>
       <div id="remBox"></div>
     </div>
-    <div class="panel">
+    <div class="panel" data-sec="install" hidden>
       <h2>Install on your phone</h2>
       <div id="instBox"></div>
     </div>
-    <div class="panel">
+    <div class="panel" data-sec="accountability" hidden>
       <h2>Accountability</h2>
       <div id="acBox"></div>
     </div>
-    <div class="panel">
+    <div class="panel" data-sec="chains" hidden>
       <h2>Habit chains</h2>
       <div id="hcBox"><p class="sub">After you tick the first habit, the app suggests the next step.</p><div id="hcList"></div><div class="btnrow"><button class="btn small" type="button" id="hcAdd">Add a chain</button></div></div>
     </div>
-    <div class="panel">
+    <div class="panel" data-sec="library" hidden>
       <h2>Exercise library</h2>
       <div id="libBox"><p class="sub">Main muscle and form cues for each lift. Cues show in the gym log when you pick the exercise.</p>
         <input class="inp text" id="libQ" placeholder="Search exercises" aria-label="Search exercises">
         <div id="libList" style="margin-top:6px"></div>
         <div class="addstudy" style="margin-top:10px"><input class="inp text" id="libNew" placeholder="New exercise" maxlength="60" aria-label="New exercise name"><button class="btn" type="button" id="libAdd">Add</button></div></div>
     </div>
-    <div class="panel">
+    <div class="panel" data-sec="study" hidden>
       <h2>Study goals</h2>
       <div id="sgBox"><p class="sub">Hours per week for each subject. Progress shows in the study log and Stats.</p><div id="sgList"></div>
         <div class="addstudy" style="margin-top:10px"><input class="inp text" id="sgName" placeholder="Subject" maxlength="40" aria-label="Subject"><input class="inp" id="sgHours" type="number" inputmode="decimal" min="0.5" step="0.5" placeholder="h/week" aria-label="Hours per week"><button class="btn" type="button" id="sgAdd">Add goal</button></div></div>
     </div>
-    <div class="panel">
+    <div class="panel" data-sec="appearance" hidden>
       <h2>Appearance</h2>
       <div id="apBox"></div>
     </div>
-    <div class="panel">
+    <div class="panel" data-sec="checkins" hidden>
       <h2>Check-ins</h2>
       <div id="ciBox"></div>
     </div>
-    <div class="panel">
+    <div class="panel" data-sec="gym" hidden>
       <h2>Gym tools</h2>
       <div id="gtBox"></div>
     </div>
-    <div class="panel">
+    <div class="panel" data-sec="timers" hidden>
       <h2>Timers and sunlight</h2>
       <div id="tlBox"></div>
     </div>
-    <div class="panel">
+    <div class="panel" data-sec="health" hidden>
       <h2>Apple Health</h2>
       <div id="hkBox"></div>
     </div>
-    <div class="panel">
+    <div class="panel" data-sec="pin" hidden>
       <h2>PIN lock</h2>
       <div id="pinBox"></div>
     </div>
-    <div class="panel">
+    <div class="panel" data-sec="sync" hidden>
       <h2>Cloud sync</h2>
       <div id="syncBox"></div>
     </div>
-    <div class="panel">
+    <div class="panel" data-sec="challenges" hidden>
       <h2>Challenges</h2>
       <p class="sub">Each challenge has its own dates, calendar, stats, badges and report. Your log, habits, meals and schedule carry over.</p>
       <div id="chList"></div>
@@ -899,12 +919,12 @@ textarea.ing{min-height:52px;font-size:13px}
         <button class="btn primary full" id="ncAdd" type="button">Start challenge</button>
       </div>
     </div>
-    <div class="panel">
+    <div class="panel" data-sec="export" hidden>
       <h2>Spreadsheet export</h2>
       <p class="sub">CSV files open in Excel, Google Sheets or Numbers. The daily log has one row per day across every challenge; the lift file has one row per set.</p>
       <div class="btnrow"><button class="btn primary" id="csvDays" type="button">Daily log (.csv)</button><button class="btn" id="csvLifts" type="button">Lift sets (.csv)</button></div>
     </div>
-    <div class="panel">
+    <div class="panel" data-sec="backup" hidden>
       <h2>Backup</h2>
       <p class="sub">Your log lives in this browser only. Copy a backup to keep it safe or move it to another device.</p>
       <div class="btnrow">
@@ -3126,7 +3146,7 @@ function applyHealth(o){
 }
 async function importHealthClipboard(){
   try { const t = await navigator.clipboard.readText(); if (!applyHealth(parseHealth(t))) {} }
-  catch (e) { setView('set'); setTimeout(() => { const ta = $('#hkTa'); if (ta) { ta.scrollIntoView({block:'center'}); ta.focus(); } toast("Couldn't read the clipboard. Paste the Health data into the box."); }, 50); }
+  catch (e) { openSetup('health'); setTimeout(() => { const ta = $('#hkTa'); if (ta) { ta.scrollIntoView({block:'center'}); ta.focus(); } toast("Couldn't read the clipboard. Paste the Health data into the box."); }, 50); }
 }
 function handleHealthHash(){
   const h = location.hash || ''; if (!/^#hk=/.test(h)) return;
@@ -3902,10 +3922,49 @@ function renderStudyGoals(){
 $('#sgBox').addEventListener('change', e => { const t = e.target; if (!t.dataset.sg) return; const v = parseFloat(t.value); if (v > 0) S().studyGoals[t.dataset.sg] = {name:t.dataset.sn, h:Math.round(v * 2) / 2}; else delete S().studyGoals[t.dataset.sg]; save(); toast('Saved'); });
 $('#sgAdd').addEventListener('click', () => { const n = $('#sgName').value.trim(), h = parseFloat($('#sgHours').value); if (!n || !(h > 0)) { toast('Add a subject and hours per week'); return; } S().studyGoals[n.toLowerCase()] = {name:n.slice(0, 40), h:Math.round(h * 2) / 2}; save(); $('#sgName').value = ''; $('#sgHours').value = ''; renderStudyGoals(); });
 
+/* ================= setup sections ================= */
+const SET_GROUPS = [
+  ['Tracking', [['habits', 'Habits and targets', 'Daily habits, weights and minimum versions'], ['chains', 'Habit chains', 'Suggest the next habit after one'], ['checkins', 'Check-ins', 'Strict logging windows'], ['meals', 'Meal templates', 'One-tap meals with macros'], ['study', 'Study goals', 'Weekly hours per subject']]],
+  ['Training', [['schedule', 'Weekly schedule', 'Workout for each day, deload weeks'], ['library', 'Exercise library', 'Main muscle and form cues'], ['gym', 'Gym tools', 'Rest timer defaults'], ['timers', 'Timers and sunlight', 'Focus timer and sunlight']]],
+  ['App', [['appearance', 'Appearance', 'Light or dark mode, accent color'], ['units', 'Units', 'Weight, distance and more'], ['reminders', 'Reminders', 'Notifications and calendar file'], ['accountability', 'Accountability', 'Lock past days'], ['pin', 'PIN lock', 'Ask for a PIN when the app opens'], ['install', 'Install on your phone', 'Add to Home Screen']]],
+  ['Data', [['challenges', 'Challenges', 'Dates for this and new challenges'], ['sync', 'Cloud sync', 'Keep devices in step'], ['health', 'Apple Health', 'Steps, sleep and heart rate from a Shortcut'], ['export', 'Spreadsheet export', 'Daily log and lift sets as CSV'], ['backup', 'Backup', 'Copy, restore or erase data']]]
+];
+const SET_SECS = {}; for (const [g, rows] of SET_GROUPS) for (const [id, t] of rows) SET_SECS[id] = {t, g};
+const SET_CHEV = '<svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>';
+$('#setMenu').innerHTML = SET_GROUPS.map(([g, rows]) => '<div class="setgroup"><p class="eyebrow">' + g + '</p><div class="setlist">' +
+  rows.map(([id, t, d]) => '<button class="setrow" type="button" data-open="' + id + '"><span><b>' + t + '</b><small>' + d + '</small></span>' + SET_CHEV + '</button>').join('') + '</div></div>').join('');
+let setSec = null, setMenuY = 0;
+function applySec(sec){
+  setSec = sec;
+  $('#setHead').hidden = !!sec; $('#setSubHead').hidden = !sec;
+  document.querySelectorAll('#v-set .panel[data-sec]').forEach(p => { p.hidden = p.dataset.sec !== sec; });
+  if (sec) { $('#setSubTitle').textContent = SET_SECS[sec].t; $('#setSubEyebrow').textContent = 'Setup · ' + SET_SECS[sec].g; }
+}
+const baseUrl = () => location.pathname + location.search;
+function openSec(sec, how){
+  if (sec && !SET_SECS[sec]) sec = null;
+  if (sec && !setSec) setMenuY = window.scrollY;
+  applySec(sec);
+  const url = sec ? '#set/' + sec : baseUrl() + '#set';
+  try { if (how === 'push') history.pushState({sec}, '', url); else if (how === 'replace') history.replaceState({sec}, '', url); } catch (e) {}
+  window.scrollTo(0, sec ? 0 : setMenuY);
+}
+function openSetup(sec){ if (view !== 'set') setView('set'); openSec(sec, 'push'); }
+$('#setMenu').addEventListener('click', e => { const b = e.target.closest('[data-open]'); if (b) openSec(b.dataset.open, 'push'); });
+$('#setBack').addEventListener('click', () => { if (history.state && history.state.sec) history.back(); else openSec(null, 'replace'); });
+window.addEventListener('popstate', () => {
+  const h = location.hash || '';
+  if (!/^#set(\/|$)/.test(h) && view !== 'set') return;
+  const m = /^#set\/([a-z]+)$/.exec(h);
+  if (view !== 'set') setView('set');
+  openSec(m ? m[1] : null, 'none');
+});
+
 /* ================= views ================= */
 const VIEWS = {day:'#v-day', cal:'#v-cal', stats:'#v-stats', set:'#v-set', report:'#v-report', week:'#v-week'};
 function setView(v, keepScroll){
   view = v;
+  if (v !== 'set') { if (setSec) applySec(null); if (/^#set/.test(location.hash)) try { history.replaceState(null, '', baseUrl()); } catch (e) {} }
   for (const [k, sel] of Object.entries(VIEWS)) $(sel).hidden = k !== v;
   const tabFor = v === 'report' || v === 'week' ? 'stats' : v;
   document.querySelectorAll('.tab').forEach(t => { if (t.dataset.view === tabFor) t.setAttribute('aria-current', 'page'); else t.removeAttribute('aria-current'); });
@@ -3913,7 +3972,7 @@ function setView(v, keepScroll){
   if (v === 'day') renderDay(); else if (v === 'cal') renderCal(); else if (v === 'stats') renderStats(); else if (v === 'report') renderReport(); else if (v === 'week') renderWeekly(); else renderSettings();
   if (!keepScroll) window.scrollTo(0, 0);
 }
-document.querySelectorAll('.tab').forEach(t => t.addEventListener('click', () => setView(t.dataset.view)));
+document.querySelectorAll('.tab').forEach(t => t.addEventListener('click', () => { if (t.dataset.view === 'set' && view === 'set' && setSec) { openSec(null, 'replace'); return; } setView(t.dataset.view); }));
 document.addEventListener('visibilitychange', () => {
   if (document.hidden) { save(); return; }
   const now = sod(new Date());
@@ -3932,8 +3991,8 @@ applyTheme();
 lastSettingsSig = settingsSig();
 activate(pickActive(), false);
 scheduleReminders();
-const h0 = (location.hash || '').slice(1);
-setView(VIEWS[h0] ? h0 : 'day');
+const h0 = (location.hash || '').slice(1), m0 = /^set\/([a-z]+)$/.exec(h0);
+if (m0 && SET_SECS[m0[1]]) { setView('set'); openSec(m0[1], 'replace'); } else setView(VIEWS[h0] ? h0 : 'day');
 handleHealthHash();
 initLock();
 startTicker();
