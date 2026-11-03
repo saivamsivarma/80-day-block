@@ -580,8 +580,8 @@ textarea.ing{min-height:52px;font-size:13px}
   <section id="v-day">
     <header class="dayhead">
       <div>
-        <p class="eyebrow" id="dEyebrow">Day 1 of 80</p>
-        <h1 class="date" id="dDate">Oct 17</h1>
+        <p class="eyebrow" id="dEyebrow">Day 1 of 59</p>
+        <h1 class="date" id="dDate">Nov 3</h1>
         <div class="wk"><span class="pill" id="dWorkout">Pull day</span><span class="count" id="dCount"></span></div>
       </div>
       <div class="ring" id="ring" role="img" aria-label="Daily completion">
@@ -652,7 +652,7 @@ textarea.ing{min-height:52px;font-size:13px}
     <div class="kpis">
       <div class="panel"><p class="eyebrow">Overall</p><p class="big" id="sOverall">—</p><p class="sub" id="sOverallSub" style="margin:6px 0 0;font-size:13px"></p></div>
       <div class="panel kpi2">
-        <div><b id="sLeft">80</b><small id="sLeftLbl">days until Jan 4</small></div>
+        <div><b id="sLeft">59</b><small id="sLeftLbl">days until Dec 31</small></div>
         <div><b id="sPerfect">0</b><small>perfect days</small></div>
       </div>
       <div class="panel"><p class="eyebrow">Level</p><p class="big" id="sLvl">1</p><div class="lvlbar"><i id="sLvlBar"></i></div><p class="sub" id="sLvlSub" style="margin:6px 0 0;font-size:13px"></p></div>
@@ -783,7 +783,7 @@ textarea.ing{min-height:52px;font-size:13px}
   <section id="v-report" hidden>
     <button class="backbtn" type="button" id="repBack"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>Stats</button>
     <p class="eyebrow" style="margin-top:16px" id="rEyebrow"></p>
-    <h1 class="page-title" id="rTitle">80-day report</h1>
+    <h1 class="page-title" id="rTitle">Progress report</h1>
     <div id="rBody"></div>
   </section>
 
@@ -935,7 +935,7 @@ textarea.ing{min-height:52px;font-size:13px}
   <div class="dock-in">
     <div class="daynav" id="daynav">
       <button class="navbtn" id="prevBtn" type="button" aria-label="Previous day"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button>
-      <label class="dp"><span id="dpLabel">Sat, Oct 17</span><input type="date" id="dp" min="2026-10-17" max="2027-01-04" aria-label="Pick a date"></label>
+      <label class="dp"><span id="dpLabel">Tue, Nov 3</span><input type="date" id="dp" min="2026-11-03" max="2026-12-31" aria-label="Pick a date"></label>
       <button class="todaybtn" id="todayBtn" type="button">Today</button>
       <button class="navbtn" id="nextBtn" type="button" aria-label="Next day"><svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg></button>
     </div>
@@ -991,7 +991,7 @@ textarea.ing{min-height:52px;font-size:13px}
 <script>
 (function(){
 'use strict';
-const DEFAULT_CHALLENGE = {id:'c2026', name:'80-Day Block', start:'2026-10-17', end:'2027-01-04'};
+const DEFAULT_CHALLENGE = {id:'c2026', name:'80-Day Block', start:'2026-11-03', end:'2026-12-31'};
 let CHAL, START, END, TOTAL, WEEKS, HALFWAY;
 const SKEY = 'block80.v1';
 const TYPES = ['check', 'num', 'water', 'gym'];
@@ -1223,9 +1223,9 @@ function clean(raw){
     }
   }
   if (!out.challenges.some(c => !c.deleted)) out.challenges.push(Object.assign({}, DEFAULT_CHALLENGE));
-  // Oct 2026 restart: move the original Oct 12 – Dec 30 block to Oct 17 – Jan 4 and clear what was earned under the old dates
+  // Nov 2026 restart: move the main block (originally Oct 12, then Oct 17) to Nov 3 – Dec 31 and clear what was earned under the old dates
   let restarted = false;
-  for (const c of out.challenges) if (c.id === 'c2026' && c.start === '2026-10-12' && c.end === '2026-12-30') { c.start = DEFAULT_CHALLENGE.start; c.end = DEFAULT_CHALLENGE.end; c.u = Date.now(); restarted = true; }
+  for (const c of out.challenges) if (c.id === 'c2026' && !c.deleted && c.start < DEFAULT_CHALLENGE.start) { c.start = DEFAULT_CHALLENGE.start; c.end = DEFAULT_CHALLENGE.end; c.u = Date.now(); restarted = true; }
   out.restarted = restarted;
   if (raw.reviews && typeof raw.reviews === 'object') for (const [k, v] of Object.entries(raw.reviews)) {
     let kk = k;
@@ -1435,7 +1435,7 @@ function renderDay(){
   if (isLocked(d)) msg = "Locked: days more than 48 hours past can't be changed. You can turn this off in Setup → Accountability.";
   dayRoot.classList.toggle('locked', isLocked(d));
   const n = $('#dNotice'); n.textContent = msg; n.hidden = !msg;
-  $('#dReportCard').innerHTML = TODAY >= END && same(d, END) ? '<div class="notice" style="display:flex;align-items:center;justify-content:space-between;gap:12px"><span><b>Your 80-day report is ready.</b></span><button class="btn small primary" type="button" data-act="report">View report</button></div>' : '';
+  $('#dReportCard').innerHTML = TODAY >= END && same(d, END) ? '<div class="notice" style="display:flex;align-items:center;justify-content:space-between;gap:12px"><span><b>Your ' + TOTAL + '-day report is ready.</b></span><button class="btn small primary" type="button" data-act="report">View report</button></div>' : '';
   renderChain(); renderQuote(); renderCheckin(); renderAlerts(); renderMood();
 
   const mealsOn = S().meals.length && (hById('protein') || hById('kcal'));
