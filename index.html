@@ -90,7 +90,7 @@ h1,h2,h3,p{margin:0}
 .notice{margin-bottom:12px;padding:10px 14px;border-radius:14px;background:var(--accent-soft);color:var(--fg);font-size:14px}
 
 /* Chain banner */
-.chain{display:flex;flex-direction:column;align-items:flex-start;gap:10px;margin-bottom:12px;padding:12px 14px;border-radius:16px;background:var(--surface);border:1px solid var(--line)}
+.chain{display:flex;align-items:center;gap:12px;margin-bottom:12px;padding:10px 14px;border-radius:16px;background:var(--surface);border:1px solid var(--line)}
 .chain .links{display:flex;gap:4px;flex:none}
 .chain .links{gap:5px}
 .chain .lk{width:15px;height:15px;border-radius:5px;border:1.5px solid var(--line);background:var(--surface-2)}
@@ -98,7 +98,8 @@ h1,h2,h3,p{margin:0}
 .chain .lk.warn{background:var(--warn);border-color:var(--warn)}
 .chain .lk.bad{background:var(--bad-soft);border-color:color-mix(in srgb,var(--bad) 55%,transparent)}
 .chain .lk.now{border-style:dashed;border-color:var(--muted);background:transparent}
-.chain p{font-size:14px;line-height:1.35;min-width:0}
+.chain p{font-size:13px;line-height:1.35;min-width:0;color:var(--muted)}
+.chain p b{color:var(--fg)}
 .chain b{font-weight:600}
 .chain.broken{border-color:color-mix(in srgb,var(--bad) 45%,var(--line))}
 
@@ -135,6 +136,12 @@ input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-
 .inp.text{font-family:var(--font-body)}
 .inp[type=time]{font-family:var(--font-data)}
 .num .u{font-size:12px;color:var(--muted);width:34px}
+.num.stepper{gap:0;border:1px solid var(--line);border-radius:12px;background:var(--surface-2);overflow:hidden}
+.num.stepper input{width:64px;height:44px;border:0;border-radius:0;background:transparent;text-align:center;padding:0 2px;font-size:16px}
+.num.stepper input:focus{outline:0;background:var(--surface)}
+.stp{width:38px;height:44px;display:grid;place-items:center;color:var(--accent)}
+.stp svg{width:16px;height:16px;stroke:currentColor;stroke-width:2.4;fill:none;stroke-linecap:round}
+.stp:active{background:var(--accent-soft)}
 .row.rest{color:var(--muted)}
 .row.rest .box{border-style:dashed}
 .row.rest .txt b{color:var(--muted)}
@@ -418,7 +425,8 @@ select.inp{font-family:var(--font-body)}
 .tring .trk{stroke:var(--surface-2)}
 .tring .arc{stroke:var(--accent);stroke-linecap:round;transition:stroke-dashoffset 1s linear}
 .tfull.sun .tring .arc{stroke:var(--warn)}
-.tfull.brk .tring .arc{stroke:var(--good)}
+.tfull.brk .tring .arc,.tfull.go .tring .arc{stroke:var(--good)}
+.tfull.go .ttime{color:var(--good);font-family:var(--font-display)}
 .tring .tin{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px}
 .tring .ttime{font-family:var(--font-data);font-size:clamp(52px,17vw,80px);font-weight:600;letter-spacing:-.03em;font-variant-numeric:tabular-nums;line-height:1}
 .tring .tof{color:var(--muted);font-size:14px}
@@ -460,7 +468,8 @@ select.inp{font-family:var(--font-body)}
 .checkin:active{transform:scale(.99)}
 .ci-t{font-family:var(--font-display);font-size:24px;font-weight:700;line-height:1.1}
 .ci-s{font-size:13px;opacity:.9}
-.cinote{margin-bottom:12px;padding:10px 14px;border-radius:14px;background:var(--surface);border:1px dashed var(--line);font-size:14px;color:var(--muted)}
+.cinote{margin:-4px 2px 12px;font-size:13px;color:var(--muted);display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.cinote::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--accent);flex:none}
 .tbar{position:fixed;left:0;right:0;top:calc(env(safe-area-inset-top,0px) + 8px);z-index:15;display:flex;flex-wrap:wrap;justify-content:center;gap:6px;padding-inline:16px;pointer-events:none}
 .tpill{pointer-events:auto;display:inline-flex;align-items:center;gap:8px;height:38px;padding:0 6px 0 14px;border-radius:999px;background:var(--fg);color:var(--bg);font-family:var(--font-data);font-size:13px;box-shadow:0 4px 16px rgba(0,0,0,.18)}
 .tpill b{font-family:var(--font-body);font-weight:600}
@@ -543,7 +552,11 @@ select.inp{font-family:var(--font-body)}
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--mood1:#FF6B6B;--mood2:#FF922B;--mood3:#5C6575;--mood4:#94D82D;--mood5:#51CF66;--frost:#4DABF7}}
 :root[data-theme="dark"]{--mood1:#FF6B6B;--mood2:#FF922B;--mood3:#5C6575;--mood4:#94D82D;--mood5:#51CF66;--frost:#4DABF7}
 .alert{margin-bottom:12px;padding:14px;border-radius:16px;background:var(--surface);border:1px solid var(--accent);display:flex;flex-direction:column;gap:4px}
-.alert b{font-size:15px;font-weight:600}
+.alert{position:relative}
+.alert b{font-size:15px;font-weight:600;padding-right:34px}
+.adx{position:absolute;top:8px;right:8px;width:32px;height:32px;border-radius:10px;display:grid;place-items:center;color:var(--muted)}
+.adx svg{width:16px;height:16px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round}
+.adx:active{background:var(--surface-2)}
 .alert p{font-size:14px;color:var(--muted)}
 .alert .btnrow{margin-top:6px}
 .moodrow{display:flex;align-items:center;gap:12px;margin-top:12px;padding:10px 14px;border-radius:18px;background:var(--surface);border:1px solid var(--line)}
@@ -661,7 +674,6 @@ textarea.ing{min-height:52px;font-size:13px}
       <button class="schip undo" id="undoChip" type="button" hidden>Undo</button>
     </div>
     <div id="dChain"></div>
-    <p class="quote" id="dQuote"></p>
     <div id="dCheckin"></div>
     <div id="dAlerts"></div>
     <p class="notice" id="dNotice" hidden></p>
@@ -669,6 +681,7 @@ textarea.ing{min-height:52px;font-size:13px}
     <ul class="habits" id="habits"></ul>
     <div id="dReview"></div>
     <div id="dMood"></div>
+    <p class="quote" id="dQuote"></p>
     <div id="dExtras"></div>
     <p class="hint">Swipe left or right to change days</p>
   </section>
@@ -1507,10 +1520,12 @@ function renderChain(){
   const y = addDays(TODAY, -1), ys = dayScore(y), st = streak70();
   const links = []; for (let i = 6; i >= 0; i--) { const d = addDays(TODAY, -i); links.push(d < START ? '<i class="lk" style="opacity:.3"></i>' : '<i class="lk ' + (i === 0 ? (chainOK(d) ? status(d) : 'now') : status(d)) + '"></i>'); }
   const kept = chainOK(y);
-  const msg = kept ? '<b>Yesterday ' + pct(ys.p) + '.</b> Chain at ' + st.cur + (st.cur === 1 ? ' day' : ' days') + '. Hit 70% today to keep it going.'
-    : '<b>Yesterday ' + pct(ys.p) + '.</b> The chain reset. Start a new one today: 70% keeps it alive' + (S().habits.some(h => h.min || h.minTarget || h.minTime) ? ', and minimum versions count.' : '.');
+  const msg = kept ? '<b>' + st.cur + '-day chain.</b> Yesterday ' + pct(ys.p) + '. Hit 70% today to extend it.'
+    : '<b>Yesterday ' + pct(ys.p) + '.</b> New chain starts today at 70%' + (S().habits.some(h => h.min || h.minTarget || h.minTime) ? '; minimums count.' : '.');
   box.innerHTML = '<div class="chain' + (kept ? '' : ' broken') + '"><span class="links" aria-hidden="true">' + links.join('') + '</span><p>' + msg + '</p></div>';
 }
+const niceStep = t => { const x = (t || 10) / 10; return [1, 2, 5, 10, 25, 50, 100, 250, 500, 1000, 2500, 5000].filter(n => n <= x).pop() || 1; };
+const PLUS_SVG = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>', MINUS_SVG = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/></svg>';
 function renderDay(){
   const d = cur, w = workoutFor(d), r = peek(d), dl = isDeload(weekOf(d));
   $('#dEyebrow').textContent = 'Day ' + dayNum(d) + ' of ' + TOTAL + ' · ' + fWeekday.format(d);
@@ -1538,7 +1553,7 @@ function renderDay(){
       const v = r && r.vals[h.id] != null ? r.vals[h.id] : '';
       row = '<li class="row" data-row="' + h.id + '"><button class="boxbtn" type="button" data-toggle="' + h.id + '" aria-label="Mark ' + esc(h.name) + ' done"><span class="box">' + CHECK_SVG + '</span></button>' +
         '<label class="txt" for="in-' + h.id + '"><b>' + nm + '</b><small>Goal ' + fmtN(h.target, 2) + ' ' + esc(h.unit) + (h.minTarget ? ' · min ' + fmtN(h.minTarget, 2) : '') + '</small><span class="mini"><i></i>' + (h.minTarget ? '<u style="left:' + (h.minTarget / h.target * 100) + '%"></u>' : '') + '</span></label>' +
-        '<span class="num"><input id="in-' + h.id + '" data-field="' + h.id + '" type="number" inputmode="decimal" min="0" step="any" placeholder="0" value="' + v + '" enterkeyhint="done"><span class="u">' + esc(h.unit) + '</span></span></li>';
+        '<span class="num stepper"><button class="stp" type="button" data-step="' + h.id + '" data-dir="-1" aria-label="Subtract ' + niceStep(h.target) + ' ' + esc(h.unit) + '">' + MINUS_SVG + '</button><input id="in-' + h.id + '" data-field="' + h.id + '" type="number" inputmode="decimal" min="0" step="any" placeholder="0" value="' + v + '" enterkeyhint="done" aria-label="' + esc(h.name) + ' in ' + esc(h.unit) + '"><button class="stp" type="button" data-step="' + h.id + '" data-dir="1" aria-label="Add ' + niceStep(h.target) + ' ' + esc(h.unit) + '">' + PLUS_SVG + '</button></span></li>';
     } else if (h.type === 'water') {
       row = '<li class="water" data-row="' + h.id + '"><div class="row"><button class="boxbtn" type="button" data-toggle="' + h.id + '" aria-label="Mark water done"><span class="box">' + CHECK_SVG + '</span></button>' +
         '<span class="txt"><b>' + nm + '</b><small>Goal ' + fmtN(h.target / 1000, 2) + ' L' + (h.minTarget ? ' · min ' + fmtN(h.minTarget / 1000, 2) + ' L' : '') + '</small></span><span class="wamt" id="wAmt"></span></div>' +
@@ -1728,6 +1743,8 @@ function syncNumInput(id){ const el = $('#in-' + id), r = peek(cur); if (el) el.
 dayRoot.addEventListener('click', e => {
   const t = e.target.closest('[data-toggle]');
   if (t) { const id = t.dataset.toggle; if (strictBlocked(id)) return; const h = hById(id), on = !(peek(cur) && peek(cur).checks[id] === true); const r = rec(cur, (on ? 'Checked ' : 'Unchecked ') + (h ? h.name : id)); if (on) { r.checks[id] = true; ctStamp(r, id); } else delete r.checks[id]; save(); buzz(); updateDay(); if (on) chainHint(id); return; }
+  const sb = e.target.closest('[data-step]');
+  if (sb) { const h = hById(sb.dataset.step); if (!h) return; const r = rec(cur), st = niceStep(h.target), v0 = r.vals[h.id] || 0, v = Math.max(0, Math.round((v0 + st * Number(sb.dataset.dir)) * 100) / 100); if (v) r.vals[h.id] = v; else delete r.vals[h.id]; relevelNum(r, h.id); save(); syncNumInput(h.id); vib(8); updateDay(); return; }
   const mb = e.target.closest('[data-min]');
   if (mb) { const id = mb.dataset.min; if (strictBlocked(id)) return; const r = rec(cur, 'Minimum: ' + (hById(id) ? hById(id).name : id)); if (r.checks[id] === 'min') delete r.checks[id]; else { r.checks[id] = 'min'; ctStamp(r, id); } save(); buzz(); updateDay(); if (r.checks[id]) chainHint(id); return; }
   const wb = e.target.closest('[data-water]');
@@ -2943,7 +2960,12 @@ function sunLevel(r){
 }
 function onTick(){
   const now = Date.now();
-  if (timers.rest && now >= timers.rest.end) { delete timers.rest; saveTimers(); chime(2); vib([200, 100, 200]); toast('Rest over. Next set.'); }
+  if (timers.rest && now >= timers.rest.end) {
+    const late = now - timers.rest.end; delete timers.rest; saveTimers(); chime(2); vib([200, 100, 200]);
+    if (document.hidden) { if (canNotify() && Notification.permission === 'granted') notify('Rest over', 'Time for your next set.'); pendingLate = now - late; }
+    else if (late > 4000) toast('Rest ended ' + mmss(late) + ' ago');
+    else { tfGo = now; if (tfKind !== 'rest') toast('Rest over. Next set.'); }
+  }
   if (timers.sun) {
     const s = timers.sun, mins = s.base + Math.floor((now - s.start) / 60000), r = data.days[s.k];
     if (!r || (r.sunMin || 0) !== mins) { const rr = rawRec(s.k); rr.sunMin = mins; sunLevel(rr); save(); if (view === 'day' && key(cur) === s.k) updateDay(); }
@@ -2967,20 +2989,28 @@ function renderTimerBar(){
   renderTimerFull();
 }
 /* full-screen timer */
-let tfKind = null, tfWake = null;
+let tfKind = null, tfWake = null, tfGo = 0, pendingLate = 0;
+document.addEventListener('visibilitychange', () => { if (!document.hidden && pendingLate) { toast('Rest ended ' + mmss(Date.now() - pendingLate) + ' ago'); pendingLate = 0; } if (!document.hidden) renderTimerBar(); });
 const TF_C = 2 * Math.PI * 54;
 function wake(on){
   try {
-    if (on && !tfWake && navigator.wakeLock) navigator.wakeLock.request('screen').then(l => { tfWake = l; }, () => {});
+    if (on && !tfWake && navigator.wakeLock && !document.hidden) navigator.wakeLock.request('screen').then(l => { tfWake = l; l.addEventListener('release', () => { if (tfWake === l) tfWake = null; }); }, () => {});
     else if (!on && tfWake) { tfWake.release(); tfWake = null; }
   } catch (e) {}
 }
 function openTimerFull(kind){ if (!timers[kind]) return; tfKind = kind; renderTimerFull(); }
 function closeTimerFull(){ tfKind = null; renderTimerFull(); }
 function renderTimerFull(){
-  const el = $('#tfull'), t = tfKind && timers[tfKind];
-  if (!t) { if (!el.hidden) { el.hidden = true; wake(false); } tfKind = null; return; }
-  const now = Date.now();
+  const el = $('#tfull'), now = Date.now();
+  let t = tfKind && timers[tfKind];
+  if (!t && tfKind === 'rest' && tfGo && now - tfGo < 2600) {
+    el.className = 'tfull rest go'; $('#tfLabel').textContent = 'Rest over'; $('#tfTime').textContent = 'Go'; $('#tfOf').textContent = '';
+    $('#tfArc').style.strokeDashoffset = '0'; $('#tfSub').textContent = 'Time for your next set.';
+    const ctl = '<button class="btn primary" type="button" data-tf="done">Back to log</button>';
+    if ($('#tfCtl').dataset.sig !== ctl) { $('#tfCtl').innerHTML = ctl; $('#tfCtl').dataset.sig = ctl; }
+    return;
+  }
+  if (!t) { if (!el.hidden) el.hidden = true; tfKind = null; tfGo = 0; wake(!!timers.rest); return; }
   let label, left, total, of = '', sub = '', ctl;
   if (tfKind === 'rest') {
     label = 'Rest'; left = t.end - now; total = t.dur * 1000; of = 'of ' + mmss(total);
@@ -3006,12 +3036,14 @@ function renderTimerFull(){
   if ($('#tfSub').innerHTML !== sub) $('#tfSub').innerHTML = sub;
   if ($('#tfCtl').dataset.sig !== ctl) { $('#tfCtl').innerHTML = ctl; $('#tfCtl').dataset.sig = ctl; }
   el.hidden = !$('#lock').hidden;
-  if (wasHidden && !el.hidden) { wake(true); const b = $('#tfCtl .primary'); if (b) b.focus({preventScroll:true}); }
+  wake(!el.hidden || !!timers.rest);
+  if (wasHidden && !el.hidden) { const b = $('#tfCtl .primary'); if (b) b.focus({preventScroll:true}); }
 }
-$('#tfMin').addEventListener('click', closeTimerFull);
+$('#tfMin').addEventListener('click', () => { tfGo = 0; closeTimerFull(); });
 document.addEventListener('keydown', e => { if (e.key === 'Escape' && tfKind) closeTimerFull(); });
 $('#tfCtl').addEventListener('click', e => {
   const b = e.target.closest('[data-tf]'); if (!b) return;
+  if (b.dataset.tf === 'done') { tfGo = 0; closeTimerFull(); return; }
   const a = b.dataset.tf, t = timers[tfKind]; if (!t) return;
   if (a === 'plus') { t.end += 15000; t.dur += 15; }
   else if (a === 'minus') { t.end -= 15000; t.dur = Math.max(15, t.dur - 15); if (t.end <= Date.now()) delete timers.rest; }
@@ -3302,6 +3334,7 @@ dayRoot.addEventListener('click', e => {
   else if (act === 'sore') { const p = a.dataset.p, r = rec(cur); r.sore = r.sore || {}; const l = ((r.sore[p] || 0) + 1) % 4; if (l) r.sore[p] = l; else delete r.sore[p]; save(); a.className = 'sorechip l' + l; a.innerHTML = p + (l ? ' <i>' + ['', 'mild', 'mod', 'very'][l] + '</i>' : ''); }
   else if (act === 'measshow') { measOpen = key(cur); renderExtras(); }
   else if (act === 'hkpaste') importHealthClipboard();
+  else if (act === 'adismiss') { const c = a.closest('[data-alert]'); if (c) { const m = lsGet(DKEY, {}); for (const k of Object.keys(m)) if (m[k] < key(TODAY)) delete m[k]; m[c.dataset.alert] = key(TODAY); lsSet(DKEY, m); c.remove(); toast('Hidden until tomorrow'); } }
 });
 dayRoot.addEventListener('click', e => {
   const b = e.target.closest('[data-rest]'); if (!b) return;
@@ -3820,16 +3853,20 @@ function chainHint(id){
 }
 function showHint(text, btn, fn){ showSnack(text); snackFn = fn; $('#snackUndo').textContent = btn; clearTimeout(snackT); snackT = setTimeout(hideSnack, 7000); }
 function ctStamp(r, id){ if (r === data.days[key(TODAY)]) { r.ct = r.ct || {}; r.ct[id] = nowHM(); } }
-const alertCard = (title, text, a1, l1, a2, l2) => '<div class="alert"><b>' + title + '</b><p>' + text + '</p><div class="btnrow"><button class="btn small primary" type="button" data-act="' + a1 + '">' + l1 + '</button>' + (a2 ? '<button class="btn small" type="button" data-act="' + a2 + '">' + l2 + '</button>' : '') + '</div></div>';
+const DKEY = 'block80.dismissed';
+const dismissed = id => { const m = lsGet(DKEY, {}); return m[id] === key(TODAY); };
+let alertId = '';
+const alertCard = (title, text, a1, l1, a2, l2) => (dismissed(alertId) ? '' : '<div class="alert" data-alert="' + alertId + '"><button class="adx" type="button" data-act="adismiss" aria-label="Hide for today">' + X_SVG + '</button><b>' + title + '</b><p>' + text + '</p><div class="btnrow"><button class="btn small primary" type="button" data-act="' + a1 + '">' + l1 + '</button>' + (a2 ? '<button class="btn small" type="button" data-act="' + a2 + '">' + l2 + '</button>' : '') + '</div></div>');
 function renderAlerts(){
   const box = $('#dAlerts'); if (!box) return;
   if (!same(cur, TODAY) || !inRange(TODAY)) { box.innerHTML = ''; return; }
   let h = '';
   const y = addDays(TODAY, -1);
-  if (y >= START && !chainOK(y)) { const fi = freezeInfo(), prev = chainLenEnding(addDays(y, -1)); if (fi.left > 0 && prev > 0) h += alertCard('Save your ' + prev + '-day chain?', 'Yesterday was ' + pct(dayScore(y).p) + '. Spend a freeze token (' + fi.left + ' left) to keep the chain going.', 'freeze', 'Use a token'); }
+  if (y >= START && !chainOK(y)) { const fi = freezeInfo(), prev = chainLenEnding(addDays(y, -1)); if (fi.left > 0 && prev > 0) { alertId = 'freeze'; h += alertCard('Save your ' + prev + '-day chain?', 'Yesterday was ' + pct(dayScore(y).p) + '. Spend a freeze token (' + fi.left + ' left) to keep the chain going.', 'freeze', 'Use a token'); } }
   const m = missedWorkout(), gh = gymHabit();
+  alertId = 'resched';
   if (m && gh) h += alertCard('Missed ' + esc(m.w) + ' on ' + fWeekday.format(m.d), 'Shift the rest of this week so ' + esc(m.w) + ' happens ' + (credit(TODAY, gh.id) > 0 ? 'tomorrow' : 'today') + '? Rest days move to the end of the week.', 'resched-shift', 'Shift the split', 'resched-keep', 'Keep the plan');
-  const L = data.letters[CHAL.id];
+  const L = data.letters[CHAL.id]; alertId = 'letter';
   if (TODAY >= END && L && L.sealed) h += alertCard('Your letter is unlocked', 'You wrote it on ' + fMD.format(parseKey(L.at || key(START))) + '.', 'letter', 'Read it');
   else if (dayNum(TODAY) <= 7 && !(L && L.sealed)) h += alertCard('Write to future you', 'Seal a letter now. It stays locked until ' + fShort.format(END) + '.', 'letter', L && L.text ? 'Finish the letter' : 'Write it');
   box.innerHTML = h;
