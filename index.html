@@ -377,6 +377,33 @@ select.inp{font-family:var(--font-body)}
 .setrow .chev{transform:rotate(-90deg)}
 #v-set .panel[data-sec]>h2:first-child{display:none}
 #v-set .panel[data-sec]{margin-top:16px}
+.setrow>span.ico{flex:none;display:grid;width:34px}
+.logpage .meals{padding:0}
+.logpage .meals .mhead,.logpage .mchips,.logpage .mlog,.logpage .remain{padding-inline:0}
+.logpage .meals .mhead b{display:none}
+.logpage .mchips{margin-inline:-14px;padding-inline:14px}
+.logmenu{margin-top:18px}
+#v-day[data-sub]>:not(#dSubHead):not(#dExtras){display:none!important}
+#v-day[data-sub] .logmenu{display:none}
+.logpage{margin-top:16px}
+.logpage .card-body{padding-top:16px}
+.tpill{cursor:pointer}
+.tfull{position:fixed;inset:0;z-index:40;background:var(--bg);color:var(--fg);display:flex;flex-direction:column;align-items:center;padding:calc(env(safe-area-inset-top,0px) + 12px) 20px calc(env(safe-area-inset-bottom,0px) + 24px);text-align:center}
+.tfull .ttop{width:100%;max-width:520px;display:flex;justify-content:space-between;align-items:center}
+.tfull .tmid{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;width:100%}
+.tring{position:relative;width:min(76vw,340px);aspect-ratio:1}
+.tring svg{width:100%;height:100%;transform:rotate(-90deg)}
+.tring circle{fill:none;stroke-width:7}
+.tring .trk{stroke:var(--surface-2)}
+.tring .arc{stroke:var(--accent);stroke-linecap:round;transition:stroke-dashoffset 1s linear}
+.tfull.sun .tring .arc{stroke:var(--warn)}
+.tfull.brk .tring .arc{stroke:var(--good)}
+.tring .tin{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px}
+.tring .ttime{font-family:var(--font-data);font-size:clamp(52px,17vw,80px);font-weight:600;letter-spacing:-.03em;font-variant-numeric:tabular-nums;line-height:1}
+.tring .tof{color:var(--muted);font-size:14px}
+.tfull .tsub{color:var(--muted);font-size:15px;max-width:320px;min-height:22px}
+.tfull .tctl{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;width:100%;max-width:420px}
+.tfull .tctl .btn{flex:1;min-width:88px;height:56px;font-size:16px;border-radius:16px}
 .minihead{font-size:13px;font-weight:600;margin-top:16px;color:var(--fg)}
 .chrow{display:flex;align-items:center;gap:10px;padding:10px 0;border-top:1px solid var(--line)}
 .chrow:first-child{border-top:0}
@@ -590,6 +617,11 @@ textarea.ing{min-height:52px;font-size:13px}
 <div class="app">
   <!-- DAY -->
   <section id="v-day">
+    <div id="dSubHead" hidden>
+      <button class="backbtn" type="button" id="dSubBack"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>Day</button>
+      <p class="eyebrow" style="margin-top:16px" id="dSubEyebrow"></p>
+      <h1 class="page-title" id="dSubTitle"></h1>
+    </div>
     <header class="dayhead">
       <div>
         <p class="eyebrow" id="dEyebrow">Day 1 of 59</p>
@@ -968,6 +1000,15 @@ textarea.ing{min-height:52px;font-size:13px}
   </div>
 </nav>
 <div class="tbar" id="tbar" hidden></div>
+<div class="tfull" id="tfull" hidden role="dialog" aria-modal="true" aria-labelledby="tfLabel">
+  <div class="ttop"><button class="backbtn" type="button" id="tfMin"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>Minimize</button><p class="eyebrow" id="tfLabel"></p></div>
+  <div class="tmid">
+    <div class="tring"><svg viewBox="0 0 120 120" aria-hidden="true"><circle class="trk" cx="60" cy="60" r="54"/><circle class="arc" id="tfArc" cx="60" cy="60" r="54" stroke-dasharray="339.29" stroke-dashoffset="0"/></svg>
+      <div class="tin"><span class="ttime" id="tfTime" role="timer" aria-live="off">0:00</span><span class="tof" id="tfOf"></span></div></div>
+    <p class="tsub" id="tfSub"></p>
+  </div>
+  <div class="tctl" id="tfCtl"></div>
+</div>
 <div class="snack" id="snack" hidden role="status"><span id="snackTxt"></span><button type="button" id="snackUndo">Undo</button></div>
 <div class="lock" id="lock" hidden role="dialog" aria-modal="true" aria-labelledby="lockTitle">
   <div class="lockbox">
@@ -1052,6 +1093,7 @@ const CHEV = '<svg class="chev" viewBox="0 0 24 24" aria-hidden="true"><path d="
 const X_SVG = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>';
 const MEDAL = '<svg viewBox="0 0 32 32" aria-hidden="true"><path d="M10 3h4l3 7h-4zM22 3h-4l-3 7h4z" fill="var(--muted)"/><circle cx="16" cy="19" r="9" fill="var(--gold)"/><circle cx="16" cy="19" r="6" fill="none" stroke="var(--surface)" stroke-width="1.5"/><path d="M16 15.2l1.2 2.4 2.6.4-1.9 1.8.5 2.6-2.4-1.3-2.4 1.3.5-2.6-1.9-1.8 2.6-.4z" fill="var(--surface)"/></svg>';
 const ICONS = {
+  food:'<path d="M7 3v8a2 2 0 0 0 2 2v8M7 3v5M11 3v5M9 3v5M17 3c-1.7 1.2-2.5 3.4-2.5 6.5 0 1.4.8 2.5 2.5 2.5v9"/>',
   gym:'<path d="M6.5 7v10M17.5 7v10M3.5 9.5v5M20.5 9.5v5M6.5 12h11"/>',
   study:'<path d="M4 5.5h6a2 2 0 0 1 2 2V19a2 2 0 0 0-2-2H4zM20 5.5h-6a2 2 0 0 0-2 2V19a2 2 0 0 1 2-2h6z"/>',
   run:'<path d="M4.5 19c3.5 0 3.5-6.5 7.5-6.5s4-6.5 7.5-6.5"/><circle cx="4.5" cy="19" r="1.5"/><circle cx="19.5" cy="6" r="1.5"/>',
@@ -1458,21 +1500,19 @@ function renderDay(){
   $('#dReportCard').innerHTML = TODAY >= END && same(d, END) ? '<div class="notice" style="display:flex;align-items:center;justify-content:space-between;gap:12px"><span><b>Your ' + TOTAL + '-day report is ready.</b></span><button class="btn small primary" type="button" data-act="report">View report</button></div>' : '';
   renderChain(); renderQuote(); renderCheckin(); renderAlerts(); renderMood();
 
-  const mealsOn = S().meals.length && (hById('protein') || hById('kcal'));
-  const lastNutri = ['kcal', 'protein'].find(id => { const h = hById(id); return h && inLife(h, d); });
   habitsEl.innerHTML = S().habits.filter(h => inLife(h, d)).map(h => {
     const nm = esc(dispName(h, d)) + wtag(h);
     let row;
     if (h.type === 'gym') {
       if (!w) return '<li><div class="row rest"><span class="box" aria-hidden="true"></span><span class="txt"><b>' + esc(h.name) + ' · Rest</b><small>Recovery day. Not counted.</small></span></div></li>';
       row = '<li class="crow" data-row="' + h.id + '"><button class="row" type="button" data-toggle="' + h.id + '"><span class="box">' + CHECK_SVG + '</span><span class="txt"><b>' + esc(h.name) + ' · ' + esc(w) + wtag(h) + '</b><small data-sub="' + h.id + '">' + (dl ? 'Deload: about half the sets' : esc(w) + ' session') + '</small></span></button>' +
+        '<button class="minbtn" type="button" data-dsub="gym" style="margin-right:6px">Log</button>' +
         (h.min ? '<button class="minbtn" type="button" data-min="' + h.id + '" aria-pressed="false" title="' + esc(h.min) + '">Min</button>' : '') + '</li>';
     } else if (h.type === 'num') {
       const v = r && r.vals[h.id] != null ? r.vals[h.id] : '';
       row = '<li class="row" data-row="' + h.id + '"><button class="boxbtn" type="button" data-toggle="' + h.id + '" aria-label="Mark ' + esc(h.name) + ' done"><span class="box">' + CHECK_SVG + '</span></button>' +
         '<label class="txt" for="in-' + h.id + '"><b>' + nm + '</b><small>Goal ' + fmtN(h.target, 2) + ' ' + esc(h.unit) + (h.minTarget ? ' · min ' + fmtN(h.minTarget, 2) : '') + '</small><span class="mini"><i></i>' + (h.minTarget ? '<u style="left:' + (h.minTarget / h.target * 100) + '%"></u>' : '') + '</span></label>' +
         '<span class="num"><input id="in-' + h.id + '" data-field="' + h.id + '" type="number" inputmode="decimal" min="0" step="any" placeholder="0" value="' + v + '" enterkeyhint="done"><span class="u">' + esc(h.unit) + '</span></span></li>';
-      if (mealsOn && h.id === lastNutri) row += '<li class="meals" id="mealRow"></li>';
     } else if (h.type === 'water') {
       row = '<li class="water" data-row="' + h.id + '"><div class="row"><button class="boxbtn" type="button" data-toggle="' + h.id + '" aria-label="Mark water done"><span class="box">' + CHECK_SVG + '</span></button>' +
         '<span class="txt"><b>' + nm + '</b><small>Goal ' + fmtN(h.target / 1000, 2) + ' L' + (h.minTarget ? ' · min ' + fmtN(h.minTarget / 1000, 2) + ' L' : '') + '</small></span><span class="wamt" id="wAmt"></span></div>' +
@@ -1486,7 +1526,6 @@ function renderDay(){
     return row;
   }).join('');
 
-  renderMeals();
   renderReview();
   renderExtras();
   $('#dpLabel').textContent = fShort.format(d);
@@ -1527,8 +1566,14 @@ function liftOptions(d, idx){
 function studyTopics(){ const m = new Map(); for (const r of Object.values(data.days)) for (const s of r.study) if (!m.has(s.t.toLowerCase())) m.set(s.t.toLowerCase(), s.t); return [...m.values()]; }
 function renderExtras(){
   const d = cur, r = peek(d) || blankDay(), w = workoutFor(d), U = S().units, open = S().ui.open, idx = liftIndex();
-  const det = (id, icon, title, body) => '<details class="card" data-det="' + id + '"' + (open[id] ? ' open' : '') + '><summary>' + ico(icon) + '<span class="txt"><b>' + title + '</b><small id="sum-' + id + '"></small></span>' + CHEV + '</summary><div class="card-body">' + body + '</div></details>';
+  const rows = [], pages = [];
+  const det = (id, icon, title, body) => {
+    rows.push('<button class="setrow logrow" type="button" data-dsub="' + id + '">' + ico(icon) + '<span><b>' + title + '</b><small id="sum-' + id + '"></small></span>' + CHEV + '</button>');
+    pages.push('<div class="card logpage" data-dpage="' + id + '" data-title="' + title + '" hidden><div class="card-body">' + body + '</div></div>');
+    return '';
+  };
   let html = '';
+  if (S().meals.length && (hById('protein') || hById('kcal'))) det('food', 'food', 'Food', '<div class="meals" id="mealRow"></div>');
   if (w) {
     html += det('gym', 'gym', esc(w) + ' log',
       (isDeload(weekOf(d)) ? '<p class="calc">Deload week: same exercises, about half the sets, and stop 3–4 reps short of failure.</p>' : '') +
@@ -1559,8 +1604,9 @@ function renderExtras(){
     '<div class="fgrid"><label class="field">Woke up at<input class="inp" id="bWake" data-act="wake" type="time" value="' + r.wake + '"></label>' +
     '<label class="field">In bed tonight at<input class="inp" id="bBed" data-act="bed" type="time" value="' + r.bed + '"></label></div><p class="calc" id="bCalc"></p>' + bodyExtras(r, d));
   html += det('note', 'note', 'Notes', '<textarea id="nNote" data-act="note" placeholder="Anything worth remembering, like why a habit slipped">' + esc(r.note) + '</textarea>');
-  extrasEl.innerHTML = html;
-  extrasEl.querySelectorAll('details').forEach(el => el.addEventListener('toggle', () => { S().ui.open[el.dataset.det] = el.open; try { localStorage.setItem(SKEY, JSON.stringify(data)); } catch (e) {} }));
+  extrasEl.innerHTML = '<div class="setgroup logmenu"><p class="eyebrow">Logs</p><div class="setlist">' + rows.join('') + '</div></div>' + pages.join('');
+  renderMeals();
+  applyDaySub(daySub);
   if (w) renderLifts(idx);
   renderStudy();
 }
@@ -1631,7 +1677,7 @@ function updateDay(){
   $('#chDayXp').textContent = '+' + dayXP(d, idx.prs) + ' XP' + (same(d, TODAY) ? ' today' : '');
 
   const rr = r || blankDay();
-  const sum = (id, txt, has) => { const el = $('#sum-' + id); if (!el) return; el.textContent = txt; el.closest('details').classList.toggle('has', !!has); };
+  const sum = (id, txt, has) => { const el = $('#sum-' + id); if (!el) return; el.textContent = txt; el.closest('[data-dsub]').classList.toggle('has', !!has); };
   if ($('#sum-gym')) {
     const prs = idx.prs[key(d)], n = rr.lifts.length;
     sum('gym', n || rr.dur ? [rr.dur ? rr.dur + ' min' : '', n ? n + (n === 1 ? ' set' : ' sets') : '', prs ? prs.size + ' PR' + (prs.size > 1 ? 's' : '') : ''].filter(Boolean).join(' · ') : 'Lifts, sets and duration', n || rr.dur);
@@ -1644,6 +1690,7 @@ function updateDay(){
   sum('body', [rr.weight != null ? fmtN(rr.weight, 2) + ' ' + U.body : '', sl != null ? 'slept ' + fmtHM(sl) : ''].filter(Boolean).join(' · ') || 'Weight, wake and bed times', rr.weight != null || rr.wake || rr.bed);
   const bc = $('#bCalc');
   if (bc) bc.innerHTML = sl != null ? 'Last night: <strong>' + fmtHM(sl) + '</strong> of ' + fmtHM(tgt) + ' target' : 'Sleep hours appear when you log last night\'s bedtime and this morning\'s wake time.';
+  if ($('#sum-food')) { const pr = rr.vals.protein, kv = rr.vals.kcal; sum('food', rr.meals.length || kv != null || pr != null ? [rr.meals.length ? rr.meals.length + (rr.meals.length === 1 ? ' meal' : ' meals') : '', kv != null ? fmtN(kv, 0) + ' kcal' : '', pr != null ? fmtN(pr, 0) + ' g protein' : ''].filter(Boolean).join(' · ') : 'Meals, barcode scan and macros', rr.meals.length); }
   sum('note', rr.note ? rr.note.slice(0, 48) + (rr.note.length > 48 ? '…' : '') : 'Why a habit slipped, how you felt', rr.note);
   afterUpdate(d);
 }
@@ -1765,7 +1812,7 @@ $('#dp').addEventListener('change', e => {
   cur = d; renderDay();
 });
 let sx = null, sy = 0;
-dayRoot.addEventListener('touchstart', e => { if (e.target.closest('input,textarea,.wbtns,.addlift,.addstudy,.mchips,.macros,.mlist,#dCheckin,details[open] .card-body')) { sx = null; return; } sx = e.touches[0].clientX; sy = e.touches[0].clientY; }, {passive:true});
+dayRoot.addEventListener('touchstart', e => { if (e.target.closest('input,textarea,.wbtns,.addlift,.addstudy,.mchips,.macros,.mlist,#dCheckin,.logpage,.tfull')) { sx = null; return; } sx = e.touches[0].clientX; sy = e.touches[0].clientY; }, {passive:true});
 dayRoot.addEventListener('touchend', e => {
   if (sx == null) return;
   const dx = e.changedTouches[0].clientX - sx, dy = e.changedTouches[0].clientY - sy; sx = null;
@@ -2887,11 +2934,68 @@ function onTick(){
 }
 function renderTimerBar(){
   const el = $('#tbar'), now = Date.now(), items = [];
-  if (timers.rest) items.push('<span class="tpill"><b>Rest</b> ' + mmss(timers.rest.end - now) + '<button type="button" data-tstop="rest">Skip</button></span>');
-  if (timers.sun) items.push('<span class="tpill"><b>Sunlight</b> ' + mmss(now - timers.sun.start + timers.sun.base * 60000) + ' / 30:00<button type="button" data-tstop="sun">Stop</button></span>');
-  if (timers.pomo) items.push('<span class="tpill"><b>' + (timers.pomo.phase === 'focus' ? 'Focus' : 'Break') + '</b> ' + mmss(timers.pomo.start + timers.pomo.dur * 60000 - now) + (timers.pomo.phase === 'focus' ? ' · ' + esc(timers.pomo.topic) : '') + (timers.pomo.phase === 'focus' ? '<button type="button" data-tdist="1">Distracted' + (timers.pomo.dist ? ' ' + timers.pomo.dist : '') + '</button>' : '') + '<button type="button" data-tstop="pomo">Stop</button></span>');
+  if (timers.rest) items.push('<span class="tpill" data-tk="rest"><b>Rest</b> ' + mmss(timers.rest.end - now) + '<button type="button" data-tstop="rest">Skip</button></span>');
+  if (timers.sun) items.push('<span class="tpill" data-tk="sun"><b>Sunlight</b> ' + mmss(now - timers.sun.start + timers.sun.base * 60000) + ' / 30:00<button type="button" data-tstop="sun">Stop</button></span>');
+  if (timers.pomo) items.push('<span class="tpill" data-tk="pomo"><b>' + (timers.pomo.phase === 'focus' ? 'Focus' : 'Break') + '</b> ' + mmss(timers.pomo.start + timers.pomo.dur * 60000 - now) + (timers.pomo.phase === 'focus' ? ' · ' + esc(timers.pomo.topic) : '') + (timers.pomo.phase === 'focus' ? '<button type="button" data-tdist="1">Distracted' + (timers.pomo.dist ? ' ' + timers.pomo.dist : '') + '</button>' : '') + '<button type="button" data-tstop="pomo">Stop</button></span>');
   el.hidden = !items.length; el.innerHTML = items.join('');
+  renderTimerFull();
 }
+/* full-screen timer */
+let tfKind = null, tfWake = null;
+const TF_C = 2 * Math.PI * 54;
+function wake(on){
+  try {
+    if (on && !tfWake && navigator.wakeLock) navigator.wakeLock.request('screen').then(l => { tfWake = l; }, () => {});
+    else if (!on && tfWake) { tfWake.release(); tfWake = null; }
+  } catch (e) {}
+}
+function openTimerFull(kind){ if (!timers[kind]) return; tfKind = kind; renderTimerFull(); }
+function closeTimerFull(){ tfKind = null; renderTimerFull(); }
+function renderTimerFull(){
+  const el = $('#tfull'), t = tfKind && timers[tfKind];
+  if (!t) { if (!el.hidden) { el.hidden = true; wake(false); } tfKind = null; return; }
+  const now = Date.now();
+  let label, left, total, of = '', sub = '', ctl;
+  if (tfKind === 'rest') {
+    label = 'Rest'; left = t.end - now; total = t.dur * 1000; of = 'of ' + mmss(total);
+    const r = peek(cur), L = r && r.lifts.length ? r.lifts[r.lifts.length - 1] : null;
+    sub = L ? 'Last set: ' + esc(L.ex) + ' · ' + (L.w ? fmtN(L.w, 2) + ' ' + S().units.lift + ' × ' : 'BW × ') + L.r + ' · ' + r.lifts.length + (r.lifts.length === 1 ? ' set' : ' sets') + ' today' : 'Breathe. Next set when the ring empties.';
+    ctl = '<button class="btn" type="button" data-tf="minus">−15s</button><button class="btn" type="button" data-tf="plus">+15s</button><button class="btn primary" type="button" data-tf="skip">Skip</button>';
+  } else if (tfKind === 'pomo') {
+    const focus = t.phase === 'focus'; total = t.dur * 60000; left = t.start + total - now;
+    label = focus ? 'Focus' : 'Break'; of = 'of ' + t.dur + ' min'; sub = focus ? esc(t.topic) + (t.dist ? ' · distracted ' + t.dist + '×' : '') : 'Stand up, look far away, drink water.';
+    ctl = (focus ? '<button class="btn" type="button" data-tf="dist">Distracted' + (t.dist ? ' · ' + t.dist : '') + '</button>' : '') + '<button class="btn primary" type="button" data-tf="stop">' + (focus ? 'Stop and log' : 'End break') + '</button>';
+  } else {
+    total = 30 * 60000; const done = now - t.start + t.base * 60000; left = total - done;
+    label = 'Sunlight'; of = 'of 30:00'; sub = 'Logs every minute. Phone in your pocket is fine.';
+    ctl = '<button class="btn primary" type="button" data-tf="stop">Stop and log</button>';
+  }
+  const wasHidden = el.hidden;
+  el.className = 'tfull ' + tfKind + (tfKind === 'pomo' && t.phase !== 'focus' ? ' brk' : '');
+  $('#tfLabel').textContent = label;
+  $('#tfTime').textContent = tfKind === 'sun' ? mmss(total - left) : mmss(left);
+  $('#tfOf').textContent = of;
+  const frac = Math.max(0, Math.min(1, tfKind === 'sun' ? 1 - left / total : left / total));
+  $('#tfArc').style.strokeDashoffset = (TF_C * (1 - frac)).toFixed(2);
+  if ($('#tfSub').innerHTML !== sub) $('#tfSub').innerHTML = sub;
+  if ($('#tfCtl').dataset.sig !== ctl) { $('#tfCtl').innerHTML = ctl; $('#tfCtl').dataset.sig = ctl; }
+  el.hidden = !$('#lock').hidden;
+  if (wasHidden && !el.hidden) { wake(true); const b = $('#tfCtl .primary'); if (b) b.focus({preventScroll:true}); }
+}
+$('#tfMin').addEventListener('click', closeTimerFull);
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && tfKind) closeTimerFull(); });
+$('#tfCtl').addEventListener('click', e => {
+  const b = e.target.closest('[data-tf]'); if (!b) return;
+  const a = b.dataset.tf, t = timers[tfKind]; if (!t) return;
+  if (a === 'plus') { t.end += 15000; t.dur += 15; }
+  else if (a === 'minus') { t.end -= 15000; t.dur = Math.max(15, t.dur - 15); if (t.end <= Date.now()) delete timers.rest; }
+  else if (a === 'skip') delete timers.rest;
+  else if (a === 'dist') { t.dist = (t.dist || 0) + 1; vib(10); }
+  else if (a === 'stop') { if (tfKind === 'pomo') stopPomo(); else if (tfKind === 'sun') stopSun(); }
+  saveTimers(); renderTimerBar();
+  if (tfKind === 'pomo' && view === 'day') refreshPomoBtn();
+});
+$('#tbar').addEventListener('click', e => { if (e.target.closest('button')) return; const p = e.target.closest('[data-tk]'); if (p) openTimerFull(p.dataset.tk); });
 $('#tbar').addEventListener('click', e => {
   const b = e.target.closest('[data-tstop]'); if (!b) return;
   const t = b.dataset.tstop;
@@ -2901,11 +3005,11 @@ $('#tbar').addEventListener('click', e => {
   renderTimerBar();
 });
 const fmtRest = s => s < 60 ? s + 's' : (s % 60 ? Math.floor(s / 60) + ':' + pad(s % 60) : s / 60 + ' min');
-function startRest(sec){ sec = sec || S().gym.rest; timers.rest = {end:Date.now() + sec * 1000, dur:sec}; saveTimers(); audio(); renderTimerBar(); }
+function startRest(sec){ sec = sec || S().gym.rest; timers.rest = {end:Date.now() + sec * 1000, dur:sec}; saveTimers(); audio(); tfKind = 'rest'; renderTimerBar(); }
 function toggleSun(){
   if (timers.sun) { stopSun(); return; }
-  const r = peek(cur); timers.sun = {start:Date.now(), k:key(cur), base:(r && r.sunMin) || 0}; saveTimers(); audio();
-  renderTimerBar(); updateDay(); toast('Sunlight timer started. It logs every minute.');
+  const r = peek(cur); timers.sun = {start:Date.now(), k:key(cur), base:(r && r.sunMin) || 0}; saveTimers(); audio(); tfKind = 'sun';
+  renderTimerBar(); updateDay();
 }
 function stopSun(){
   const s = timers.sun; if (!s) return;
@@ -2918,7 +3022,7 @@ function lastTopic(){ const ks = Object.keys(data.days).sort(); for (let i = ks.
 function togglePomo(){
   if (timers.pomo) { stopPomo(); return; }
   const topic = (($('#stT') && $('#stT').value.trim()) || lastTopic() || 'Study').slice(0, 40);
-  timers.pomo = {phase:'focus', start:Date.now(), dur:S().pomo.focus, topic, k:key(cur)}; saveTimers(); audio();
+  timers.pomo = {phase:'focus', start:Date.now(), dur:S().pomo.focus, topic, k:key(cur)}; saveTimers(); audio(); tfKind = 'pomo';
   renderTimerBar(); refreshPomoBtn(); toast('Focus started: ' + S().pomo.focus + ' min of ' + topic);
 }
 function logPomo(p, mins){
@@ -3922,6 +4026,32 @@ function renderStudyGoals(){
 $('#sgBox').addEventListener('change', e => { const t = e.target; if (!t.dataset.sg) return; const v = parseFloat(t.value); if (v > 0) S().studyGoals[t.dataset.sg] = {name:t.dataset.sn, h:Math.round(v * 2) / 2}; else delete S().studyGoals[t.dataset.sg]; save(); toast('Saved'); });
 $('#sgAdd').addEventListener('click', () => { const n = $('#sgName').value.trim(), h = parseFloat($('#sgHours').value); if (!n || !(h > 0)) { toast('Add a subject and hours per week'); return; } S().studyGoals[n.toLowerCase()] = {name:n.slice(0, 40), h:Math.round(h * 2) / 2}; save(); $('#sgName').value = ''; $('#sgHours').value = ''; renderStudyGoals(); });
 
+/* ================= day log pages ================= */
+let daySub = null, dayMenuY = 0;
+function applyDaySub(sub){
+  const pg = sub && extrasEl.querySelector('[data-dpage="' + sub + '"]');
+  if (sub && !pg) sub = null;
+  daySub = sub;
+  if (sub) dayRoot.dataset.sub = sub; else delete dayRoot.dataset.sub;
+  $('#dSubHead').hidden = !sub;
+  extrasEl.querySelectorAll('[data-dpage]').forEach(p => { p.hidden = p.dataset.dpage !== sub; });
+  if (sub) { $('#dSubTitle').textContent = pg.dataset.title.replace(/&amp;/g, '&'); $('#dSubEyebrow').textContent = fShort.format(cur) + ' · Day ' + dayNum(cur); }
+}
+function openDaySub(sub, how){
+  if (sub && !daySub) dayMenuY = window.scrollY;
+  applyDaySub(sub); sub = daySub;
+  const url = sub ? '#day/' + sub : location.pathname + location.search;
+  try { if (how === 'push') history.pushState({dsub:sub}, '', url); else if (how === 'replace') history.replaceState({dsub:sub}, '', url); } catch (e) {}
+  window.scrollTo(0, sub ? 0 : dayMenuY);
+}
+dayRoot.addEventListener('click', e => { const b = e.target.closest('[data-dsub]'); if (b) { e.preventDefault(); openDaySub(b.dataset.dsub, 'push'); } });
+$('#dSubBack').addEventListener('click', () => { if (history.state && history.state.dsub) history.back(); else openDaySub(null, 'replace'); });
+window.addEventListener('popstate', () => {
+  const m = /^#day\/([a-z]+)$/.exec(location.hash || '');
+  if (m) { if (view !== 'day') setView('day'); openDaySub(m[1], 'none'); }
+  else if (view === 'day' && daySub) openDaySub(null, 'none');
+});
+
 /* ================= setup sections ================= */
 const SET_GROUPS = [
   ['Tracking', [['habits', 'Habits and targets', 'Daily habits, weights and minimum versions'], ['chains', 'Habit chains', 'Suggest the next habit after one'], ['checkins', 'Check-ins', 'Strict logging windows'], ['meals', 'Meal templates', 'One-tap meals with macros'], ['study', 'Study goals', 'Weekly hours per subject']]],
@@ -3964,6 +4094,7 @@ window.addEventListener('popstate', () => {
 const VIEWS = {day:'#v-day', cal:'#v-cal', stats:'#v-stats', set:'#v-set', report:'#v-report', week:'#v-week'};
 function setView(v, keepScroll){
   view = v;
+  if (v !== 'day' && daySub) { applyDaySub(null); if (/^#day\//.test(location.hash)) try { history.replaceState(null, '', baseUrl()); } catch (e) {} }
   if (v !== 'set') { if (setSec) applySec(null); if (/^#set/.test(location.hash)) try { history.replaceState(null, '', baseUrl()); } catch (e) {} }
   for (const [k, sel] of Object.entries(VIEWS)) $(sel).hidden = k !== v;
   const tabFor = v === 'report' || v === 'week' ? 'stats' : v;
@@ -3972,7 +4103,7 @@ function setView(v, keepScroll){
   if (v === 'day') renderDay(); else if (v === 'cal') renderCal(); else if (v === 'stats') renderStats(); else if (v === 'report') renderReport(); else if (v === 'week') renderWeekly(); else renderSettings();
   if (!keepScroll) window.scrollTo(0, 0);
 }
-document.querySelectorAll('.tab').forEach(t => t.addEventListener('click', () => { if (t.dataset.view === 'set' && view === 'set' && setSec) { openSec(null, 'replace'); return; } setView(t.dataset.view); }));
+document.querySelectorAll('.tab').forEach(t => t.addEventListener('click', () => { if (t.dataset.view === 'set' && view === 'set' && setSec) { openSec(null, 'replace'); return; } if (t.dataset.view === 'day' && view === 'day' && daySub) { openDaySub(null, 'replace'); return; } setView(t.dataset.view); }));
 document.addEventListener('visibilitychange', () => {
   if (document.hidden) { save(); return; }
   const now = sod(new Date());
@@ -3992,7 +4123,8 @@ lastSettingsSig = settingsSig();
 activate(pickActive(), false);
 scheduleReminders();
 const h0 = (location.hash || '').slice(1), m0 = /^set\/([a-z]+)$/.exec(h0);
-if (m0 && SET_SECS[m0[1]]) { setView('set'); openSec(m0[1], 'replace'); } else setView(VIEWS[h0] ? h0 : 'day');
+const d0 = /^day\/([a-z]+)$/.exec(h0);
+if (m0 && SET_SECS[m0[1]]) { setView('set'); openSec(m0[1], 'replace'); } else if (d0) { setView('day'); openDaySub(d0[1], 'replace'); } else setView(VIEWS[h0] ? h0 : 'day');
 handleHealthHash();
 initLock();
 startTicker();
