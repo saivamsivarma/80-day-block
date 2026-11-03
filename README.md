@@ -1,4 +1,4 @@
-# 80-Day Block
+# Blocks
 
 Daily habit tracker: weighted habits with minimum versions, gym log with PRs, runs, study log, meals, bodyweight, sleep, badges, reports, CSV export, multiple challenges and optional cloud sync.
 

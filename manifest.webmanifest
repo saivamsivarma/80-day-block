@@ -1,7 +1,7 @@
 {
-  "name": "80-Day Block",
-  "short_name": "80-Day Block",
-  "description": "Daily habit tracker, Nov 3 \u2013 Dec 31, 2026",
+  "name": "Blocks",
+  "short_name": "Blocks",
+  "description": "Daily habit tracker, one block at a time",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
