@@ -1,7 +1,7 @@
 {
   "name": "Blocks",
   "short_name": "Blocks",
-  "description": "Daily habit tracker, one block at a time",
+  "description": "Gym and run tracker for a weekly hybrid training program",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
