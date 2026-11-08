@@ -526,23 +526,25 @@ let TODAY = new Date(); TODAY.setHours(0, 0, 0, 0);
 /* ================= program ================= */
 const MEAL_LABELS = ['Breakfast', 'Snack', 'Lunch', 'Dinner', 'Night snack'];
 const DAY_NAMES = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
-/* Meals built from what's at home: eggs, whey, A2 milk, rice, sweet potato, frozen triple-berry blend, frozen veg mix, plus chicken breast and 93/7 ground turkey.
+/* Lean bulk for 67 kg → 70 kg, 5'11": about 3,150 kcal/day on average (training days ~3,200, long run ~3,450, rest ~2,750), ~180 g protein, carb-heavy for running.
+   Meals built from what's at home: eggs, whey, A2 milk, rice, sweet potato, frozen triple-berry blend, frozen veg mix, plus chicken breast and 93/7 ground turkey.
    Each meal is [text, kcal, protein g]; numbers are estimates (whole A2 milk, raw meat weights, baked sweet potato). */
 const MEAL = {
-  bStd:['4 eggs scrambled with 1 cup frozen veg mix, 300 g sweet potato hash', 618, 34],
-  bBig:['5 eggs scrambled with 1 cup frozen veg mix, 400 g sweet potato hash', 780, 41],
-  bRest:['4 eggs scrambled with 1 cup frozen veg mix, 200 g sweet potato hash', 528, 32],
-  shake:['Shake: 1 scoop whey, 2 cups A2 milk, 1 cup frozen berries', 490, 41],
-  shakeRun:['Right after the run: 1 scoop whey, 2 cups A2 milk, 1 cup frozen berries', 490, 41],
-  eggsBerries:['3 hard-boiled eggs, 1 cup thawed berries', 286, 20],
-  riceChicken:['Chicken rice bowl: 6 oz chicken breast, 2 cups cooked rice, 1 cup veg mix', 670, 49],
-  riceTurkey:['Turkey fried rice: 6 oz 93/7 ground turkey, 2 cups cooked rice, 1 cup veg mix', 725, 44],
-  riceChickenR:['Chicken rice bowl: 6 oz chicken breast, 1½ cups cooked rice, 1 cup veg mix', 568, 47],
-  spChicken:['Sheet-pan chicken: 6 oz chicken breast, 400 g sweet potato, 1 cup veg mix', 620, 49],
-  spTurkey:['Turkey skillet: 6 oz 93/7 ground turkey, 400 g sweet potato cubes, 1 cup veg mix', 675, 44],
-  spTurkeyR:['Turkey skillet: 6 oz 93/7 ground turkey, 300 g sweet potato, 1 cup veg mix', 585, 42],
-  pudding:['Rice pudding: 1 cup cooked rice simmered in 1½ cups A2 milk, ½ scoop whey stirred in off the heat, ½ cup berries on top', 525, 28],
-  night:['Warm A2 milk (2 cups) with ½ scoop whey', 360, 28]
+  bStd:['3 eggs scrambled with 1 cup frozen veg mix, 350 g sweet potato hash, 1 cup A2 milk', 741, 37],
+  bSat:['3 eggs scrambled with 1 cup frozen veg mix, 400 g sweet potato hash, 1 cup A2 milk. Eat 2–3 h before the run', 786, 38],
+  bRest:['3 eggs scrambled with 1 cup frozen veg mix, 250 g sweet potato hash, 1 cup A2 milk', 651, 35],
+  shake:['Shake after training: 1 scoop whey, 2 cups A2 milk, 1½ cups frozen berries', 525, 42],
+  shakeRun:['Right after the run: 1 scoop whey, 2 cups A2 milk, 1½ cups frozen berries', 525, 42],
+  snackRest:['2 hard-boiled eggs, 1 cup berries, 1 cup A2 milk', 364, 22],
+  riceChicken:['Chicken rice bowl: 5 oz chicken breast, 2½ cups cooked rice, 1 cup veg mix', 742, 46],
+  riceChickenBig:['Chicken rice bowl: 5 oz chicken breast, 3 cups cooked rice, 1 cup veg mix', 845, 48],
+  riceTurkey:['Turkey fried rice: 5 oz 93/7 ground turkey, 2½ cups cooked rice, 1 cup veg mix', 785, 41],
+  spChicken:['Sheet-pan chicken: 5 oz chicken breast, 400 g sweet potato, 1 cup veg mix', 590, 43],
+  spTurkey:['Turkey skillet: 5 oz 93/7 ground turkey, 400 g sweet potato cubes, 1 cup veg mix', 633, 38],
+  spTurkeyBig:['Turkey skillet: 5 oz 93/7 ground turkey, 500 g sweet potato cubes, 1 cup veg mix', 723, 40],
+  spTurkeyR:['Turkey skillet: 5 oz 93/7 ground turkey, 300 g sweet potato, 1 cup veg mix', 543, 36],
+  pudding:['Rice pudding: 1½ cups cooked rice simmered in 1½ cups A2 milk, ½ cup berries on top', 568, 19],
+  puddingS:['Rice pudding: 1 cup cooked rice simmered in 1½ cups A2 milk, ½ cup berries on top', 465, 17]
 };
 const day = (...ks) => ({meals:ks.map(k => MEAL[k][0]), mac:ks.map(k => [MEAL[k][1], MEAL[k][2]])});
 const ex = (n, s, r, g) => g ? {n, s, r, g} : {n, s, r};
@@ -558,7 +560,7 @@ const DEFAULT_PROGRAM = [
   {title:'Legs + Recovery', focus:'Quads, glutes, hamstrings',
    ex:[ex('Barbell back squat', 4, '6–8'), ex('Romanian deadlift', 4, '8–10'), ex('Leg press', 3, '10–12'), ex('Walking lunges', 3, '10 each side'), ex('Seated leg curl', 3, '10–12'), ex('Standing calf raise', 4, '12–15'), ex('Hanging knee raise', 3, '12–15')],
    run:null, rec:['8–10k steps', '15–20 min mobility'], note:'No run today. Recover hard so the next quality sessions hit.',
-   ...day('bRest', 'shake', 'riceChicken', 'spTurkey', 'night')},
+   ...day('bStd', 'shake', 'riceChicken', 'spTurkeyR', 'puddingS')},
   {title:'Upper + Interval run', focus:'Upper body strength',
    ex:[ex('Incline DB press', 4, '8–10'), ex('Weighted pull-up', 4, '6–8'), ex('Seated DB shoulder press', 4, '8–10'), ex('Chest-supported row', 4, '8–10'), ex('Cable lateral raise', 3, '10–12'), ex('Face pull', 3, '12–15'), ex('Hanging knee raise', 4, '10–15')],
    run:{kind:'Intervals', dist:4, note:'Warm up: 1 mi easy, Zone 1–2\nMain set: 6 × 400 m at 5K pace, 90 s walk/jog between\nCool down: 1 mi easy'}, rec:[], note:'',
@@ -570,10 +572,10 @@ const DEFAULT_PROGRAM = [
   {title:'Long run + Accessory', focus:'Long run, then full-body accessory work',
    ex:[ex('Pull-up', 3, '8–10'), ex('DB bench press', 3, '10–12'), ex('DB row', 3, '10–12'), ex('Lateral raise', 3, '12–15'), ex('Walking lunges', 3, '12 each'), ex('Triceps pushdown', 3, '12–15'), ex('Biceps curl', 3, '12–15'), ex('Hanging knee raise', 3, '12–15', 'Core circuit'), ex('Plank', 3, '45s', 'Core circuit'), ex('Ab wheel', 3, '10', 'Core circuit')],
    run:{kind:'Long run', dist:8.5, note:'Zone 2, easy the whole way.'}, rec:[], note:'',
-   ...day('bBig', 'shakeRun', 'riceChicken', 'spTurkey', 'pudding')},
+   ...day('bSat', 'shakeRun', 'riceChickenBig', 'spTurkeyBig', 'pudding')},
   {title:'Recovery + Reset', focus:'Low-stress day. Reset the system.',
    ex:[], run:null, rec:['8–10k steps', '20–30 min mobility', 'Sauna or cold plunge', 'Light stretching', 'Hydration and sleep focus'], note:'No lift, no hard run. Walk, move, recover, and set up the next training week.',
-   ...day('bRest', 'eggsBerries', 'riceChickenR', 'spTurkeyR', 'night')}
+   ...day('bRest', 'snackRest', 'riceChicken', 'spTurkeyR', 'puddingS')}
 ];
 const RUN_KINDS = ['Easy run', 'Tempo run', 'Intervals', 'Long run', 'Recovery run'];
 const dowOf = d => (d.getDay() + 6) % 7;
