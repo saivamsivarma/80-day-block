@@ -166,6 +166,30 @@ button.blkhead{width:100%;text-align:left}
 .rev .pt small{display:block;font-family:var(--font-body);font-size:12px}
 .rev .up{color:var(--good)}
 .rev .dn{color:var(--muted)}
+.bwrow.compact{padding:0;border:0;background:none}
+.bwchip{display:flex;align-items:center;gap:8px;width:100%;min-height:40px;padding:6px 12px;border-radius:12px;background:var(--surface);border:1px solid var(--line);text-align:left;font-size:13px}
+.bwchip b{font-family:var(--font-data);font-size:14px;font-weight:600;white-space:nowrap}
+.bwchip span{flex:1;min-width:0;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.bwchip u{color:var(--accent);font-weight:600;text-decoration:none}
+.bwchart .glab{font-family:var(--font-body);font-size:11px;font-weight:600;fill:var(--good)}
+.bwchart .alab{font-family:var(--font-data);font-size:10px;fill:var(--muted)}
+.blk.alldone .blkhead h2::after{content:' ✓';color:var(--good)}
+.rftime{font-family:var(--font-data);font-size:clamp(64px,22vw,104px);font-weight:600;letter-spacing:-.04em;font-variant-numeric:tabular-nums;line-height:1}
+.rfstate{font-size:18px;font-weight:600;min-height:26px}
+.rfctl{display:flex;flex-direction:column;gap:10px;width:100%;max-width:420px}
+.rfbig{height:96px;font-size:22px;border-radius:22px}
+.rfrow{display:grid;grid-template-columns:2fr 1fr;gap:10px}
+.rfrow .btn{height:56px}
+.wkcards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:8px}
+.wkcards button{display:flex;flex-direction:column;gap:3px;padding:12px 14px;border-radius:14px;background:var(--ink);color:var(--ink-fg);text-align:left}
+.wkcards b{font-size:15px;font-weight:600}
+.wkcards small{font-size:12px;color:var(--ink-sub);line-height:1.3}
+.menu{margin-top:18px;background:var(--surface);border:1px solid var(--line);border-radius:18px;overflow:hidden}
+.menu .navrow{padding:13px 14px}
+.menu .navrow+.navrow{border-top:1px solid var(--line)}
+.sgroup.solo{margin-top:0}
+.sgroup.solo>h2{font-family:var(--font-display);font-size:30px;font-weight:700;color:var(--fg);letter-spacing:-.02em;margin:0 0 14px}
+.bars.none{display:block;height:auto}
 .macro{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-bottom:10px}
 .macro>div{display:flex;flex-direction:column;gap:6px;padding:10px 12px;border-radius:14px;background:var(--surface);border:1px solid var(--line)}
 .mlbl{font-family:var(--font-data);font-size:13px;color:var(--muted);display:flex;flex-direction:column}
@@ -385,10 +409,14 @@ button.blkhead{width:100%;text-align:left}
 .toast.show{opacity:1;transform:translate(-50%,0);pointer-events:auto}
 .toast button{height:32px;padding:0 12px;border-radius:8px;background:var(--accent);color:var(--accent-ink);font-weight:600;font-size:13px}
 .toast:not(.hasbtn){padding-right:16px}
-.tbar{position:fixed;left:0;right:0;top:calc(env(safe-area-inset-top,0px) + 8px);z-index:15;display:flex;justify-content:center;padding-inline:16px;pointer-events:none}
-.tpill{pointer-events:auto;cursor:pointer;display:inline-flex;align-items:center;gap:8px;height:38px;padding:0 6px 0 14px;border-radius:999px;background:var(--fg);color:var(--bg);font-family:var(--font-data);font-size:13px;box-shadow:0 4px 16px rgba(0,0,0,.18)}
+.tbar{display:flex;padding-top:8px}
+.tpill{flex:1;cursor:pointer;display:flex;align-items:center;gap:10px;height:44px;padding:0 8px 0 16px;border-radius:14px;background:var(--ink);color:var(--ink-fg);font-family:var(--font-data);font-size:16px;font-weight:600}
+.tpill i{flex:1}
+.hasrest .app{padding-bottom:calc(204px + env(safe-area-inset-bottom,0px))}
+.hasrest .app.nonav{padding-bottom:calc(146px + env(safe-area-inset-bottom,0px))}
+.hasrest .toast{bottom:calc(204px + env(safe-area-inset-bottom,0px))}
 .tpill b{font-family:var(--font-body);font-weight:600}
-.tpill button{height:28px;padding:0 10px;border-radius:999px;background:rgba(127,127,127,.28);color:inherit;font-family:var(--font-body);font-size:12px;font-weight:600}
+.tpill button{height:30px;padding:0 10px;border-radius:999px;background:rgba(127,127,127,.28);color:inherit;font-family:var(--font-body);font-size:12px;font-weight:600}
 .tfull{position:fixed;inset:0;z-index:40;background:var(--bg);color:var(--fg);display:flex;flex-direction:column;align-items:center;padding:calc(env(safe-area-inset-top,0px) + 12px) 20px calc(env(safe-area-inset-bottom,0px) + 24px);text-align:center}
 .tfull .ttop{width:100%;max-width:520px;display:flex;justify-content:space-between;align-items:center}
 .tfull .tmid{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;width:100%}
@@ -414,13 +442,13 @@ button.blkhead{width:100%;text-align:left}
   <section id="v-today">
     <div class="prestart" id="tPre" hidden></div>
     <header class="hero">
-      <p class="eyebrow" id="tEyebrow"></p>
+      <p class="eyebrow"><span id="tEyebrow"></span><span id="tPct"></span></p>
       <h1 class="dayname" id="tDay"></h1>
       <p class="daytitle" id="tTitle"></p>
       <p class="focus" id="tFocus"></p>
     </header>
     <div class="wstrip" id="tWeek" role="group" aria-label="Days this week"></div>
-    <div class="dprog" id="tProg"></div>
+    <div class="dprog" id="tProg" hidden></div>
     <div class="dstat" id="tStat"></div>
     <div class="bwrow" id="tBw"></div>
     <section class="blk" id="secLift">
@@ -452,8 +480,9 @@ button.blkhead{width:100%;text-align:left}
       <button class="navbtn" type="button" id="wkNext" aria-label="Next week"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
     </div>
     <div class="wktot" id="wkTot"></div>
+    <div class="wkcards"><button type="button" id="wkReview"><b>Week review</b><small>Sessions, miles, weight and records</small></button><button type="button" id="wkGroc"><b>Grocery list</b><small>Everything this week's meals need</small></button></div>
     <ul class="wklist" id="wkList"></ul>
-    <div class="btnrow" style="margin-top:14px"><button class="btn primary" type="button" id="wkReview">Week review</button><button class="btn" type="button" id="wkGroc">Grocery list</button><button class="btn" type="button" id="wkEdit">Edit program</button></div>
+    <div class="btnrow" style="margin-top:14px"><button class="btn" type="button" id="wkEdit">Edit program</button></div>
   </section>
 
   <section id="v-prog" hidden>
@@ -468,8 +497,12 @@ button.blkhead{width:100%;text-align:left}
 
   <section id="v-set" hidden>
     <div id="setMain">
-      <p class="eyebrow">Settings</p>
-      <h1 class="page-title">Setup</h1>
+      <div id="setTop">
+        <p class="eyebrow">Settings</p>
+        <h1 class="page-title">Setup</h1>
+        <div class="menu" id="setMenu"></div>
+      </div>
+      <div class="subbar" id="setSubBar" hidden><button class="backbtn" type="button" id="setBack"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>Setup</button></div>
       <div class="sgroup"><h2>Program</h2><div class="sbox">
         <button class="navrow" type="button" id="openEditor"><span>Edit workouts, runs and meals<small>Change exercises, sets, reps and the meal plan for each day</small></span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>
         <label class="urow"><span>Week 1 starts</span><input class="inp" id="startDate" type="date" style="width:auto"></label>
@@ -504,6 +537,7 @@ button.blkhead{width:100%;text-align:left}
 
 <nav class="dock" aria-label="App">
   <div class="dock-in">
+    <div class="tbar" id="tbar" hidden></div>
     <div class="daynav" id="daynav">
       <button class="navbtn" type="button" id="prevBtn" aria-label="Previous day"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
       <label class="dp"><span id="dpLabel"></span><input type="date" id="dp" aria-label="Pick a date"></label>
@@ -519,7 +553,6 @@ button.blkhead{width:100%;text-align:left}
   </div>
 </nav>
 
-<div class="tbar" id="tbar" hidden></div>
 <div class="tfull" id="tfull" hidden role="dialog" aria-modal="true" aria-labelledby="tfLabel">
   <div class="ttop"><button class="backbtn" type="button" id="tfMin"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>Minimize</button><p class="eyebrow" id="tfLabel"></p></div>
   <div class="tmid">
@@ -528,6 +561,11 @@ button.blkhead{width:100%;text-align:left}
     <p class="tsub" id="tfSub"></p>
   </div>
   <div class="tctl" id="tfCtl"></div>
+</div>
+<div class="tfull" id="rfull" hidden role="dialog" aria-modal="true" aria-label="Run timer">
+  <div class="ttop"><button class="backbtn" type="button" id="rfMin"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>Minimize</button><p class="eyebrow" id="rfLabel"></p></div>
+  <div class="tmid"><span class="rftime" id="rfTime" role="timer">0:00</span><p class="rfstate" id="rfState"></p><p class="calc" id="rfLaps"></p></div>
+  <div class="rfctl" id="rfCtl"></div>
 </div>
 <div class="sheet" id="exSheet" hidden role="dialog" aria-modal="true" aria-labelledby="exTitle">
   <div class="sheet-in">
@@ -782,8 +820,9 @@ function wake(on){ try { if (on && !tfWake && navigator.wakeLock && !document.hi
 function startRest(sec){ timers.rest = {end:Date.now() + sec * 1000, dur:sec}; saveTimers(); audio(); tfOpen = true; renderTimer(); }
 function renderTimer(){
   const t = timers.rest, bar = $('#tbar');
-  if (t) { bar.hidden = false; bar.innerHTML = '<span class="tpill" data-tk="rest"><b>Rest</b> ' + mmss(t.end - Date.now()) + '<button type="button" data-skip="1">Skip</button></span>'; }
-  else { bar.hidden = true; bar.innerHTML = ''; }
+  if (t) { if (!bar.firstChild) bar.innerHTML = '<span class="tpill" data-tk="rest"><b>Rest</b><span id="tbT"></span><i></i><button type="button" data-skip="1">Skip</button></span>'; $('#tbT').textContent = mmss(t.end - Date.now()); bar.hidden = false; }
+  else if (!bar.hidden) { bar.hidden = true; bar.innerHTML = ''; }
+  document.body.classList.toggle('hasrest', !!t);
   const el = $('#tfull'), now = Date.now();
   if (!t && tfGo && now - tfGo < 2600) {
     el.className = 'tfull go'; el.hidden = false; $('#tfLabel').textContent = 'Rest over'; $('#tfTime').textContent = 'Go'; $('#tfOf').textContent = '';
@@ -1109,7 +1148,7 @@ function renderRun(){
   const d = cur, p = planFor(d).run, r = peek(d) || blankRec(), run = r.run || {}, box = $('#runBox');
   if (!p && !run.dist && !run.sec && !runOpen) { $('#runMeta').textContent = ''; box.innerHTML = '<p class="calc" style="margin-bottom:10px">No run planned today.</p><button class="btn small" type="button" data-ract="open">Log a run anyway</button>'; return; }
   const U = S().units.dist, steps = p && p.note ? p.note.split('\n').map(s => s.trim()).filter(Boolean) : [];
-  $('#runMeta').textContent = p ? p.kind : 'Extra run';
+  $('#runMeta').textContent = run.dist ? fmtDist(run.dist) + (run.sec ? ' · ' + paceTxt(run.dist, run.sec) : '') : (p ? p.kind : 'Extra run');
   let h = p ? '<div class="runplan"><b>' + (p.dist ? fmtDist(p.dist) : p.kind) + '</b><span>' + esc(p.kind) + '</span></div>' : '';
   if (steps.length > 1) h += '<ul class="runsteps">' + steps.map(s => { const m = s.match(/^([^:]{2,24}):\s*(.*)$/); return '<li>' + (m ? '<b>' + esc(m[1]) + '</b> · ' + esc(m[2]) : esc(s)) + '</li>'; }).join('') + '</ul>';
   else if (steps.length) h += '<p class="calc" style="margin-top:6px">' + esc(steps[0]) + '</p>';
@@ -1131,7 +1170,7 @@ function saveRun(patch){
 $('#runBox').addEventListener('click', e => {
   const b = e.target.closest('[data-ract]'); if (!b) return; const a = b.dataset.ract;
   if (a === 'open') { runOpen = true; renderRun(); return; }
-  if (['timer', 'lap', 'repgo', 'repdone', 'stop', 'discard'].includes(a)) { runAct(a); return; }
+  if (['timer', 'full', 'lap', 'repgo', 'repdone', 'stop', 'discard'].includes(a)) { runAct(a); return; }
   if (a === 'asplan') { saveRun({dist:planFor(cur).run.dist}); vib(10); toast('Run logged'); return; }
   if (a === 'd-' || a === 'd+') { const r = peek(cur), curv = r && r.run && r.run.dist ? distIn(r.run.dist) : 0, v = Math.max(0, Math.round((curv + (a === 'd+' ? 0.25 : -0.25)) * 100) / 100); saveRun({dist:v ? distOut(v) : null}); vib(6); }
 });
@@ -1195,14 +1234,25 @@ function renderStat(){
     if (p.rec.length) parts.push(p.rec.filter((_, i) => r.rec && r.rec[i]).length / p.rec.length);
     if (mi.length) parts.push(mi.filter(i => r.meals && r.meals[i]).length / mi.length);
     const pc = parts.length ? Math.round(parts.reduce((a, b) => a + b, 0) / parts.length * 100) : 0;
-    $('#tProg').innerHTML = '<span class="dbar" role="img" aria-label="' + pc + ' percent of the day done"><i style="width:' + pc + '%"' + (pc >= 100 ? ' class="full"' : '') + '></i></span><b>' + pc + '%</b>'; }
+    $('#tProg').innerHTML = '<span class="dbar" role="img" aria-label="' + pc + ' percent of the day done"><i style="width:' + pc + '%"' + (pc >= 100 ? ' class="full"' : '') + '></i></span><b>' + pc + '%</b>'; $('#tPct').textContent = parts.length ? ' · ' + pc + '% done' : ''; }
   el.innerHTML = tiles.map(([id, v, l, ok]) => '<button type="button" data-go="' + id + '"' + (ok ? ' class="ok"' : '') + '><b>' + v + '</b><small>' + l + '</small></button>').join('');
 }
 let folds = lsGet('blocks.fold', {});
-function applyFolds(){ for (const id of ['secLift', 'secRun', 'secRec', 'secMeals']) { const el = $('#' + id); el.classList.toggle('folded', !!folds[id]); el.querySelector('.blkhead').setAttribute('aria-expanded', !folds[id]); } }
-document.querySelectorAll('[data-fold]').forEach(b => b.addEventListener('click', () => { const id = b.dataset.fold; if (folds[id]) delete folds[id]; else folds[id] = 1; lsSet('blocks.fold', folds); applyFolds(); }));
+let autoFold = {};
+/* Sections already finished when the day opens start folded; logging during the session never folds anything under your thumb */
+function computeAuto(){
+  const d = cur, p = planFor(d), r = peek(d) || blankRec(), ls = liftStatus(d), rs = runStatus(d), done = {};
+  if (ls.tgt && (r.gOut || (ls.fin && !same(d, TODAY)))) done.secLift = 1;
+  if (rs.plan && rs.dist >= rs.plan * 0.95 && (rs.sec || !same(d, TODAY))) done.secRun = 1;
+  if (p.rec.length && p.rec.every((_, i) => r.rec && r.rec[i])) done.secRec = 1;
+  const mi = p.meals.map((t, i) => i).filter(i => p.meals[i].trim()); if (mi.length && mi.every(i => r.meals && r.meals[i])) done.secMeals = 1;
+  autoFold = done;
+  for (const id of ['secLift', 'secRun', 'secRec', 'secMeals']) $('#' + id).classList.toggle('alldone', !!done[id]);
+}
+function applyFolds(){ for (const id of ['secLift', 'secRun', 'secRec', 'secMeals']) { const el = $('#' + id), f = !!folds[id] || !!autoFold[id]; el.classList.toggle('folded', f); el.querySelector('.blkhead').setAttribute('aria-expanded', !f); } }
+document.querySelectorAll('[data-fold]').forEach(b => b.addEventListener('click', () => { const id = b.dataset.fold; if (folds[id] || autoFold[id]) { delete folds[id]; delete autoFold[id]; } else folds[id] = 1; lsSet('blocks.fold', folds); applyFolds(); }));
 applyFolds();
-$('#tStat').addEventListener('click', e => { const b = e.target.closest('[data-go]'); if (!b) return; if (folds[b.dataset.go]) { delete folds[b.dataset.go]; lsSet('blocks.fold', folds); applyFolds(); } $('#' + b.dataset.go).scrollIntoView({behavior:'smooth', block:'start'}); });
+$('#tStat').addEventListener('click', e => { const b = e.target.closest('[data-go]'); if (!b) return; if (folds[b.dataset.go] || autoFold[b.dataset.go]) { delete folds[b.dataset.go]; delete autoFold[b.dataset.go]; lsSet('blocks.fold', folds); applyFolds(); } $('#' + b.dataset.go).scrollIntoView({behavior:'smooth', block:'start'}); });
 function renderToday(){
   const d = cur, p = planFor(d), wk = weekNo(d), st = START(), until = dayDiff(TODAY, st);
   $('#tEyebrow').textContent = (wk >= 1 ? 'Week ' + wk + ' · ' : 'Before week 1 · ') + fMD.format(d) + (same(d, TODAY) ? ' · Today' : '');
@@ -1214,7 +1264,7 @@ function renderToday(){
   $('#tFocus').textContent = [p.focus, p.note].filter(Boolean).map(t => /[.!?]$/.test(t) ? t : t + '.').join(' ');
   $('#tFocus').hidden = !p.focus && !p.note;
   runOpen = false;
-  renderBw(); renderTools();
+  bwEdit = false; renderBw(); renderTools(); computeAuto(); applyFolds();
   renderStat(); renderGym(); renderRun(); renderRec(); renderMeals();
   $('#dpLabel').textContent = same(d, TODAY) ? 'Today, ' + fMD.format(d) : fShort.format(d);
   $('#dp').value = key(d);
@@ -1250,7 +1300,7 @@ function setView(v){
   for (const [k, sel] of Object.entries(VIEWS)) $(sel).hidden = k !== v;
   document.querySelectorAll('.tab').forEach(t => { if (t.dataset.view === v) t.setAttribute('aria-current', 'page'); else t.removeAttribute('aria-current'); });
   $('#daynav').hidden = v !== 'today'; $('#app').classList.toggle('nonav', v !== 'today');
-  if (v === 'today') renderToday(); else if (v === 'week') renderWeek(); else if (v === 'prog') renderProgress(); else if (v === 'set') { closeEditor(); renderSettings(); }
+  if (v === 'today') renderToday(); else if (v === 'week') renderWeek(); else if (v === 'prog') renderProgress(); else if (v === 'set') { closeEditor(); setSec = null; applySetSec(); renderSettings(); }
   window.scrollTo(0, 0);
 }
 document.querySelectorAll('.tab').forEach(t => t.addEventListener('click', () => setView(t.dataset.view)));
@@ -1287,7 +1337,7 @@ $('#wkNext').addEventListener('click', () => { wkOff++; renderWeek(); });
 $('#wkList').addEventListener('click', e => { const b = e.target.closest('[data-day]'); if (!b) return; cur = parseKey(b.dataset.day); setView('today'); });
 $('#wkReview').addEventListener('click', () => openReview(wkOff));
 $('#wkGroc').addEventListener('click', () => openGroceries(wkOff));
-$('#wkEdit').addEventListener('click', () => { setView('set'); openEditor(planIdx(TODAY)); });
+$('#wkEdit').addEventListener('click', () => { setView('set'); setSec = 0; applySetSec(); openEditor(planIdx(TODAY)); });
 
 /* ================= progress ================= */
 function renderProgress(){
@@ -1296,7 +1346,9 @@ function renderProgress(){
   for (let w = curW - 7; w <= curW; w++) { let mi = 0; if (w < 0 && !weeks.length) { let any = false; for (let i = 0; i < 7; i++) { const r0 = peek(addDays(s, w * 7 + i)); if (r0 && r0.run && r0.run.dist) { any = true; break; } } if (!any) continue; } for (let i = 0; i < 7; i++) { const r = peek(addDays(s, w * 7 + i)); if (r && r.run && r.run.dist) mi += r.run.dist; } weeks.push({w, mi}); }
   const mx = Math.max(1, ...weeks.map(x => x.mi), program().reduce((a, p) => a + (p.run && p.run.dist || 0), 0));
   $('#pRunBars').style.setProperty('--n', Math.max(4, weeks.length));
-  $('#pRunBars').innerHTML = weeks.map(x => '<div><em>' + (x.mi ? fmtN(distIn(x.mi), 1) : '') + '</em><i' + (x.w === curW ? ' class="cur"' : '') + ' style="height:' + (x.mi / mx * 100).toFixed(1) + '%"></i><small>' + (x.w >= 0 ? 'W' + (x.w + 1) : fMD.format(addDays(s, x.w * 7))) + '</small></div>').join('');
+  const anyRun = weeks.some(x => x.mi > 0);
+  $('#pRunBars').classList.toggle('none', !anyRun);
+  $('#pRunBars').innerHTML = !anyRun ? '<p class="rnote">No runs logged yet. Log your first run on the Today tab and weekly miles appear here.</p>' : weeks.map(x => '<div><em>' + (x.mi ? fmtN(distIn(x.mi), 1) : '') + '</em><i' + (x.w === curW ? ' class="cur"' : '') + ' style="height:' + (x.mi / mx * 100).toFixed(1) + '%"></i><small>' + (x.w >= 0 ? 'W' + (x.w + 1) : fMD.format(addDays(s, x.w * 7))) + '</small></div>').join('');
   const planWk = program().reduce((a, p) => a + (p.run && p.run.dist || 0), 0), thisWk = weeks[weeks.length - 1].mi;
   let longest = 0, pS = 0, pD = 0;
   for (const [k, r] of Object.entries(data.days)) { if (!r.run || !r.run.dist) continue; longest = Math.max(longest, r.run.dist); if (dayDiff(parseKey(k), TODAY) <= 28 && r.run.sec) { pS += r.run.sec; pD += r.run.dist; } }
@@ -1307,7 +1359,7 @@ function renderProgress(){
   for (let i = 0; i < 7; i++) { const r = peek(addDays(ws, i)); if (!r) continue; for (const L of r.lifts) { if (L.wu) continue; const m = muscleOf(L.ex); sets[m] = (sets[m] || 0) + 1; tot++; } }
   const groups = MUSCLES.concat(sets.Other ? ['Other'] : []), vmx = Math.max(22, ...Object.values(sets));
   $('#pVolSub').textContent = 'This week, ' + fMD.format(ws) + ' – ' + fMD.format(addDays(ws, 6)) + ' · ' + tot + ' working sets. The shaded band is 10–20 sets, a common range for growth.';
-  $('#pVol').innerHTML = groups.map(g => { const n = sets[g] || 0; return '<div class="vrow"><span>' + g + '</span><span class="vbar"><u style="left:' + (10 / vmx * 100) + '%;width:' + (10 / vmx * 100) + '%"></u><i style="width:' + (n / vmx * 100) + '%"></i></span><b>' + n + '</b></div>'; }).join('');
+  $('#pVol').innerHTML = !tot ? '<p class="rnote">No sets logged this week yet. Each muscle\'s weekly sets show here as you train.</p>' : groups.map(g => { const n = sets[g] || 0; return '<div class="vrow"><span>' + g + '</span><span class="vbar"><u style="left:' + (10 / vmx * 100) + '%;width:' + (10 / vmx * 100) + '%"></u><i style="width:' + (n / vmx * 100) + '%"></i></span><b>' + n + '</b></div>'; }).join('');
   // records
   const idx = liftIndex(), list = Object.entries(idx.best).sort((a, b) => b[1].last.localeCompare(a[1].last));
   $('#pRec').innerHTML = list.length ? list.map(([k, b]) => '<li><button type="button" data-hist="' + esc(b.lastName) + '"><span class="nm">' + esc(b.lastName) + '<small>Best ' + setTxt(b) + ' on ' + fMD.format(parseKey(b.k)) + '</small></span><span class="pt"><b>' + (b.w ? fmtN(b.sc, 0) : '—') + '</b> ' + (b.w ? U.lift : '') + '</span></button></li>').join('') : '<li><span class="rnote">Log a few sets to see records here.</span></li>';
@@ -1382,6 +1434,13 @@ let edDay = 0;
 function editProgram(){ if (!S().program) S().program = JSON.parse(JSON.stringify(DEFAULT_PROGRAM)); return S().program; }
 function openEditor(i){ edDay = i == null ? planIdx(TODAY) : i; $('#setMain').hidden = true; $('#editor').hidden = false; renderEditor(); window.scrollTo(0, 0); }
 function closeEditor(){ $('#setMain').hidden = false; $('#editor').hidden = true; }
+const SET_DESC = {'Program':'Workouts, meals, start date, deload, goal weight', 'Units':'lb or kg, miles or km', 'Rest timer':'Default rest, auto-start, notifications', 'Appearance':'Light or dark, accent color', 'Cloud sync':'Keep your devices in step', 'Backup':'Copy, download or restore your data', 'Install on your phone':'Add Blocks to your Home Screen', 'Erase':'Delete all workout data'};
+const setGroups = [...document.querySelectorAll('#setMain > .sgroup')];
+let setSec = null;
+$('#setMenu').innerHTML = setGroups.map((g, i) => { const t = g.querySelector('h2').textContent; return '<button class="navrow" type="button" data-sec="' + i + '"><span>' + t + '<small>' + (SET_DESC[t] || '') + '</small></span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>'; }).join('');
+function applySetSec(){ $('#setTop').hidden = setSec != null; $('#setSubBar').hidden = setSec == null; setGroups.forEach((g, i) => { g.hidden = i !== setSec; g.classList.toggle('solo', i === setSec); }); }
+$('#setMenu').addEventListener('click', e => { const b = e.target.closest('[data-sec]'); if (!b) return; setSec = Number(b.dataset.sec); applySetSec(); window.scrollTo(0, 0); });
+$('#setBack').addEventListener('click', () => { setSec = null; applySetSec(); window.scrollTo(0, 0); });
 $('#openEditor').addEventListener('click', () => openEditor());
 $('#edBack').addEventListener('click', () => { closeEditor(); renderSettings(); window.scrollTo(0, 0); });
 function renderEditor(){
@@ -1535,6 +1594,7 @@ $('#syncBox').addEventListener('click', async e => {
 /* ================= bodyweight ================= */
 const bwU = () => S().units.body;
 function bwAvg(end, n){ let s = 0, c = 0; for (let i = 0; i < (n || 7); i++) { const r = peek(addDays(end, -i)); if (r && r.bw) { s += r.bw; c++; } } return c >= 3 ? s / c : null; }
+let bwEdit = false;
 function renderBw(){
   const el = $('#tBw'), d = cur;
   if (d > TODAY) { el.hidden = true; return; }
@@ -1543,13 +1603,17 @@ function renderBw(){
   let hint = 'Weigh in after waking, before eating.';
   if (avg) hint = '7-day average ' + fmtN(avg, 1) + ' ' + bwU() + (goal ? ' · ' + (Math.abs(goal - avg) < 0.05 ? 'at goal' : fmtN(Math.abs(goal - avg), 1) + ' ' + bwU() + ' to ' + fmtN(goal, 1)) : '');
   else if (goal) hint += ' Goal ' + fmtN(goal, 1) + ' ' + bwU() + '.';
+  el.classList.toggle('compact', !!v && !bwEdit);
+  if (v && !bwEdit) { el.innerHTML = '<button type="button" class="bwchip" data-bwedit="1"><b>' + fmtN(v, 1) + ' ' + bwU() + '</b><span>' + (avg ? hint : 'this morning') + '</span><u>Edit</u></button>'; return; }
   el.innerHTML = '<span class="bwtx"><b>Morning weight</b><small>' + hint + '</small></span><span class="cstep bwstep"><button type="button" data-bw="-" aria-label="0.1 less">' + MINUS_SVG + '</button><input id="bwIn" type="number" inputmode="decimal" min="0" step="any" placeholder="' + bwU() + '" value="' + v + '" aria-label="Bodyweight in ' + bwU() + '"><button type="button" data-bw="+" aria-label="0.1 more">' + PLUS_SVG + '</button></span>';
 }
 function setBw(v){
+  bwEdit = true;
   const r = rec(cur); if (v > 0) r.bw = Math.round(v * 10) / 10; else delete r.bw;
   save(); renderBw();
 }
 $('#tBw').addEventListener('click', e => {
+  if (e.target.closest('[data-bwedit]')) { bwEdit = true; renderBw(); const i = $('#bwIn'); if (i) i.focus(); return; }
   const b = e.target.closest('[data-bw]'); if (!b) return;
   const r = peek(cur); let base = r && r.bw;
   if (!base) { for (let i = 1; i <= 30 && !base; i++) { const p = peek(addDays(cur, -i)); if (p && p.bw) base = p.bw; } if (!base) base = S().goal ? S().goal - 3 : 70; setBw(base); vib(6); return; }
@@ -1562,7 +1626,7 @@ function renderBwPanel(){
   const box = $('#pBw');
   if (pts.length < 2) { $('#pBwSub').textContent = 'Log your morning weight on the Today tab.'; box.innerHTML = '<p class="rnote">' + (pts.length ? 'One weigh-in so far. The trend appears after a few more.' : 'No weigh-ins yet.') + '</p>'; return; }
   const avgs = []; for (let i = 0; i <= 55; i++) { const a = bwAvg(addDays(TODAY, i - 55)); if (a) avgs.push({i, v:a}); }
-  const all = pts.map(p => p.v).concat(goal ? [goal] : []), mn = Math.min(...all) - 0.3, mx = Math.max(...all) + 0.3, W = 320, H = 130, P = 6;
+  const all = pts.map(p => p.v).concat(avgs.map(a => a.v)), mn = Math.min(...all) - 0.4, mx = Math.max(...all) + 0.4, W = 320, H = 130, P = 6, gIn = goal && goal >= mn && goal <= mx;
   const X = i => P + (W - 2 * P) * i / 55, Y = v => H - P - (H - 2 * P) * (v - mn) / (mx - mn);
   const now = bwAvg(TODAY), prev = bwAvg(addDays(TODAY, -7)), rate = now && prev ? now - prev : null;
   let advice = 'Keep logging. The weekly rate shows after two weeks of weigh-ins.';
@@ -1570,9 +1634,10 @@ function renderBwPanel(){
     const lo = U === 'lb' ? 0.2 : 0.1, hi = U === 'lb' ? 0.9 : 0.4;
     advice = rate < lo ? 'Gaining slower than planned. Add about 200 kcal a day, such as ½ cup more rice at lunch.' : rate > hi ? 'Gaining faster than a lean bulk needs. Trim about 200 kcal, such as a smaller night pudding.' : 'On pace for a lean bulk. Keep eating the same.';
   } else if (goal && now && now >= goal - 0.05) advice = 'You\'re at your goal weight. Hold here or set a new goal in Setup.';
-  $('#pBwSub').textContent = 'Last 8 weeks. Dots are weigh-ins, the line is the 7-day average' + (goal ? ', the dashed line is your goal.' : '.');
+  $('#pBwSub').textContent = 'Last 8 weeks, zoomed to your range. Dots are weigh-ins, the line is the 7-day average.';
   box.innerHTML = '<svg class="bwchart" viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="Bodyweight over the last 8 weeks">' +
-    (goal ? '<line class="goal" x1="' + P + '" x2="' + (W - P) + '" y1="' + Y(goal).toFixed(1) + '" y2="' + Y(goal).toFixed(1) + '"/>' : '') +
+    (gIn ? '<line class="goal" x1="' + P + '" x2="' + (W - P) + '" y1="' + Y(goal).toFixed(1) + '" y2="' + Y(goal).toFixed(1) + '"/>' : goal ? '<text class="glab" x="' + (W - P) + '" y="' + (goal > mx ? 14 : H - 6) + '" text-anchor="end">Goal ' + fmtN(goal, 1) + ' ' + U + (goal > mx ? ' ↑' : ' ↓') + '</text>' : '') +
+    '<text class="alab" x="' + P + '" y="14">' + fmtN(mx, 1) + '</text><text class="alab" x="' + P + '" y="' + (H - 6) + '">' + fmtN(mn, 1) + '</text>' +
     pts.map(p => '<circle class="pt" cx="' + X(p.i).toFixed(1) + '" cy="' + Y(p.v).toFixed(1) + '" r="2.5"/>').join('') +
     (avgs.length > 1 ? '<polyline points="' + avgs.map(a => X(a.i).toFixed(1) + ',' + Y(a.v).toFixed(1)).join(' ') + '"/>' : '') + '</svg>' +
     '<div class="kv"><div><b>' + (now ? fmtN(now, 1) : fmtN(pts[pts.length - 1].v, 1)) + ' ' + U + '</b><small>' + (now ? '7-day average' : 'latest') + '</small></div><div><b>' + (rate != null ? (rate >= 0 ? '+' : '−') + fmtN(Math.abs(rate), 2) : '—') + '</b><small>' + U + ' vs last week</small></div><div><b>' + (goal && now ? fmtN(Math.max(0, goal - now), 1) + ' ' + U : '—') + '</b><small>to goal</small></div></div><p class="calc" style="margin-top:10px">' + advice + '</p>';
@@ -1620,9 +1685,26 @@ function runLiveHtml(){
     h += '<p class="rtstate" id="rtState"></p>' + (done ? '<p class="calc">Reps: <strong>' + t.laps.map(s => mmss(s * 1000)).join(' · ') + '</strong></p>' : '') +
       '<div class="btnrow">' + (iv.phase === 'work' ? '<button class="btn primary rtbig" type="button" data-ract="repdone">Rep ' + (done + 1) + ' done</button>' : iv.phase === 'idle' && done < iv.n ? '<button class="btn primary rtbig" type="button" data-ract="repgo">Start rep ' + (done + 1) + ' of ' + iv.n + '</button>' : '') + '</div>';
   } else h += (t.laps.length ? '<p class="calc">Laps: <strong>' + t.laps.map(s => mmss(s * 1000)).join(' · ') + '</strong></p>' : '') + '<div class="btnrow"><button class="btn rtbig" type="button" data-ract="lap">Lap</button></div>';
-  return h + '<div class="btnrow"><button class="btn primary" type="button" data-ract="stop">Stop and save</button><button class="btn danger" type="button" data-ract="discard">Discard</button></div>';
+  return h + '<div class="btnrow"><button class="btn" type="button" data-ract="full">Full screen</button><button class="btn primary" type="button" data-ract="stop">Stop and save</button><button class="btn danger" type="button" data-ract="discard">Discard</button></div>';
 }
+let rtOpen = false;
+function renderRunFull(){
+  const el = $('#rfull'), t = timers.run;
+  if (!t || !rtOpen) { el.hidden = true; return; }
+  const now = Date.now(), iv = t.iv, done = t.laps.length, p = planFor(parseKey(t.day)).run;
+  $('#rfLabel').textContent = p ? p.kind + (p.dist ? ' · ' + fmtDist(p.dist) : '') : 'Run';
+  $('#rfTime').textContent = mmss(now - t.start);
+  $('#rfState').textContent = !iv ? (done ? 'Lap ' + (done + 1) + ' · ' + mmss(now - t.lapAt) : 'Easy and steady.') : iv.phase === 'work' ? 'Rep ' + (done + 1) + ' of ' + iv.n + ' · ' + mmss(now - iv.t0) : iv.phase === 'rest' ? 'Walk or jog · next rep in ' + mmss(iv.restEnd - now) : done >= iv.n ? 'All ' + iv.n + ' reps done. Cool down, then stop.' : 'Warm up, then start your first rep.';
+  $('#rfLaps').textContent = done ? (iv ? 'Reps: ' : 'Laps: ') + t.laps.map(x => mmss(x * 1000)).join(' · ') : '';
+  const big = !iv ? '<button class="btn rfbig" type="button" data-ract="lap">Lap</button>' : iv.phase === 'work' ? '<button class="btn primary rfbig" type="button" data-ract="repdone">Rep ' + (done + 1) + ' done</button>' : iv.phase === 'idle' && done < iv.n ? '<button class="btn primary rfbig" type="button" data-ract="repgo">Start rep ' + (done + 1) + '</button>' : '';
+  const h = big + '<div class="rfrow"><button class="btn' + (big && iv && iv.phase !== 'idle' ? '' : ' primary') + '" type="button" data-ract="stop">Stop and save</button><button class="btn danger" type="button" data-ract="discard">Discard</button></div>';
+  const c = $('#rfCtl'); if (c.dataset.sig !== h) { c.innerHTML = h; c.dataset.sig = h; }
+  el.hidden = false;
+}
+$('#rfMin').addEventListener('click', () => { rtOpen = false; renderRunFull(); });
+$('#rfCtl').addEventListener('click', e => { const b = e.target.closest('[data-ract]'); if (b) runAct(b.dataset.ract); });
 function tickRun(){
+  renderRunFull();
   const t = timers.run; if (!t) return;
   const now = Date.now(), iv = t.iv;
   if (iv && iv.phase === 'rest' && now >= iv.restEnd) { iv.phase = 'work'; iv.t0 = now; saveTimers(); chime(3); vib([300, 100, 300]); if (view === 'today') renderRun(); }
@@ -1631,17 +1713,18 @@ function tickRun(){
 }
 function runAct(a){
   const t = timers.run, now = Date.now();
-  if (a === 'timer') { const iv = ivPlan(planFor(cur).run); timers.run = {start:now, day:key(cur), laps:[], lapAt:now, iv:iv ? {n:iv.n, rest:iv.rest, phase:'idle'} : null}; audio(); }
+  if (a === 'full') { rtOpen = true; renderRunFull(); return; }
+  if (a === 'timer') { rtOpen = true; const iv = ivPlan(planFor(cur).run); timers.run = {start:now, day:key(cur), laps:[], lapAt:now, iv:iv ? {n:iv.n, rest:iv.rest, phase:'idle'} : null}; audio(); }
   else if (!t) return;
   else if (a === 'lap') { t.laps.push(Math.round((now - t.lapAt) / 1000)); t.lapAt = now; vib(10); }
   else if (a === 'repgo') { t.iv.phase = 'work'; t.iv.t0 = now; vib(10); }
   else if (a === 'repdone') { t.laps.push(Math.max(1, Math.round((now - t.iv.t0) / 1000))); if (t.laps.length >= t.iv.n) t.iv.phase = 'idle'; else { t.iv.phase = 'rest'; t.iv.restEnd = now + t.iv.rest * 1000; } vib(10); }
   else if (a === 'stop') {
     const sec = Math.max(1, Math.round((now - t.start) / 1000)), laps = t.laps.slice(0, 40), had = peek(cur) && peek(cur).run && peek(cur).run.dist;
-    delete timers.run; saveTimers(); saveRun(laps.length ? {sec, laps} : {sec}); wake(!!timers.rest);
+    const tk = t.day; delete timers.run; rtOpen = false; saveTimers(); renderRunFull(); if (key(cur) !== tk) { cur = parseKey(tk); if (view === 'today') renderToday(); } saveRun(laps.length ? {sec, laps} : {sec}); wake(!!timers.rest);
     toast(had ? 'Run saved' : 'Time saved. Enter the distance.'); if (!had) { const i = $('#rDist'); if (i) i.focus(); } return;
   }
-  else if (a === 'discard') { delete timers.run; wake(!!timers.rest); }
+  else if (a === 'discard') { delete timers.run; rtOpen = false; wake(!!timers.rest); }
   saveTimers(); renderRun(); tickRun(); if (timers.run) wake(true);
 }
 
