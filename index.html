@@ -100,6 +100,11 @@ textarea:focus{outline:2px solid var(--accent);outline-offset:0;border-color:tra
 .ico svg,.stp svg,.cstep button svg,.gaddbtn svg{stroke:currentColor;fill:none;stroke-linecap:round;stroke-linejoin:round}
 
 /* Today header */
+.dprog{display:flex;align-items:center;gap:10px;margin-top:14px}
+.dbar{flex:1;height:8px;border-radius:5px;background:var(--surface-2);overflow:hidden}
+.dbar i{display:block;height:100%;border-radius:5px;background:var(--accent);transition:width .35s ease}
+.dbar i.full{background:var(--good)}
+.dprog b{font-family:var(--font-data);font-size:13px;font-weight:600;min-width:38px;text-align:right}
 .dstat{display:grid;grid-template-columns:repeat(var(--n,4),minmax(0,1fr));gap:8px;margin-top:10px}
 .dstat button{display:flex;flex-direction:column;align-items:flex-start;gap:2px;padding:10px 12px;border-radius:14px;background:var(--surface);border:1px solid var(--line);text-align:left;min-width:0}
 .dstat b{font-family:var(--font-data);font-size:17px;font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap}
@@ -128,6 +133,12 @@ textarea:focus{outline:2px solid var(--accent);outline-offset:0;border-color:tra
 .wstrip .sel small{color:var(--ink-sub)}
 .blk{margin-top:28px;scroll-margin-top:16px}
 .blkhead{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px;padding:11px 14px;border-radius:14px;background:var(--ink);color:var(--ink-fg)}
+button.blkhead{width:100%;text-align:left}
+.blkhead h2{flex:1}
+.fchev{width:18px;height:18px;flex:none;stroke:var(--ink-sub);stroke-width:2.2;fill:none;stroke-linecap:round;stroke-linejoin:round;transition:transform .2s}
+.blk.folded .fchev{transform:rotate(-90deg)}
+.blk.folded>:not(.blkhead){display:none!important}
+.blk.folded .blkhead{margin-bottom:0}
 .blkhead h2{font-family:var(--font-display);font-size:19px;font-weight:700;letter-spacing:-.01em}
 .blkhead span{font-size:13px;color:var(--ink-sub);text-align:right}
 .macro{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-bottom:10px}
@@ -156,6 +167,10 @@ textarea:focus{outline:2px solid var(--accent);outline-offset:0;border-color:tra
 .exname b{font-size:16px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-decoration:underline;text-decoration-color:var(--line);text-underline-offset:3px}
 .exname small{font-size:12px;color:var(--muted)}
 .exprog{flex:none;font-family:var(--font-data);font-size:13px;font-weight:600;padding:4px 9px;border-radius:999px;background:var(--surface-2);color:var(--muted)}
+.exdots{flex:none;display:flex;gap:4px;align-items:center;max-width:96px;flex-wrap:wrap;justify-content:flex-end}
+.exdots i{width:10px;height:18px;border-radius:4px;background:var(--surface-2);border:1px solid var(--line)}
+.exdots i.on{background:var(--accent);border-color:var(--accent)}
+.exdots.ok i.on{background:var(--good);border-color:var(--good)}
 .exprog.ok{background:color-mix(in srgb,var(--good) 16%,var(--surface));color:var(--good)}
 .excard.done:not(.active){background:color-mix(in srgb,var(--good) 6%,var(--surface))}
 .exsum{display:flex;flex-wrap:wrap;gap:4px 10px;width:100%;padding:6px 14px 12px;text-align:left;font-family:var(--font-data);font-size:13px}
@@ -380,21 +395,22 @@ textarea:focus{outline:2px solid var(--accent);outline-offset:0;border-color:tra
       <p class="focus" id="tFocus"></p>
     </header>
     <div class="wstrip" id="tWeek" role="group" aria-label="Days this week"></div>
+    <div class="dprog" id="tProg"></div>
     <div class="dstat" id="tStat"></div>
     <section class="blk" id="secLift">
-      <div class="blkhead"><h2>Training</h2><span id="liftMeta"></span></div>
+      <button class="blkhead" type="button" data-fold="secLift" aria-expanded="true"><h2>Training</h2><span id="liftMeta"></span><svg class="fchev" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>
       <div id="gymLog"></div>
     </section>
     <section class="blk" id="secRun">
-      <div class="blkhead"><h2>Run</h2><span id="runMeta"></span></div>
+      <button class="blkhead" type="button" data-fold="secRun" aria-expanded="true"><h2>Run</h2><span id="runMeta"></span><svg class="fchev" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>
       <div class="card" id="runBox"></div>
     </section>
     <section class="blk" id="secRec">
-      <div class="blkhead"><h2>Recovery</h2><span id="recMeta"></span></div>
+      <button class="blkhead" type="button" data-fold="secRec" aria-expanded="true"><h2>Recovery</h2><span id="recMeta"></span><svg class="fchev" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>
       <div id="recBox"></div>
     </section>
     <section class="blk" id="secMeals">
-      <div class="blkhead"><h2>Nutrition</h2><span id="mealMeta"></span></div>
+      <button class="blkhead" type="button" data-fold="secMeals" aria-expanded="true"><h2>Nutrition</h2><span id="mealMeta"></span><svg class="fchev" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>
       <div class="macro" id="mealMac"></div>
       <ul class="chk" id="mealBox"></ul>
     </section>
@@ -549,34 +565,33 @@ const MEAL = {
 const day = (...ks) => ({meals:ks.map(k => MEAL[k][0]), mac:ks.map(k => [MEAL[k][1], MEAL[k][2]])});
 const ex = (n, s, r, g) => g ? {n, s, r, g} : {n, s, r};
 const DEFAULT_PROGRAM = [
-  {title:'Push + Easy run', focus:'Heavy chest, shoulders, triceps',
-   ex:[ex('Incline DB press', 4, '6–8'), ex('Flat machine chest press', 3, '8–10'), ex('Seated DB shoulder press', 4, '8–10'), ex('Cable lateral raise', 3, '12–15'), ex('Rope triceps pushdown', 3, '10–12'), ex('Overhead cable triceps extension', 3, '10–12')],
+  {title:'Upper A + Easy run', focus:'Heavy upper: chest, back, shoulders, arms',
+   ex:[ex('Incline DB press', 4, '6–8'), ex('Weighted pull-up', 4, '6–8'), ex('Seated DB shoulder press', 3, '8–10'), ex('Chest-supported row', 4, '8–10'), ex('Cable lateral raise', 3, '12–15'), ex('Rope triceps pushdown', 3, '10–12'), ex('EZ bar curl', 3, '8–10')],
    run:{kind:'Easy run', dist:5, note:'Zone 2. Conversational pace, aerobic base.'}, rec:[], note:'',
    ...day('bStd', 'shake', 'riceChicken', 'spTurkey', 'pudding')},
-  {title:'Pull + Tempo run', focus:'Back, rear delts, biceps',
-   ex:[ex('Wide grip lat pulldown', 4, '8–10'), ex('Chest-supported row', 4, '8–10'), ex('Single arm cable row', 3, '10–12'), ex('Rear delt fly', 3, '12–15'), ex('EZ bar curl', 3, '8–10'), ex('Hammer curl', 3, '10–12')],
-   run:{kind:'Tempo run', dist:4.5, note:'Controlled discomfort. Steady hard effort.'}, rec:[], note:'',
+  {title:'Lower A + Tempo run', focus:'Heavy lower: quads, hamstrings, calves, abs',
+   ex:[ex('Barbell back squat', 4, '6–8'), ex('Romanian deadlift', 4, '8–10'), ex('Leg press', 3, '10–12'), ex('Seated leg curl', 3, '10–12'), ex('Standing calf raise', 4, '12–15'), ex('Hanging knee raise', 3, '12–15')],
+   run:{kind:'Tempo run', dist:4.5, note:'Controlled discomfort. Steady hard effort. Lift first, or split the two by several hours.'}, rec:[], note:'',
    ...day('bStd', 'shake', 'riceTurkey', 'spChicken', 'pudding')},
-  {title:'Legs + Recovery', focus:'Quads, glutes, hamstrings',
-   ex:[ex('Barbell back squat', 4, '6–8'), ex('Romanian deadlift', 4, '8–10'), ex('Leg press', 3, '10–12'), ex('Walking lunges', 3, '10 each side'), ex('Seated leg curl', 3, '10–12'), ex('Standing calf raise', 4, '12–15'), ex('Hanging knee raise', 3, '12–15')],
-   run:null, rec:['8–10k steps', '15–20 min mobility'], note:'No run today. Recover hard so the next quality sessions hit.',
-   ...day('bStd', 'shake', 'riceChicken', 'spTurkeyR', 'puddingS')},
-  {title:'Upper + Interval run', focus:'Upper body strength',
-   ex:[ex('Incline DB press', 4, '8–10'), ex('Weighted pull-up', 4, '6–8'), ex('Seated DB shoulder press', 4, '8–10'), ex('Chest-supported row', 4, '8–10'), ex('Cable lateral raise', 3, '10–12'), ex('Face pull', 3, '12–15'), ex('Hanging knee raise', 4, '10–15')],
+  {title:'Recovery', focus:'No lift, no run',
+   ex:[], run:null, rec:['8–10k steps', '15–20 min mobility'], note:'Recover hard so the next two sessions hit.',
+   ...day('bRest', 'snackRest', 'riceChicken', 'spTurkeyR', 'puddingS')},
+  {title:'Upper B + Interval run', focus:'Upper volume: chest, back, delts, arms',
+   ex:[ex('Flat machine chest press', 4, '8–10'), ex('Wide grip lat pulldown', 4, '8–10'), ex('Single arm cable row', 3, '10–12'), ex('Cable lateral raise', 3, '12–15'), ex('Rear delt fly', 3, '12–15'), ex('Overhead cable triceps extension', 3, '10–12'), ex('Hammer curl', 3, '10–12')],
    run:{kind:'Intervals', dist:4, note:'Warm up: 1 mi easy, Zone 1–2\nMain set: 6 × 400 m at 5K pace, 90 s walk/jog between\nCool down: 1 mi easy'}, rec:[], note:'',
    ...day('bStd', 'shake', 'riceTurkey', 'spChicken', 'pudding')},
-  {title:'Lower + Easy run', focus:'Lower body strength',
-   ex:[ex('Hack squat', 4, '8–10'), ex('Romanian deadlift', 4, '8–10'), ex('Walking lunges', 3, '10 each leg'), ex('Leg press', 3, '10–12'), ex('Seated leg curl', 3, '10–12'), ex('Standing calf raise', 4, '12–15'), ex('Cable crunch', 4, '12–15')],
+  {title:'Lower B + Easy run', focus:'Lower volume: quads, glutes, hamstrings, abs',
+   ex:[ex('Hack squat', 4, '8–10'), ex('Romanian deadlift', 3, '8–10'), ex('Walking lunges', 3, '10 each leg'), ex('Seated leg curl', 3, '10–12'), ex('Standing calf raise', 4, '12–15'), ex('Cable crunch', 4, '12–15')],
    run:{kind:'Easy run', dist:3.75, note:'Zone 2. Conversational pace.'}, rec:[], note:'',
    ...day('bStd', 'shake', 'riceChicken', 'spTurkey', 'pudding')},
-  {title:'Long run + Accessory', focus:'Long run, then full-body accessory work',
-   ex:[ex('Pull-up', 3, '8–10'), ex('DB bench press', 3, '10–12'), ex('DB row', 3, '10–12'), ex('Lateral raise', 3, '12–15'), ex('Walking lunges', 3, '12 each'), ex('Triceps pushdown', 3, '12–15'), ex('Biceps curl', 3, '12–15'), ex('Hanging knee raise', 3, '12–15', 'Core circuit'), ex('Plank', 3, '45s', 'Core circuit'), ex('Ab wheel', 3, '10', 'Core circuit')],
-   run:{kind:'Long run', dist:8.5, note:'Zone 2, easy the whole way.'}, rec:[], note:'',
+  {title:'Long run', focus:'Zone 2, easy the whole way',
+   ex:[], run:{kind:'Long run', dist:8.5, note:'Zone 2, easy the whole way.'}, rec:['10 min stretching after the run'], note:'No lifting today.',
    ...day('bSat', 'shakeRun', 'riceChickenBig', 'spTurkeyBig', 'pudding')},
   {title:'Recovery + Reset', focus:'Low-stress day. Reset the system.',
    ex:[], run:null, rec:['8–10k steps', '20–30 min mobility', 'Sauna or cold plunge', 'Light stretching', 'Hydration and sleep focus'], note:'No lift, no hard run. Walk, move, recover, and set up the next training week.',
    ...day('bRest', 'snackRest', 'riceChicken', 'spTurkeyR', 'puddingS')}
 ];
+const PROGRAM_VERSION = 2; /* 2 = upper/lower/upper/lower split */
 const RUN_KINDS = ['Easy run', 'Tempo run', 'Intervals', 'Long run', 'Recovery run'];
 const dowOf = d => (d.getDay() + 6) % 7;
 const program = () => S().program || DEFAULT_PROGRAM;
@@ -597,7 +612,7 @@ const COMPOUND = /(squat|deadlift|bench|shoulder press|overhead press|chest pres
 /* ================= storage ================= */
 const KEY = 'blocks.v2', TKEY = 'blocks.timers', THEME_KEY = 'blocks.theme', SYNC_KEY = 'blocks.sync';
 const DEFAULT_START = '2026-11-09';
-const blankSettings = () => ({u:0, start:DEFAULT_START, units:{lift:'lb', dist:'mi'}, rest:120, autoRest:true, notify:false, exset:{}, program:null});
+const blankSettings = () => ({u:0, start:DEFAULT_START, units:{lift:'lb', dist:'mi'}, rest:120, autoRest:true, notify:false, exset:{}, program:null, pv:PROGRAM_VERSION});
 const blankDoc = () => ({version:7, settings:blankSettings(), days:{}});
 function cleanLift(L){
   if (!L || typeof L.ex !== 'string' || !L.ex.trim() || typeof L.r !== 'number' || !(L.r > 0) || L.r > 600) return null;
@@ -650,7 +665,7 @@ function cleanSettings(s, fromOld){
     const e = {}; if (typeof v.note === 'string' && v.note.trim()) e.note = v.note.slice(0, 140); if (Number.isInteger(v.rest) && v.rest >= 15 && v.rest <= 600) e.rest = v.rest;
     if (Object.keys(e).length) o.exset[k] = e;
   }
-  if (!fromOld) o.program = cleanProgram(s.program);
+  if (!fromOld) { o.program = cleanProgram(s.program); o.pv = Number.isInteger(s.pv) ? s.pv : 1; }
   return o;
 }
 /* The old habit-tracker format (v5/v6): keep only lifts, runs and gym timing; everything else is dropped. */
@@ -686,6 +701,9 @@ let data, migrated = false;
   lsSet(KEY, data);
 })();
 const S = () => data.settings;
+/* A new built-in split replaces a program saved under an older one */
+function upgradeProgram(){ if ((S().pv || 1) < PROGRAM_VERSION) { S().program = null; S().pv = PROGRAM_VERSION; S().u = Date.now(); lsSet(KEY, data); return true; } return false; }
+upgradeProgram();
 const START = () => parseKey(S().start);
 const weekNo = d => Math.floor(dayDiff(START(), d) / 7) + 1;
 const peek = d => data.days[key(d)] || null;
@@ -841,7 +859,7 @@ function renderGym(idx){
   const d = cur, r = peek(d) || blankRec(), U = S().units, prs = idx.prs[key(d)] || new Set(), plan = gymPlan(d, r), isToday = same(d, TODAY);
   if (gForKey !== key(d)) { gForKey = key(d); gAct = null; gEdit = null; gAddOpen = false; }
   const show = plan.length || gAddOpen;
-  $('#liftMeta').textContent = plan.length ? plan.length + ' exercises · ' + plan.reduce((a, it) => a + it.s, 0) + ' sets' : '';
+  $('#liftMeta').textContent = plan.length ? r.lifts.filter(wkSets).length + ' of ' + plan.reduce((a, it) => a + it.s, 0) + ' sets' : '';
   if (!show) { box.innerHTML = '<p class="plannote">No lifting planned today.</p><button class="btn small gaddbtn" type="button" data-gact="addopen">' + PLUS_SVG + 'Log a lift anyway</button>'; return; }
   const work = r.lifts.filter(wkSets);
   if (!gAct || !plan.some(it => exKey(it.n) === gAct)) {
@@ -864,7 +882,7 @@ function renderGym(idx){
     const meta = (it.g ? esc(it.g) + ' · ' : '') + esc(muscleOf(name)) + ' · ' + tgt + ' × ' + esc(it.r) + ' · rest ' + fmtRest(c.rest);
     let h = '<section class="excard' + (act ? ' active' : '') + (done >= tgt ? ' done' : '') + '" data-ex="' + esc(k) + '" data-name="' + esc(name) + '">' +
       '<div class="exhead"><button class="exname" type="button" data-gact="hist"><b>' + esc(name) + '</b><small>' + meta + '</small></button>' +
-      '<span class="exprog' + (done >= tgt ? ' ok' : '') + '">' + done + '/' + tgt + '</span></div>';
+      '<span class="exdots' + (done >= tgt ? ' ok' : '') + '" role="img" aria-label="' + done + ' of ' + tgt + ' sets done">' + Array.from({length:Math.max(tgt, done)}, (_, q) => '<i' + (q < done ? ' class="on"' : '') + '></i>').join('') + '</span></div>';
     if (!act) return h + '<button class="exsum" type="button" data-gact="open">' + (mine.length ? mine.map(x => '<span' + (x.L.wu ? ' class="wu"' : '') + '>' + setTxt(x.L) + '</span>').join('') : '<span class="dim">' + (last ? 'Last: ' + last.sets.map(setTxt).join(' · ') : 'Tap to log') + '</span>') + '</button></section>';
     if (c.note) h += '<p class="exnote">' + esc(c.note) + '</p>';
     if (last) {
@@ -1109,9 +1127,20 @@ function renderStat(){
     tiles.push(['secMeals', tp ? mi.reduce((a, i) => a + (r.meals && r.meals[i] ? mp(i) : 0), 0) + '/' + tp : n + '/' + mi.length, tp ? 'g protein' : 'meals', n === mi.length]); }
   const el = $('#tStat'); el.style.setProperty('--n', tiles.length || 1);
   if ($('#tWeek').childElementCount) renderStrip();
+  { const parts = [];
+    if (ls.tgt) parts.push(ls.fin ? 1 : Math.min(1, ls.done / ls.tgt));
+    if (rs.plan) parts.push(Math.min(1, rs.dist / rs.plan));
+    if (p.rec.length) parts.push(p.rec.filter((_, i) => r.rec && r.rec[i]).length / p.rec.length);
+    if (mi.length) parts.push(mi.filter(i => r.meals && r.meals[i]).length / mi.length);
+    const pc = parts.length ? Math.round(parts.reduce((a, b) => a + b, 0) / parts.length * 100) : 0;
+    $('#tProg').innerHTML = '<span class="dbar" role="img" aria-label="' + pc + ' percent of the day done"><i style="width:' + pc + '%"' + (pc >= 100 ? ' class="full"' : '') + '></i></span><b>' + pc + '%</b>'; }
   el.innerHTML = tiles.map(([id, v, l, ok]) => '<button type="button" data-go="' + id + '"' + (ok ? ' class="ok"' : '') + '><b>' + v + '</b><small>' + l + '</small></button>').join('');
 }
-$('#tStat').addEventListener('click', e => { const b = e.target.closest('[data-go]'); if (b) $('#' + b.dataset.go).scrollIntoView({behavior:'smooth', block:'start'}); });
+let folds = lsGet('blocks.fold', {});
+function applyFolds(){ for (const id of ['secLift', 'secRun', 'secRec', 'secMeals']) { const el = $('#' + id); el.classList.toggle('folded', !!folds[id]); el.querySelector('.blkhead').setAttribute('aria-expanded', !folds[id]); } }
+document.querySelectorAll('[data-fold]').forEach(b => b.addEventListener('click', () => { const id = b.dataset.fold; if (folds[id]) delete folds[id]; else folds[id] = 1; lsSet('blocks.fold', folds); applyFolds(); }));
+applyFolds();
+$('#tStat').addEventListener('click', e => { const b = e.target.closest('[data-go]'); if (!b) return; if (folds[b.dataset.go]) { delete folds[b.dataset.go]; lsSet('blocks.fold', folds); applyFolds(); } $('#' + b.dataset.go).scrollIntoView({behavior:'smooth', block:'start'}); });
 function renderToday(){
   const d = cur, p = planFor(d), wk = weekNo(d), st = START(), until = dayDiff(TODAY, st);
   $('#tEyebrow').textContent = (wk >= 1 ? 'Week ' + wk + ' · ' : 'Before week 1 · ') + fMD.format(d) + (same(d, TODAY) ? ' · Today' : '');
@@ -1377,6 +1406,7 @@ function mergeRemote(rem){
   let changed = false;
   for (const [k, v] of Object.entries(rem.days)) { const l = data.days[k]; if (!l || (v.u || 0) > (l.u || 0)) { data.days[k] = v; changed = true; } }
   if ((rem.settings.u || 0) > (S().u || 0)) { data.settings = rem.settings; changed = true; }
+  upgradeProgram();
   return changed;
 }
 async function syncNow(manual){
