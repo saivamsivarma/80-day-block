@@ -591,11 +591,14 @@ const DEFAULT_PROGRAM = [
    ex:[], run:null, rec:['8–10k steps', '20–30 min mobility', 'Sauna or cold plunge', 'Light stretching', 'Hydration and sleep focus'], note:'No lift, no hard run. Walk, move, recover, and set up the next training week.',
    ...day('bRest', 'snackRest', 'riceChicken', 'spTurkeyR', 'puddingS')}
 ];
-const PROGRAM_VERSION = 2; /* 2 = upper/lower/upper/lower split */
+const PROGRAM_VERSION = 3; /* 2 = upper/lower/upper/lower split; 3 = cycle counts from the start date (Tue Nov 10) */
 const RUN_KINDS = ['Easy run', 'Tempo run', 'Intervals', 'Long run', 'Recovery run'];
 const dowOf = d => (d.getDay() + 6) % 7;
 const program = () => S().program || DEFAULT_PROGRAM;
-const planFor = d => program()[dowOf(d)];
+/* The 7-day cycle is counted from the start date: day 1 of every week is the first program day (Upper A) */
+const planIdx = d => ((dayDiff(parseKey(S().start), d) % 7) + 7) % 7;
+const planFor = d => program()[planIdx(d)];
+const cycName = i => DAY_NAMES[dowOf(addDays(parseKey(S().start), i))];
 function parseReps(str){
   const s = String(str || '').trim(), m = s.match(/^(\d+)\s*(?:[–-]\s*(\d+))?\s*(s|sec)?\b\s*(.*)$/i);
   if (!m) return {lo:8, hi:12, txt:s, sec:false};
@@ -611,7 +614,7 @@ const COMPOUND = /(squat|deadlift|bench|shoulder press|overhead press|chest pres
 
 /* ================= storage ================= */
 const KEY = 'blocks.v2', TKEY = 'blocks.timers', THEME_KEY = 'blocks.theme', SYNC_KEY = 'blocks.sync';
-const DEFAULT_START = '2026-11-09';
+const DEFAULT_START = '2026-11-10';
 const blankSettings = () => ({u:0, start:DEFAULT_START, units:{lift:'lb', dist:'mi'}, rest:120, autoRest:true, notify:false, exset:{}, program:null, pv:PROGRAM_VERSION});
 const blankDoc = () => ({version:7, settings:blankSettings(), days:{}});
 function cleanLift(L){
@@ -702,7 +705,7 @@ let data, migrated = false;
 })();
 const S = () => data.settings;
 /* A new built-in split replaces a program saved under an older one */
-function upgradeProgram(){ if ((S().pv || 1) < PROGRAM_VERSION) { S().program = null; S().pv = PROGRAM_VERSION; S().u = Date.now(); lsSet(KEY, data); return true; } return false; }
+function upgradeProgram(){ if ((S().pv || 1) < PROGRAM_VERSION) { if ((S().pv || 1) < 2) S().program = null; if (S().start === '2026-11-09') S().start = DEFAULT_START; S().pv = PROGRAM_VERSION; S().u = Date.now(); lsSet(KEY, data); return true; } return false; }
 upgradeProgram();
 const START = () => parseKey(S().start);
 const weekNo = d => Math.floor(dayDiff(START(), d) / 7) + 1;
@@ -1222,7 +1225,7 @@ function renderWeek(){
 $('#wkPrev').addEventListener('click', () => { wkOff--; renderWeek(); });
 $('#wkNext').addEventListener('click', () => { wkOff++; renderWeek(); });
 $('#wkList').addEventListener('click', e => { const b = e.target.closest('[data-day]'); if (!b) return; cur = parseKey(b.dataset.day); setView('today'); });
-$('#wkEdit').addEventListener('click', () => { setView('set'); openEditor(dowOf(TODAY)); });
+$('#wkEdit').addEventListener('click', () => { setView('set'); openEditor(planIdx(TODAY)); });
 
 /* ================= progress ================= */
 function renderProgress(){
@@ -1290,7 +1293,7 @@ $('#v-set').addEventListener('click', async e => {
   else if (t.dataset.mode) { theme.mode = t.dataset.mode; lsSet(THEME_KEY, theme); applyTheme(); renderSettings(); }
   else if (t.dataset.accent) { theme.accent = t.dataset.accent; lsSet(THEME_KEY, theme); applyTheme(); renderSettings(); }
 });
-$('#startDate').addEventListener('change', e => { if (isKey(e.target.value)) { S().start = e.target.value; wkOff = null; saveSettings(); toast('Week 1 now starts ' + fShort.format(START())); } });
+$('#startDate').addEventListener('change', e => { if (isKey(e.target.value)) { S().start = e.target.value; wkOff = null; saveSettings(); toast('Week 1 now starts ' + fShort.format(START()) + ' with ' + program()[0].title.split(' + ')[0]); } });
 function twoTap(btn, label, fn){
   if (btn.dataset.armed) { delete btn.dataset.armed; btn.textContent = btn.dataset.label; fn(); return; }
   btn.dataset.label = btn.textContent; btn.dataset.armed = '1'; btn.textContent = label;
@@ -1309,15 +1312,15 @@ $('#eraseAll').addEventListener('click', e => twoTap(e.target, 'Tap again to era
 /* ================= program editor ================= */
 let edDay = 0;
 function editProgram(){ if (!S().program) S().program = JSON.parse(JSON.stringify(DEFAULT_PROGRAM)); return S().program; }
-function openEditor(i){ edDay = i == null ? dowOf(TODAY) : i; $('#setMain').hidden = true; $('#editor').hidden = false; renderEditor(); window.scrollTo(0, 0); }
+function openEditor(i){ edDay = i == null ? planIdx(TODAY) : i; $('#setMain').hidden = true; $('#editor').hidden = false; renderEditor(); window.scrollTo(0, 0); }
 function closeEditor(){ $('#setMain').hidden = false; $('#editor').hidden = true; }
 $('#openEditor').addEventListener('click', () => openEditor());
 $('#edBack').addEventListener('click', () => { closeEditor(); renderSettings(); window.scrollTo(0, 0); });
 function renderEditor(){
   const p = program()[edDay], U = S().units.dist;
-  $('#edDays').innerHTML = DAY_NAMES.map((n, i) => '<button type="button" data-ed="' + i + '" aria-pressed="' + (i === edDay) + '">' + n.slice(0, 3) + '</button>').join('');
+  $('#edDays').innerHTML = DAY_NAMES.map((_, i) => '<button type="button" data-ed="' + i + '" aria-pressed="' + (i === edDay) + '">' + cycName(i).slice(0, 3) + '</button>').join('');
   $('#edBody').innerHTML =
-    '<div class="sgroup"><h2>' + DAY_NAMES[edDay] + '</h2><div class="sbox">' +
+    '<div class="sgroup"><h2>' + cycName(edDay) + '</h2><div class="sbox">' +
       '<label class="field">Name<input class="inp text" data-pf="title" maxlength="40" value="' + esc(p.title) + '"></label>' +
       '<label class="field">Focus<input class="inp text" data-pf="focus" maxlength="80" value="' + esc(p.focus) + '"></label>' +
       '<label class="field">Note for the day<textarea data-pf="note" rows="2" maxlength="300">' + esc(p.note) + '</textarea></label></div></div>' +
@@ -1331,7 +1334,7 @@ function renderEditor(){
     '</div></div>' +
     '<div class="sgroup"><h2>Recovery checklist</h2><div class="sbox"><label class="field">One item per line<textarea data-pf="rec" rows="3">' + esc(p.rec.join('\n')) + '</textarea></label></div></div>' +
     '<div class="sgroup"><h2>Meals</h2><div class="sbox">' + MEAL_LABELS.map((l, i) => '<div class="meal3"><label class="field">' + l + '<textarea data-pm="' + i + '" rows="2" maxlength="200" placeholder="Leave empty to skip">' + esc(p.meals[i] || '') + '</textarea></label><label class="pfl"><span>kcal</span><input class="inp" data-pk="' + i + '" type="number" inputmode="numeric" min="0" value="' + ((p.mac && p.mac[i] && p.mac[i][0]) || '') + '"></label><label class="pfl"><span>Protein g</span><input class="inp" data-pp="' + i + '" type="number" inputmode="numeric" min="0" value="' + ((p.mac && p.mac[i] && p.mac[i][1]) || '') + '"></label></div>').join('') + '</div></div>' +
-    '<div class="btnrow" style="margin-top:18px"><button class="btn small" type="button" id="edResetDay">Reset ' + DAY_NAMES[edDay] + ' to the original plan</button><button class="btn small danger" type="button" id="edResetAll">Reset whole program</button></div>';
+    '<div class="btnrow" style="margin-top:18px"><button class="btn small" type="button" id="edResetDay">Reset ' + cycName(edDay) + ' to the original plan</button><button class="btn small danger" type="button" id="edResetAll">Reset whole program</button></div>';
 }
 $('#editor').addEventListener('click', e => {
   const b = e.target.closest('button'); if (!b) return;
@@ -1340,7 +1343,7 @@ $('#editor').addEventListener('click', e => {
   if (b.dataset.pdel) { P().ex.splice(Number(b.dataset.pdel), 1); saveSettings(); renderEditor(); }
   else if (b.dataset.padd) { P().ex.push({n:'New exercise', s:3, r:'8–12'}); saveSettings(); renderEditor(); const ins = $('#edBody').querySelectorAll('[data-pe="n"]'); const l = ins[ins.length - 1]; if (l) { l.focus(); l.select(); } }
   else if (b.dataset.psort) { const x = P().ex.pop(); P().ex.unshift(x); saveSettings(); renderEditor(); }
-  else if (b.id === 'edResetDay') twoTap(b, 'Tap again to reset ' + DAY_NAMES[edDay], () => { editProgram()[edDay] = JSON.parse(JSON.stringify(DEFAULT_PROGRAM[edDay])); saveSettings(); renderEditor(); toast(DAY_NAMES[edDay] + ' reset'); });
+  else if (b.id === 'edResetDay') twoTap(b, 'Tap again to reset ' + cycName(edDay), () => { editProgram()[edDay] = JSON.parse(JSON.stringify(DEFAULT_PROGRAM[edDay])); saveSettings(); renderEditor(); toast(cycName(edDay) + ' reset'); });
   else if (b.id === 'edResetAll') twoTap(b, 'Tap again to reset all 7 days', () => { S().program = null; saveSettings(); renderEditor(); toast('Program reset'); });
 });
 $('#editor').addEventListener('change', e => {
