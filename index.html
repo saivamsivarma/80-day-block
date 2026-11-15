@@ -1783,7 +1783,7 @@ function renderProt(){
   if (!t || d > TODAY) { el.hidden = true; return; }
   el.hidden = false;
   const r = peek(d), v = r && r.pr || 0, pc = Math.min(100, v / t * 100);
-  el.innerHTML = '<div class="ptop"><span class="bwtx"><b>Protein · ' + v + ' of ' + t + ' g</b><small>' + (v >= t ? 'Target hit' : (t - v) + ' g to go') + '</small></span><span class="pbtns"><button type="button" data-pr="10" aria-label="Add 10 grams">+10</button><button type="button" data-pr="25" aria-label="Add 25 grams">+25</button><button type="button" data-pr="40" aria-label="Add 40 grams">+40</button><button type="button" class="less" data-pr="-10" aria-label="Remove 10 grams"' + (v ? '' : ' disabled') + '>−10</button></span></div><span class="pbar" role="img" aria-label="' + Math.round(pc) + ' percent of protein target"><i' + (v >= t ? ' class="full"' : '') + ' style="width:' + pc.toFixed(1) + '%"></i></span>';
+  el.innerHTML = '<div class="ptop"><span class="bwtx"><b>Protein</b><small>' + v + ' of ' + t + ' g · ' + (v >= t ? 'target hit' : (t - v) + ' to go') + '</small></span><span class="pbtns"><button type="button" data-pr="10" aria-label="Add 10 grams">+10</button><button type="button" data-pr="25" aria-label="Add 25 grams">+25</button><button type="button" data-pr="40" aria-label="Add 40 grams">+40</button><button type="button" class="less" data-pr="-10" aria-label="Remove 10 grams"' + (v ? '' : ' disabled') + '>−10</button></span></div><span class="pbar" role="img" aria-label="' + Math.round(pc) + ' percent of protein target"><i' + (v >= t ? ' class="full"' : '') + ' style="width:' + pc.toFixed(1) + '%"></i></span>';
 }
 $('#tProt').addEventListener('click', e => {
   const b = e.target.closest('[data-pr]'); if (!b) return;
