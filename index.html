@@ -171,6 +171,7 @@ button.blkhead{width:100%;text-align:left}
 .bwchip b{font-family:var(--font-data);font-size:14px;font-weight:600;white-space:nowrap}
 .bwchip span{flex:1;min-width:0;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .bwchip u{color:var(--accent);font-weight:600;text-decoration:none}
+.bwchip.wrap span{white-space:normal;line-height:1.3}
 .bwchart .glab{font-family:var(--font-body);font-size:11px;font-weight:600;fill:var(--good)}
 .bwchart .alab{font-family:var(--font-data);font-size:10px;fill:var(--muted)}
 .blk.alldone .blkhead h2::after{content:' ✓';color:var(--good)}
@@ -505,6 +506,7 @@ button.blkhead{width:100%;text-align:left}
     <div class="dstat" id="tStat"></div>
     <div class="bwrow" id="tBw"></div>
     <div class="bwrow prow" id="tProt" hidden></div>
+    <div class="bwrow" id="tSore" hidden></div>
     <section class="blk" id="secLift">
       <button class="blkhead" type="button" data-fold="secLift" aria-expanded="true"><h2>Training</h2><span id="liftMeta"></span><svg class="fchev" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>
       <div id="gymLog"></div>
@@ -554,15 +556,16 @@ button.blkhead{width:100%;text-align:left}
       <div class="subbar" id="setSubBar" hidden><button class="backbtn" type="button" id="setBack"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>Setup</button></div>
       <div class="sgroup"><h2>Program</h2><div class="sbox">
         <button class="navrow" type="button" id="openEditor"><span>Edit workouts and runs<small>Change exercises, sets, reps and runs for each day</small></span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>
+        <div class="field">Weekly split<span id="presetSeg"></span></div>
         <label class="urow"><span>Week 1 starts</span><input class="inp" id="startDate" type="date" style="width:auto"></label>
         <div class="urow"><span>Deload week</span><span id="deloadSeg"></span></div>
         <label class="urow"><span>Goal weight (<span id="goalU"></span>)</span><input class="inp" id="goalW" type="number" inputmode="decimal" min="0" step="any" style="width:96px;text-align:center" placeholder="none"></label>
         <label class="urow"><span>Daily protein target (g)</span><input class="inp" id="protT" type="number" inputmode="numeric" min="0" step="5" style="width:96px;text-align:center" placeholder="off"></label>
       </div></div>
-      <div class="sgroup"><h2>Marathon build</h2><div class="sbox">
-        <div class="urow"><span>Grow the runs each week</span><span id="rampSw"></span></div>
-        <p class="calc">Every run gets about 10% longer each week, with a lighter week every fourth. The long run tops out at 20 miles, the other runs at about 6.</p>
-        <label class="urow"><span>Race date</span><input class="inp" id="raceDate" type="date" style="width:auto"></label>
+      <div class="sgroup"><h2>Run goal</h2><div class="sbox">
+        <div class="field">Plan<span id="rampSw"></span></div>
+        <p class="calc"><strong>5K in 8 weeks</strong> moves from run/walk to a timed 5K test. <strong>Marathon build</strong> adds about 10% to every run each week with a lighter week every fourth; the long run tops out at 20 miles, the other runs at about 6.</p>
+        <label class="urow"><span>Marathon date</span><input class="inp" id="raceDate" type="date" style="width:auto"></label>
         <p class="calc" id="rampOut"></p>
       </div></div>
       <div class="sgroup"><h2>Units</h2><div class="sbox" id="unitBox"></div></div>
@@ -666,31 +669,44 @@ let TODAY = new Date(); TODAY.setHours(0, 0, 0, 0);
 /* ================= program ================= */
 const DAY_NAMES = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 const ex = (n, s, r, g) => g ? {n, s, r, g} : {n, s, r};
-const DEFAULT_PROGRAM = [
-  {title:'Pull + Easy run', focus:'Back, rear delts, triceps',
-   ex:[ex('Weighted pull-up', 4, '6–8'), ex('Chest-supported row', 4, '8–10'), ex('Wide grip lat pulldown', 3, '10–12'), ex('Rear delt fly', 3, '12–15'), ex('Rope triceps pushdown', 3, '10–12'), ex('Overhead cable triceps extension', 3, '10–12')],
-   run:{kind:'Easy run', dist:1.5, note:'Run/walk: jog 2 min, walk 1 min, repeat. Keep it slow enough to talk. Lift first.'}, rec:[], note:''},
-  {title:'Push + Interval run', focus:'Chest, shoulders, biceps',
-   ex:[ex('Incline DB press', 4, '6–8'), ex('Flat machine chest press', 3, '8–10'), ex('Seated DB shoulder press', 3, '8–10'), ex('Cable lateral raise', 4, '12–15'), ex('EZ bar curl', 3, '8–10'), ex('Hammer curl', 3, '10–12')],
-   run:{kind:'Intervals', dist:1.5, note:'Warm up: 5 min brisk walk, then 0.5 mi easy jog\nMain set: 6 × 200 m brisk, 90 s walk between\nCool down: 5 min walk'}, rec:[], note:''},
-  {title:'Legs A', focus:'Heavy legs and abs: quads, hamstrings, calves',
-   ex:[ex('Barbell back squat', 4, '6–8'), ex('Romanian deadlift', 3, '8–10'), ex('Leg press', 3, '10–12'), ex('Seated leg curl', 3, '10–12'), ex('Standing calf raise', 4, '12–15'), ex('Hanging knee raise', 4, '12–15')],
-   run:null, rec:[], note:'No run today. Put everything into the lifts.'},
-  {title:'Upper + Tempo run', focus:'Upper volume: chest, back, delts, arms',
-   ex:[ex('Flat machine chest press', 3, '8–10'), ex('Single arm cable row', 3, '10–12'), ex('Seated DB shoulder press', 3, '10–12'), ex('Wide grip lat pulldown', 3, '10–12'), ex('Cable lateral raise', 3, '12–15'), ex('Rope triceps pushdown', 3, '10–12'), ex('EZ bar curl', 3, '10–12')],
-   run:{kind:'Tempo run', dist:2, note:'Warm up: 0.5 mi run/walk\nMain: 1 mi steady, comfortably hard, as few walk breaks as you can\nCool down: 0.5 mi easy'}, rec:[], note:''},
-  {title:'Legs B', focus:'Leg volume and abs: quads, glutes, hamstrings',
-   ex:[ex('Hack squat', 4, '8–10'), ex('Romanian deadlift', 3, '8–10'), ex('Walking lunges', 3, '10 each leg'), ex('Seated leg curl', 3, '10–12'), ex('Standing calf raise', 4, '12–15'), ex('Cable crunch', 4, '12–15')],
-   run:null, rec:[], note:'No run today.'},
-  {title:'Recovery + Reset', focus:'Low-stress day before the long run',
-   ex:[], run:null, rec:['8–10k steps', '20–30 min mobility', 'Sauna or cold plunge', 'Light stretching', 'Hydration and sleep focus'], note:'No lift, no run. Walk, move, recover.'},
-  {title:'Long run', focus:'Easy the whole way, walk breaks are fine',
-   ex:[], run:{kind:'Long run', dist:2.5, note:'Run/walk: jog 2 min, walk 1 min, repeat. Slower than you think. Finishing is the goal, not pace.'}, rec:['10 min stretching after the run'], note:'No lifting today.'}
-];
-const PROGRAM_VERSION = 6; /* 6 = hybrid: four runs a week (easy, intervals, tempo, long) at beginner distances; 4 = pull/push/legs/upper/legs, week starts Mon Nov 9, meals removed; 5 = push has biceps, pull has triceps, beginner run volume */
+const BOTH = 'Lift first, then run, or split them by 6 hours or more.';
+const RW = 'Run/walk: jog 2 min, walk 1 min, repeat. Keep it slow enough to talk.';
+const D_PULL = {title:'Pull + Interval run', focus:'Back, rear delts, triceps',
+  ex:[ex('Weighted pull-up', 4, '6–8'), ex('Chest-supported row', 4, '8–10'), ex('Wide grip lat pulldown', 3, '10–12'), ex('Rear delt fly', 3, '12–15'), ex('Rope triceps pushdown', 3, '10–12'), ex('Overhead cable triceps extension', 3, '10–12')],
+  run:{kind:'Intervals', dist:1.5, note:'Warm up: 5 min brisk walk, then easy jog\nMain set: 6 × 200 m brisk, 90 s walk between\nCool down: 5 min walk'}, rec:[], note:BOTH};
+const D_PUSH = {title:'Push + Easy run', focus:'Chest, shoulders, biceps',
+  ex:[ex('Incline DB press', 4, '6–8'), ex('Flat machine chest press', 3, '8–10'), ex('Seated DB shoulder press', 3, '8–10'), ex('Cable lateral raise', 4, '12–15'), ex('EZ bar curl', 3, '8–10'), ex('Hammer curl', 3, '10–12')],
+  run:{kind:'Easy run', dist:1.5, note:RW}, rec:[], note:BOTH};
+const D_UPPER = {title:'Upper + Tempo run', focus:'Upper volume: chest, back, delts, arms',
+  ex:[ex('Flat machine chest press', 3, '8–10'), ex('Single arm cable row', 3, '10–12'), ex('Seated DB shoulder press', 3, '10–12'), ex('Wide grip lat pulldown', 3, '10–12'), ex('Cable lateral raise', 3, '12–15'), ex('Rope triceps pushdown', 3, '10–12'), ex('EZ bar curl', 3, '10–12')],
+  run:{kind:'Tempo run', dist:2, note:'Warm up: easy run/walk\nMain: 1 mi steady, comfortably hard\nCool down: easy to finish'}, rec:[], note:BOTH};
+const D_RESET = {title:'Recovery + Reset', focus:'Low-stress day before the long run',
+  ex:[], run:null, rec:['8–10k steps', '20–30 min mobility', 'Sauna or cold plunge', 'Light stretching', 'Hydration and sleep focus'], note:'No lift, no run. Walk, move, recover.'};
+const D_LONG = {title:'Long run', focus:'Easy the whole way, walk breaks are fine',
+  ex:[], run:{kind:'Long run', dist:2.5, note:RW + ' Finishing is the goal, not pace.'}, rec:['10 min stretching after the run'], note:'No lifting today.'};
+const PROGRAMS = {
+  4:[D_PULL, D_PUSH,
+    {title:'Legs', focus:'Legs and abs: quads, hamstrings, glutes, calves',
+     ex:[ex('Barbell back squat', 4, '6–8'), ex('Romanian deadlift', 3, '8–10'), ex('Leg press', 3, '10–12'), ex('Seated leg curl', 3, '10–12'), ex('Walking lunges', 2, '10 each leg'), ex('Standing calf raise', 4, '12–15'), ex('Hanging knee raise', 3, '12–15'), ex('Cable crunch', 3, '12–15')],
+     run:null, rec:[], note:'No run today. Put everything into the lifts.'},
+    {title:'Recovery', focus:'Rest day', ex:[], run:null, rec:['8–10k steps', '15–20 min mobility'], note:'No lift, no run. Let the legs absorb yesterday.'},
+    D_UPPER, D_RESET, D_LONG],
+  5:[D_PULL, D_PUSH,
+    {title:'Legs A', focus:'Heavy legs and abs: quads, hamstrings, calves',
+     ex:[ex('Barbell back squat', 4, '6–8'), ex('Romanian deadlift', 3, '8–10'), ex('Leg press', 3, '10–12'), ex('Seated leg curl', 3, '10–12'), ex('Standing calf raise', 4, '12–15'), ex('Hanging knee raise', 4, '12–15')],
+     run:null, rec:[], note:'No run today. Put everything into the lifts.'},
+    D_UPPER,
+    {title:'Legs B', focus:'Leg volume and abs: quads, glutes, hamstrings',
+     ex:[ex('Hack squat', 4, '8–10'), ex('Romanian deadlift', 3, '8–10'), ex('Walking lunges', 3, '10 each leg'), ex('Seated leg curl', 3, '10–12'), ex('Standing calf raise', 4, '12–15'), ex('Cable crunch', 4, '12–15')],
+     run:null, rec:[], note:'No run today.'},
+    D_RESET, D_LONG]
+};
+const DEFAULT_PROGRAM = PROGRAMS[4];
+const presetProgram = () => PROGRAMS[S().preset === 5 ? 5 : 4];
+const PROGRAM_VERSION = 7; /* 6 = hybrid, four runs a week at beginner distances; 7 = 4-lift preset by default, intervals before the easy run, 5K plan on */
 const RUN_KINDS = ['Easy run', 'Tempo run', 'Intervals', 'Long run', 'Recovery run'];
 const dowOf = d => (d.getDay() + 6) % 7;
-const program = () => S().program || DEFAULT_PROGRAM;
+const program = () => S().program || presetProgram();
 /* The 7-day cycle is counted from the start date: day 1 of every week is the first program day (Pull) */
 const baseIdx = d => ((dayDiff(parseKey(S().start), d) % 7) + 7) % 7;
 /* A pushed-back session stores a per-date override */
@@ -710,9 +726,28 @@ function rampDist(run, d){
   }
   return Math.round((n % 4 === 3 ? at(n - 1) * 0.8 : at(n)) * 4) / 4;
 }
+/* 5K plan: eight weeks from S().k5. Each row: easy mi, [interval mi, reps, metres], [tempo mi, steady mi], long mi, jog min, walk min */
+const K5 = [
+  {e:1.5, i:[1.5, 6, 200], t:[2, 1], l:2.5, j:2, w:1}, {e:1.5, i:[1.5, 6, 200], t:[2, 1], l:2.5, j:3, w:1},
+  {e:2, i:[1.75, 8, 200], t:[2, 1], l:2.75, j:4, w:1}, {e:2, i:[2, 5, 400], t:[2.25, 1.25], l:3, j:5, w:1},
+  {e:2, i:[2, 6, 400], t:[2.5, 1.5], l:3.25, j:8, w:1}, {e:2.25, i:[2, 6, 400], t:[2.5, 1.5], l:3.5, j:10, w:1},
+  {e:2.5, i:[2.25, 4, 800], t:[2.5, 1.5], l:3.75, j:15, w:1}, {e:2, i:[1.5, 4, 200], t:[1.5, 0.5], l:3.1, j:0, w:0}
+];
+const k5Week = d => S().k5 ? Math.floor(dayDiff(parseKey(S().k5), weekStartOf(d)) / 7) : -1;
+function k5Run(run, d){
+  const n = k5Week(d); if (n < 0 || !run.dist) return run;
+  const w = K5[n <= 7 ? n : 6], test = n === 7, rw = w.j ? 'Run/walk: jog ' + w.j + ' min, walk ' + w.w + ' min, repeat. ' : 'Run it without planned walk breaks. ';
+  if (/Interval/.test(run.kind)) return Object.assign({}, run, {dist:w.i[0], note:'Warm up: 5 min brisk walk, then easy jog\nMain set: ' + w.i[1] + ' × ' + w.i[2] + ' m brisk, 90 s walk between\nCool down: 5 min walk'});
+  if (/Tempo/.test(run.kind)) return Object.assign({}, run, {dist:w.t[0], note:'Warm up: easy run/walk\nMain: ' + w.t[1] + ' mi steady, comfortably hard\nCool down: easy to finish'});
+  if (/Long/.test(run.kind)) return Object.assign({}, run, {dist:w.l, note:test ? '5K test: run 3.1 mi start to finish at a steady effort and time it. Walk only if you must.' : rw + 'Finishing is the goal, not pace.'});
+  if (/Easy|Recovery/.test(run.kind)) return Object.assign({}, run, {dist:w.e, note:test ? 'Short and relaxed. Save your legs for the 5K test.' : rw + 'Keep it slow enough to talk.'});
+  return run;
+}
 function planFor(d){
   if (S().race && key(d) === S().race) return RACE_DAY;
-  const p = program()[planIdx(d)]; if (!S().ramp || !p.run || !p.run.dist) return p;
+  const p = program()[planIdx(d)]; if (!p.run || !p.run.dist) return p;
+  if (S().k5) { const run = k5Run(p.run, d); return run === p.run ? p : Object.assign({}, p, {run}, k5Week(d) === 7 && /Long/.test(run.kind) ? {title:'5K test run', focus:'Your first timed 5K'} : {}); }
+  if (!S().ramp) return p;
   const dist = rampDist(p.run, d);
   return dist === p.run.dist ? p : Object.assign({}, p, {run:Object.assign({}, p.run, {dist})});
 }
@@ -734,7 +769,7 @@ const COMPOUND = /(squat|deadlift|bench|shoulder press|overhead press|chest pres
 /* ================= storage ================= */
 const KEY = 'blocks.v2', TKEY = 'blocks.timers', THEME_KEY = 'blocks.theme', SYNC_KEY = 'blocks.sync';
 const DEFAULT_START = '2026-11-09';
-const blankSettings = () => ({u:0, start:DEFAULT_START, units:{lift:'lb', dist:'mi', body:'kg'}, goal:70, deload:6, ov:{}, rest:120, autoRest:true, notify:false, exset:{}, program:null, pv:PROGRAM_VERSION, protein:150, ramp:'', race:''});
+const blankSettings = () => ({u:0, start:DEFAULT_START, units:{lift:'lb', dist:'mi', body:'kg'}, goal:70, deload:6, ov:{}, rest:120, autoRest:true, notify:false, exset:{}, program:null, pv:PROGRAM_VERSION, protein:150, ramp:'', race:'', k5:'', preset:4});
 const blankDoc = () => ({version:7, settings:blankSettings(), days:{}});
 function cleanLift(L){
   if (!L || typeof L.ex !== 'string' || !L.ex.trim() || typeof L.r !== 'number' || !(L.r > 0) || L.r > 600) return null;
@@ -753,15 +788,16 @@ function cleanDay(v, distKm){
   const du = Number(v.dur); if (Number.isInteger(du) && du > 0 && du < 600) d.dur = du;
   const gx = strList(v.gx, 30); if (gx.length) d.gx = gx;
   const gs = strList(v.gs, 30); if (gs.length) d.gs = gs.map(norm);
-  if (v.run && typeof v.run === 'object') { let dist = posNum(v.run.dist); const sec = Number.isInteger(v.run.sec) && v.run.sec > 0 ? v.run.sec : null; if (dist && distKm) dist = Math.round(dist / 1.609344 * 100) / 100; if (dist || sec) { d.run = {dist:dist || null, sec}; if (Array.isArray(v.run.laps)) { const l = v.run.laps.filter(x => Number.isInteger(x) && x > 0 && x < 36000).slice(0, 40); if (l.length) d.run.laps = l; } } }
+  if (v.run && typeof v.run === 'object') { let dist = posNum(v.run.dist); const sec = Number.isInteger(v.run.sec) && v.run.sec > 0 ? v.run.sec : null; if (dist && distKm) dist = Math.round(dist / 1.609344 * 100) / 100; if (dist || sec) { d.run = {dist:dist || null, sec}; if (Number.isInteger(v.run.eff) && v.run.eff >= 1 && v.run.eff <= 5) d.run.eff = v.run.eff; if (typeof v.run.note === 'string' && v.run.note.trim()) d.run.note = v.run.note.trim().slice(0, 140); if (Array.isArray(v.run.laps)) { const l = v.run.laps.filter(x => Number.isInteger(x) && x > 0 && x < 36000).slice(0, 40); if (l.length) d.run.laps = l; } } }
   const bw = posNum(v.bw); if (bw && bw < 700) d.bw = Math.round(bw * 10) / 10;
   if (Number.isInteger(v.pr) && v.pr > 0 && v.pr <= 1000) d.pr = v.pr;
+  if (Number.isInteger(v.so) && v.so >= 1 && v.so <= 5) d.so = v.so;
   if (v.sw && typeof v.sw === 'object' && !Array.isArray(v.sw)) { const o = {}; for (const [k, n] of Object.entries(v.sw)) if (k.length <= 60 && typeof n === 'string' && n.trim()) o[k] = n.trim().slice(0, 60); if (Object.keys(o).length) d.sw = o; }
   for (const f of ['rec', 'meals']) if (v[f] && typeof v[f] === 'object' && !Array.isArray(v[f])) { const o = {}; for (const [i, t] of Object.entries(v[f])) if (/^\d$/.test(i) && t === true) o[i] = true; if (Object.keys(o).length) d[f] = o; }
   if (typeof v.u === 'number') d.u = v.u;
   return d;
 }
-const dayEmpty = d => !d.lifts.length && !d.run && !d.rec && !d.meals && !d.gymIn && !d.gx && !d.gs && !d.dur && !d.bw && !d.sw && !d.pr;
+const dayEmpty = d => !d.lifts.length && !d.run && !d.rec && !d.meals && !d.gymIn && !d.gx && !d.gs && !d.dur && !d.bw && !d.sw && !d.pr && !d.so;
 function cleanProgram(p){
   if (!Array.isArray(p) || p.length !== 7) return null;
   return p.map((x, i) => {
@@ -785,7 +821,7 @@ function cleanSettings(s, fromOld){
     if (s.goal === 0) o.goal = 0; else if (posNum(s.goal)) o.goal = Math.round(posNum(s.goal) * 10) / 10;
     if ([0, 4, 5, 6, 8].includes(s.deload)) o.deload = s.deload;
     if (Number.isInteger(s.protein) && s.protein >= 0 && s.protein <= 400) o.protein = s.protein;
-    if (isKey(s.ramp)) o.ramp = s.ramp; if (isKey(s.race)) o.race = s.race;
+    if (isKey(s.ramp)) o.ramp = s.ramp; if (isKey(s.race)) o.race = s.race; if (isKey(s.k5)) o.k5 = s.k5; if (s.preset === 5) o.preset = 5;
     if (s.ov && typeof s.ov === 'object') { const lim = key(addDays(new Date(), -21)); for (const [k, v] of Object.entries(s.ov)) if (isKey(k) && k >= lim && Number.isInteger(v) && v >= 0 && v <= 6) o.ov[k] = v; }
   }
   const rest = fromOld ? s.gym && s.gym.rest : s.rest; if (Number.isInteger(rest) && rest >= 15 && rest <= 600) o.rest = rest;
@@ -832,7 +868,7 @@ let data, migrated = false;
 })();
 const S = () => data.settings;
 /* A new built-in split replaces a program saved under an older one */
-function upgradeProgram(){ if ((S().pv || 1) < PROGRAM_VERSION) { S().program = null; S().ov = {}; if (S().start === '2026-11-10') S().start = DEFAULT_START; S().pv = PROGRAM_VERSION; S().u = Date.now(); lsSet(KEY, data); return true; } return false; }
+function upgradeProgram(){ if ((S().pv || 1) < PROGRAM_VERSION) { S().program = null; S().ov = {}; if (S().start === '2026-11-10') S().start = DEFAULT_START; if ((S().pv || 1) < 7) { S().preset = 4; if (!S().ramp && !S().k5) { const st = parseKey(S().start), ws = addDays(st, Math.floor(dayDiff(st, TODAY) / 7) * 7); S().k5 = key(dayDiff(ws, TODAY) <= 1 ? ws : addDays(ws, 7)); } } S().pv = PROGRAM_VERSION; S().u = Date.now(); lsSet(KEY, data); return true; } return false; }
 upgradeProgram();
 const START = () => parseKey(S().start);
 const weekNo = d => Math.floor(dayDiff(START(), d) / 7) + 1;
@@ -1246,13 +1282,16 @@ function renderRun(){
     '<label class="cfield"><span>Time</span><span class="tpair"><input id="rMin" type="number" inputmode="numeric" min="0" placeholder="min" value="' + mn + '" aria-label="Minutes"><span>:</span><input id="rSec" type="number" inputmode="numeric" min="0" max="59" placeholder="ss" value="' + (sc === '' ? '' : pad(sc)) + '" aria-label="Seconds"></span></label></div>';
   const done = run.dist && p && p.dist && run.dist >= p.dist * 0.95;
   h += '<div class="runfoot">' + (run.dist ? '<span class="' + (done ? 'okline' : 'calc') + '">' + (done ? 'Done · ' : '') + fmtDist(run.dist) + (run.sec ? ' in ' + mmss(run.sec * 1000) + ' · ' + paceTxt(run.dist, run.sec) : '') + '</span>' : '<span class="calc">Log it when you finish.</span>') +
-    '<span class="btnrow">' + (same(d, TODAY) && !run.sec && !timers.run ? '<button class="btn small" type="button" data-ract="timer">' + (p && p.kind === 'Intervals' ? 'Start interval timer' : 'Start run timer') + '</button>' : '') + (p && p.dist && !run.dist ? '<button class="btn small primary" type="button" data-ract="asplan">Done as planned</button>' : '') + '</span></div>';
+    '<span class="btnrow">' + (same(d, TODAY) && !run.sec && !timers.run ? '<button class="btn small" type="button" data-ract="timer">' + (p && p.kind === 'Intervals' ? 'Start interval timer' : rwOf(p) ? 'Start run/walk timer' : 'Start run timer') + '</button>' : '') + (p && p.dist && !run.dist ? '<button class="btn small primary" type="button" data-ract="asplan">Done as planned</button>' : '') + '</span></div>';
+  if (run.dist) h += '<div class="copts" style="margin-top:10px"><span class="clbl">Effort</span><span class="seg sm">' + [1, 2, 3, 4, 5].map(v => '<button type="button" data-ract="eff" data-v="' + v + '" aria-pressed="' + (run.eff === v) + '" aria-label="' + EFF[v] + '">' + v + '</button>').join('') + '</span>' + (run.eff ? '<span class="calc">' + EFF[run.eff] + '</span>' : '') + '</div><input class="inp text" id="rNote" maxlength="140" placeholder="How did it feel? Shins, breathing, shoes…" value="' + esc(run.note || '') + '" aria-label="Run note" style="margin-top:8px">';
+  else if (p && p.dist && d >= TODAY) h += '<p class="calc" style="margin-top:8px">Fuel: eat about ' + Math.round(p.dist * bodyKg(d) * 1.67 / 10) * 10 + ' kcal extra today so the run does not eat into your bulk.</p>';
   if (timers.run && timers.run.day === key(d)) h = h.slice(0, h.indexOf('<div class="runlog">')) + runLiveHtml();
   else if (run.laps && run.laps.length) h += '<p class="calc" style="margin-top:8px">' + (p && p.kind === 'Intervals' ? 'Reps' : 'Laps') + ': <strong>' + run.laps.map(x => mmss(x * 1000)).join(' · ') + '</strong></p>';
   box.innerHTML = h;
 }
 function saveRun(patch){
   const r = rec(cur), run = Object.assign({dist:null, sec:null}, r.run || {}, patch);
+  if (!run.eff) delete run.eff; if (!run.note) delete run.note;
   if (!run.dist && !run.sec) delete r.run; else r.run = run;
   save(); renderRun(); renderStat();
 }
@@ -1260,14 +1299,18 @@ $('#runBox').addEventListener('click', e => {
   const b = e.target.closest('[data-ract]'); if (!b) return; const a = b.dataset.ract;
   if (a === 'open') { runOpen = true; renderRun(); return; }
   if (['timer', 'full', 'lap', 'repgo', 'repdone', 'stop', 'discard'].includes(a)) { runAct(a); return; }
+  if (a === 'eff') { const v = Number(b.dataset.v), r = peek(cur); saveRun({eff:r && r.run && r.run.eff === v ? null : v}); vib(6); return; }
   if (a === 'asplan') { saveRun({dist:planFor(cur).run.dist}); vib(10); toast('Run logged'); return; }
   if (a === 'd-' || a === 'd+') { const r = peek(cur), curv = r && r.run && r.run.dist ? distIn(r.run.dist) : 0, v = Math.max(0, Math.round((curv + (a === 'd+' ? 0.25 : -0.25)) * 100) / 100); saveRun({dist:v ? distOut(v) : null}); vib(6); }
 });
 $('#runBox').addEventListener('change', e => {
   const t = e.target;
+  if (t.id === 'rNote') { saveRun({note:t.value.trim().slice(0, 140)}); return; }
   if (t.id === 'rDist') { const v = parseFloat(t.value); saveRun({dist:v > 0 ? distOut(v) : null}); }
   else if (t.id === 'rMin' || t.id === 'rSec') { const m = parseInt($('#rMin').value, 10) || 0, s = Math.min(59, parseInt($('#rSec').value, 10) || 0), tot = m * 60 + s; saveRun({sec:tot > 0 ? tot : null}); }
 });
+const EFF = ['', 'Very easy', 'Easy', 'Steady', 'Hard', 'All out'];
+function bodyKg(d){ for (let i = 0; i <= 30; i++) { const r = peek(addDays(d, -i)); if (r && r.bw) return S().units.body === 'lb' ? r.bw / 2.2046 : r.bw; } const g = S().goal; return g ? (S().units.body === 'lb' ? g / 2.2046 : g) - 3 : 68; }
 $('#runBox').addEventListener('focusin', e => { if (e.target.matches('input[type=number]')) setTimeout(() => { try { e.target.select(); } catch (x) {} }, 0); });
 
 /* ================= recovery ================= */
@@ -1319,7 +1362,7 @@ function nextInfo(){
     const done = r.lifts.filter(L => wkSets(L) && exKey(L.ex) === exKey(it.n)).length, sg = suggest(it.n, it.rp, done), started = r.gymIn || r.lifts.length;
     return {go:'secLift', ex:it.n, label:started ? 'Next set' : 'Up next · ' + p.title.split(' + ')[0], title:it.n + (started ? ' · set ' + (done + 1) + ' of ' + it.s : ''), sub:(started ? '' : it.s + ' × ' + it.r + ' · ') + (sg ? 'target ' + (sg.w ? fmtN(sg.w, 2) + ' ' + U.lift + ' × ' : '') + sg.r + (it.rp.sec ? ' s' : '') : started ? it.r + ' reps' : 'first time, pick a starting weight')};
   }
-  if (p.run && p.run.dist && rs.dist < p.run.dist * 0.95) { const pt = paceTarget(p.run.kind); return {go:'secRun', label:p.ex.length ? 'Next · run' : 'Up next', title:p.run.kind + ' · ' + fmtDist(p.run.dist), sub:rs.dist ? fmtDist(rs.dist) + ' logged so far' : pt ? 'Target pace ' + pt : 'Start the run timer when you head out'}; }
+  if (p.run && p.run.dist && rs.dist < p.run.dist * 0.95) { const pt = paceTarget(p.run.kind); return {go:'secRun', label:p.ex.length ? 'Next · run' : 'Up next', title:p.run.kind + ' · ' + fmtDist(p.run.dist), sub:rs.dist ? fmtDist(rs.dist) + ' logged so far' : r.so >= 4 ? 'Legs are sore: halve it or walk it' : pt ? 'Target pace ' + pt : 'Start the run timer when you head out'}; }
   const left = p.rec.filter((_, i) => !(r.rec && r.rec[i])).length;
   if (left) return {go:'secRec', label:'Recovery', title:left + (left === 1 ? ' item' : ' items') + ' left', sub:p.rec.filter((_, i) => !(r.rec && r.rec[i])).slice(0, 2).join(' · ')};
   if (p.ex.length || p.run || p.rec.length) return {ok:true, label:'Today', title:'All done', sub:'Tomorrow: ' + planFor(addDays(d, 1)).title};
@@ -1373,7 +1416,7 @@ function renderToday(){
   $('#tFocus').textContent = [p.focus, p.note].filter(Boolean).map(t => /[.!?]$/.test(t) ? t : t + '.').join(' ');
   $('#tFocus').hidden = !p.focus && !p.note;
   runOpen = false;
-  bwEdit = false; renderBw(); renderProt(); renderMiss(); renderTools(); computeAuto(); applyFolds();
+  bwEdit = false; soEdit = false; renderBw(); renderProt(); renderSore(); renderMiss(); renderTools(); computeAuto(); applyFolds();
   renderStat(); renderGym(); renderRun(); renderRec();
   $('#dpLabel').textContent = same(d, TODAY) ? 'Today, ' + fMD.format(d) : fShort.format(d);
   $('#dp').value = key(d);
@@ -1510,9 +1553,13 @@ function renderSettings(){
   $('#deloadSeg').innerHTML = segH('data-deload', [[0, 'Off'], [4, 'Every 4th'], [6, 'Every 6th'], [8, 'Every 8th']], S().deload).replace('class="seg"', 'class="seg sm"');
   $('#goalU').textContent = S().units.body; $('#goalW').value = S().goal || '';
   $('#protT').value = S().protein || '';
-  $('#rampSw').innerHTML = swH('swRamp', !!S().ramp, 'Grow the runs each week'); $('#raceDate').value = S().race || '';
+  $('#rampSw').innerHTML = segH('data-rgoal', [['off', 'Off'], ['k5', '5K in 8 weeks'], ['ramp', 'Marathon build']], S().k5 ? 'k5' : S().ramp ? 'ramp' : 'off').replace('class="seg"', 'class="seg sm"'); $('#raceDate').value = S().race || '';
+  $('#presetSeg').innerHTML = segH('data-preset', [[4, '4 lifts + 4 runs'], [5, '5 lifts + 4 runs']], S().preset).replace('class="seg"', 'class="seg sm"');
   { const ws = weekStartOf(TODAY), a = weekRunPlan(ws), bits = [];
-    if (!S().ramp) bits.push('Off. Runs stay at ' + fmtDist(a.t) + ' a week with a ' + fmtDist(a.long) + ' long run.');
+    if (S().k5) { const n = k5Week(TODAY); let test = null; for (let i = 0; i < 7; i++) { const x = addDays(parseKey(S().k5), 49 + i); if (planFor(x).title === '5K test run') test = x; }
+      bits.push(n < 0 ? 'Starts ' + fShort.format(parseKey(S().k5)) + '.' : n > 7 ? '5K plan finished. Switch to Marathon build to keep growing.' : 'Week ' + (n + 1) + ' of 8: ' + fmtDist(a.t) + ', long run ' + fmtDist(a.long) + '.');
+      if (test && n <= 7) bits.push('5K test run on ' + fShort.format(test) + '.'); }
+    else if (!S().ramp) bits.push('Off. Runs stay at ' + fmtDist(a.t) + ' a week with a ' + fmtDist(a.long) + ' long run.');
     else { const b = weekRunPlan(addDays(ws, 28)); bits.push('This week ' + fmtDist(a.t) + ', long run ' + fmtDist(a.long) + '. In 4 weeks ' + fmtDist(b.t) + ', long run ' + fmtDist(b.long) + '.');
       let hit = null; for (let w = 0; w < 40 && !hit; w++) if (weekRunPlan(addDays(ws, w * 7)).long >= 20) hit = addDays(ws, w * 7);
       if (hit) bits.push('First 20-mile long run: week of ' + fMD.format(hit) + '.'); }
@@ -1520,7 +1567,7 @@ function renderSettings(){
       if (rd < TODAY) bits.push('Race date has passed.');
       else { bits.push('Race in ' + wks + (wks === 1 ? ' week' : ' weeks') + ', with a 3-week taper before it.');
         if (S().ramp) { let pk = 0; for (let w = 0; w <= wks; w++) pk = Math.max(pk, weekRunPlan(addDays(ws, w * 7)).long); if (pk < 18) bits.push('Longest run before the race would be ' + fmtDist(pk) + ', short of the 18–20 miles most plans reach. Pick a later race or start from longer runs.'); }
-        else bits.push('Turn on the weekly growth above to build toward it.'); } }
+        else bits.push('Choose Marathon build above to build toward it.'); } }
     $('#rampOut').textContent = bits.join(' '); }
   $('#unitBox').innerHTML = '<div class="urow"><span>Weight</span>' + segH('data-ul', [['lb', 'lb'], ['kg', 'kg']], S().units.lift) + '</div><div class="urow"><span>Distance</span>' + segH('data-ud', [['mi', 'miles'], ['km', 'km']], S().units.dist) + '</div><div class="urow"><span>Bodyweight</span>' + segH('data-ub', [['kg', 'kg'], ['lb', 'lb']], S().units.body) + '</div>';
   $('#restBox').innerHTML = '<div class="field">Default rest<span class="seg sm">' + [60, 90, 120, 150, 180].map(s => '<button type="button" data-rest="' + s + '" aria-pressed="' + (S().rest === s) + '">' + fmtRest(s) + '</button>').join('') + '</span></div>' +
@@ -1538,7 +1585,8 @@ $('#v-set').addEventListener('click', async e => {
   else if (t.dataset.deload) { S().deload = Number(t.dataset.deload); saveSettings(); renderSettings(); }
   else if (t.dataset.ud) { S().units.dist = t.dataset.ud; saveSettings(); renderSettings(); }
   else if (t.dataset.rest) { S().rest = Number(t.dataset.rest); saveSettings(); renderSettings(); }
-  else if (t.id === 'swRamp') { S().ramp = S().ramp ? '' : key(weekStartOf(TODAY)); saveSettings(); renderSettings(); toast(S().ramp ? 'Runs grow from next week' : 'Runs back to the base plan'); }
+  else if (t.dataset.rgoal) { const g = t.dataset.rgoal, ws = weekStartOf(TODAY); S().k5 = g === 'k5' ? key(dayDiff(ws, TODAY) <= 1 ? ws : addDays(ws, 7)) : ''; S().ramp = g === 'ramp' ? key(ws) : ''; saveSettings(); renderSettings(); toast(g === 'k5' ? '5K plan starts ' + fShort.format(parseKey(S().k5)) : g === 'ramp' ? 'Runs grow from next week' : 'Runs back to the base plan'); }
+  else if (t.dataset.preset) { const v = Number(t.dataset.preset) === 5 ? 5 : 4; if (v === S().preset && !S().program) return; const had = !!S().program; S().preset = v; S().program = null; S().ov = {}; saveSettings(); renderSettings(); toast((v === 5 ? 'Five lifts a week' : 'Four lifts a week') + (had ? '. Your program edits were reset.' : '')); }
   else if (t.id === 'swAuto') { S().autoRest = !S().autoRest; saveSettings(); renderSettings(); }
   else if (t.id === 'swNotify') {
     if (!S().notify) {
@@ -1573,10 +1621,10 @@ $('#eraseAll').addEventListener('click', e => twoTap(e.target, 'Tap again to era
 
 /* ================= program editor ================= */
 let edDay = 0;
-function editProgram(){ if (!S().program) S().program = JSON.parse(JSON.stringify(DEFAULT_PROGRAM)); return S().program; }
+function editProgram(){ if (!S().program) S().program = JSON.parse(JSON.stringify(presetProgram())); return S().program; }
 function openEditor(i){ edDay = i == null ? planIdx(TODAY) : i; $('#setMain').hidden = true; $('#editor').hidden = false; renderEditor(); window.scrollTo(0, 0); }
 function closeEditor(){ $('#setMain').hidden = false; $('#editor').hidden = true; }
-const SET_DESC = {'Program':'Workouts, start date, deload, goal weight, protein', 'Marathon build':'Weekly run growth and race date', 'Units':'lb or kg, miles or km', 'Rest timer':'Default rest, auto-start, notifications', 'Appearance':'Light or dark, accent color', 'Cloud sync':'Keep your devices in step', 'Backup':'Copy, download or restore your data', 'Install on your phone':'Add Blocks to your Home Screen', 'Erase':'Delete all workout data'};
+const SET_DESC = {'Program':'Workouts, start date, deload, goal weight, protein', 'Run goal':'5K plan, marathon build and race date', 'Units':'lb or kg, miles or km', 'Rest timer':'Default rest, auto-start, notifications', 'Appearance':'Light or dark, accent color', 'Cloud sync':'Keep your devices in step', 'Backup':'Copy, download or restore your data', 'Install on your phone':'Add Blocks to your Home Screen', 'Erase':'Delete all workout data'};
 const setGroups = [...document.querySelectorAll('#setMain > .sgroup')];
 let setSec = null;
 $('#setMenu').innerHTML = setGroups.map((g, i) => { const t = g.querySelector('h2').textContent; return '<button class="navrow" type="button" data-sec="' + i + '"><span>' + t + '<small>' + (SET_DESC[t] || '') + '</small></span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>'; }).join('');
@@ -1611,7 +1659,7 @@ $('#editor').addEventListener('click', e => {
   if (b.dataset.pdel) { P().ex.splice(Number(b.dataset.pdel), 1); saveSettings(); renderEditor(); }
   else if (b.dataset.padd) { P().ex.push({n:'New exercise', s:3, r:'8–12'}); saveSettings(); renderEditor(); const ins = $('#edBody').querySelectorAll('[data-pe="n"]'); const l = ins[ins.length - 1]; if (l) { l.focus(); l.select(); } }
   else if (b.dataset.psort) { const x = P().ex.pop(); P().ex.unshift(x); saveSettings(); renderEditor(); }
-  else if (b.id === 'edResetDay') twoTap(b, 'Tap again to reset ' + cycName(edDay), () => { editProgram()[edDay] = JSON.parse(JSON.stringify(DEFAULT_PROGRAM[edDay])); saveSettings(); renderEditor(); toast(cycName(edDay) + ' reset'); });
+  else if (b.id === 'edResetDay') twoTap(b, 'Tap again to reset ' + cycName(edDay), () => { editProgram()[edDay] = JSON.parse(JSON.stringify(presetProgram()[edDay])); saveSettings(); renderEditor(); toast(cycName(edDay) + ' reset'); });
   else if (b.id === 'edResetAll') twoTap(b, 'Tap again to reset all 7 days', () => { S().program = null; saveSettings(); renderEditor(); toast('Program reset'); });
 });
 $('#editor').addEventListener('change', e => {
@@ -1817,13 +1865,16 @@ $('#exSheet').addEventListener('click', e => {
 
 /* ================= run timer ================= */
 function ivPlan(p){ const t = p && p.kind === 'Intervals' ? p.note : ''; if (!t) return null; const m = t.match(/(\d+)\s*[×x]\s*\d+/), rs = t.match(/(\d+)\s*s\b/); return {n:m ? Number(m[1]) : 6, rest:rs ? Number(rs[1]) : 90}; }
+const rwOf = run => { const m = run && run.note ? run.note.match(/jog (\d+(?:\.\d+)?) min, walk (\d+(?:\.\d+)?) min/i) : null; return m && Number(m[1]) > 0 && Number(m[2]) > 0 ? {j:Number(m[1]) * 60, w:Number(m[2]) * 60} : null; };
+function rwState(t, now){ const c = t.rw.j + t.rw.w, e = ((now - t.start) / 1000) % c, jog = e < t.rw.j; return {jog, left:(jog ? t.rw.j - e : c - e) * 1000}; }
+const rwText = (t, now) => { const x = rwState(t, now); return (x.jog ? 'Jog' : 'Walk') + ' · ' + mmss(x.left) + ' left'; };
 function runLiveHtml(){
   const t = timers.run, iv = t.iv; let h = '<div class="rtlive"><b id="rtEl">' + mmss(Date.now() - t.start) + '</b><small>run time</small></div>';
   if (iv) {
     const done = t.laps.length;
     h += '<p class="rtstate" id="rtState"></p>' + (done ? '<p class="calc">Reps: <strong>' + t.laps.map(s => mmss(s * 1000)).join(' · ') + '</strong></p>' : '') +
       '<div class="btnrow">' + (iv.phase === 'work' ? '<button class="btn primary rtbig" type="button" data-ract="repdone">Rep ' + (done + 1) + ' done</button>' : iv.phase === 'idle' && done < iv.n ? '<button class="btn primary rtbig" type="button" data-ract="repgo">Start rep ' + (done + 1) + ' of ' + iv.n + '</button>' : '') + '</div>';
-  } else h += (t.laps.length ? '<p class="calc">Laps: <strong>' + t.laps.map(s => mmss(s * 1000)).join(' · ') + '</strong></p>' : '') + '<div class="btnrow"><button class="btn rtbig" type="button" data-ract="lap">Lap</button></div>';
+  } else h += (t.rw ? '<p class="rtstate" id="rtState"></p>' : '') + (t.laps.length ? '<p class="calc">Laps: <strong>' + t.laps.map(s => mmss(s * 1000)).join(' · ') + '</strong></p>' : '') + '<div class="btnrow"><button class="btn rtbig" type="button" data-ract="lap">Lap</button></div>';
   return h + '<div class="btnrow"><button class="btn" type="button" data-ract="full">Full screen</button><button class="btn primary" type="button" data-ract="stop">Stop and save</button><button class="btn danger" type="button" data-ract="discard">Discard</button></div>';
 }
 let rtOpen = false;
@@ -1833,7 +1884,7 @@ function renderRunFull(){
   const now = Date.now(), iv = t.iv, done = t.laps.length, p = planFor(parseKey(t.day)).run;
   $('#rfLabel').textContent = p ? p.kind + (p.dist ? ' · ' + fmtDist(p.dist) : '') : 'Run';
   $('#rfTime').textContent = mmss(now - t.start);
-  $('#rfState').textContent = !iv ? (done ? 'Lap ' + (done + 1) + ' · ' + mmss(now - t.lapAt) : 'Easy and steady.') : iv.phase === 'work' ? 'Rep ' + (done + 1) + ' of ' + iv.n + ' · ' + mmss(now - iv.t0) : iv.phase === 'rest' ? 'Walk or jog · next rep in ' + mmss(iv.restEnd - now) : done >= iv.n ? 'All ' + iv.n + ' reps done. Cool down, then stop.' : 'Warm up, then start your first rep.';
+  $('#rfState').textContent = !iv && t.rw ? rwText(t, now) : !iv ? (done ? 'Lap ' + (done + 1) + ' · ' + mmss(now - t.lapAt) : 'Easy and steady.') : iv.phase === 'work' ? 'Rep ' + (done + 1) + ' of ' + iv.n + ' · ' + mmss(now - iv.t0) : iv.phase === 'rest' ? 'Walk or jog · next rep in ' + mmss(iv.restEnd - now) : done >= iv.n ? 'All ' + iv.n + ' reps done. Cool down, then stop.' : 'Warm up, then start your first rep.';
   $('#rfLaps').textContent = done ? (iv ? 'Reps: ' : 'Laps: ') + t.laps.map(x => mmss(x * 1000)).join(' · ') : '';
   const big = !iv ? '<button class="btn rfbig" type="button" data-ract="lap">Lap</button>' : iv.phase === 'work' ? '<button class="btn primary rfbig" type="button" data-ract="repdone">Rep ' + (done + 1) + ' done</button>' : iv.phase === 'idle' && done < iv.n ? '<button class="btn primary rfbig" type="button" data-ract="repgo">Start rep ' + (done + 1) + '</button>' : '';
   const h = big + '<div class="rfrow"><button class="btn' + (big && iv && iv.phase !== 'idle' ? '' : ' primary') + '" type="button" data-ract="stop">Stop and save</button><button class="btn danger" type="button" data-ract="discard">Discard</button></div>';
@@ -1847,13 +1898,15 @@ function tickRun(){
   const t = timers.run; if (!t) return;
   const now = Date.now(), iv = t.iv;
   if (iv && iv.phase === 'rest' && now >= iv.restEnd) { iv.phase = 'work'; iv.t0 = now; saveTimers(); chime(3); vib([300, 100, 300]); if (view === 'today') renderRun(); }
+  if (!iv && t.rw) { const jog = rwState(t, now).jog; if (t.rwJog !== jog) { if (t.rwJog != null) { chime(jog ? 2 : 1); vib(jog ? [200, 100, 200] : [400]); } t.rwJog = jog; saveTimers(); } }
   const el = $('#rtEl'); if (el) el.textContent = mmss(now - t.start);
+  if (!iv && t.rw) { const s0 = $('#rtState'); if (s0) s0.textContent = rwText(t, now); }
   const st = $('#rtState'); if (st && iv) st.textContent = iv.phase === 'work' ? 'Rep ' + (t.laps.length + 1) + ' of ' + iv.n + ' · ' + mmss(now - iv.t0) : iv.phase === 'rest' ? 'Walk or jog · next rep in ' + mmss(iv.restEnd - now) : t.laps.length >= iv.n ? 'All ' + iv.n + ' reps done. Cool down, then stop.' : 'Warm up, then start your first rep.';
 }
 function runAct(a){
   const t = timers.run, now = Date.now();
   if (a === 'full') { rtOpen = true; renderRunFull(); return; }
-  if (a === 'timer') { rtOpen = true; const iv = ivPlan(planFor(cur).run); timers.run = {start:now, day:key(cur), laps:[], lapAt:now, iv:iv ? {n:iv.n, rest:iv.rest, phase:'idle'} : null}; audio(); }
+  if (a === 'timer') { rtOpen = true; const iv = ivPlan(planFor(cur).run); timers.run = {start:now, day:key(cur), laps:[], lapAt:now, iv:iv ? {n:iv.n, rest:iv.rest, phase:'idle'} : null, rw:iv ? null : rwOf(planFor(cur).run)}; audio(); }
   else if (!t) return;
   else if (a === 'lap') { t.laps.push(Math.round((now - t.lapAt) / 1000)); t.lapAt = now; vib(10); }
   else if (a === 'repgo') { t.iv.phase = 'work'; t.iv.t0 = now; vib(10); }
@@ -1880,6 +1933,27 @@ $('#tProt').addEventListener('click', e => {
   const r = rec(cur), v = Math.max(0, Math.min(1000, (r.pr || 0) + Number(b.dataset.pr)));
   if (v) r.pr = v; else delete r.pr;
   save(); vib(6); renderProt();
+});
+
+/* ================= soreness check-in ================= */
+let soEdit = false;
+const SORE = ['', 'Fresh', 'Good', 'A bit sore', 'Sore', 'Very sore'];
+function soreAdvice(v, p){
+  if (v >= 4) return p.run ? 'Halve today\'s run or walk it' + (p.ex.length ? ', and keep the lifts as planned' : '') : p.ex.length && /leg/i.test(p.title) ? 'Drop one set from each leg exercise' : 'Keep today light and walk';
+  return v === 3 ? 'Normal training soreness. Warm up a little longer' : 'Train as planned';
+}
+function renderSore(){
+  const el = $('#tSore'), d = cur, r = peek(d), v = r && r.so || 0;
+  if (!(same(d, TODAY) || (v && d < TODAY)) || d < START()) { el.hidden = true; return; }
+  el.hidden = false; el.classList.toggle('compact', !!v && !soEdit);
+  if (v && !soEdit) { el.innerHTML = '<button type="button" class="bwchip wrap" data-soedit="1"><b>Legs ' + v + '/5</b><span>' + SORE[v] + ' · ' + soreAdvice(v, planFor(d)) + '</span><u>Edit</u></button>'; return; }
+  el.innerHTML = '<span class="bwtx"><b>How are your legs?</b><small>1 fresh · 5 very sore</small></span><span class="seg sm">' + [1, 2, 3, 4, 5].map(x => '<button type="button" data-so="' + x + '" aria-pressed="' + (v === x) + '" aria-label="' + SORE[x] + '">' + x + '</button>').join('') + '</span>';
+}
+$('#tSore').addEventListener('click', e => {
+  if (e.target.closest('[data-soedit]')) { soEdit = true; renderSore(); return; }
+  const b = e.target.closest('[data-so]'); if (!b) return;
+  const r = rec(cur), v = Number(b.dataset.so); if (r.so === v) delete r.so; else r.so = v;
+  soEdit = false; save(); vib(6); renderSore(); renderNext();
 });
 
 /* ================= missed session ================= */
