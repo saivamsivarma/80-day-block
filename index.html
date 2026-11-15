@@ -703,7 +703,7 @@ const PROGRAMS = {
 };
 const DEFAULT_PROGRAM = PROGRAMS[4];
 const presetProgram = () => PROGRAMS[S().preset === 5 ? 5 : 4];
-const PROGRAM_VERSION = 7; /* 6 = hybrid, four runs a week at beginner distances; 7 = 4-lift preset by default, intervals before the easy run, 5K plan on */
+const PROGRAM_VERSION = 8; /* 8 = recomp: goal weight 67 kg, hold; 6 = hybrid, four runs a week at beginner distances; 7 = 4-lift preset by default, intervals before the easy run, 5K plan on */
 const RUN_KINDS = ['Easy run', 'Tempo run', 'Intervals', 'Long run', 'Recovery run'];
 const dowOf = d => (d.getDay() + 6) % 7;
 const program = () => S().program || presetProgram();
@@ -769,7 +769,7 @@ const COMPOUND = /(squat|deadlift|bench|shoulder press|overhead press|chest pres
 /* ================= storage ================= */
 const KEY = 'blocks.v2', TKEY = 'blocks.timers', THEME_KEY = 'blocks.theme', SYNC_KEY = 'blocks.sync';
 const DEFAULT_START = '2026-11-09';
-const blankSettings = () => ({u:0, start:DEFAULT_START, units:{lift:'lb', dist:'mi', body:'kg'}, goal:70, deload:6, ov:{}, rest:120, autoRest:true, notify:false, exset:{}, program:null, pv:PROGRAM_VERSION, protein:150, ramp:'', race:'', k5:'', preset:4});
+const blankSettings = () => ({u:0, start:DEFAULT_START, units:{lift:'lb', dist:'mi', body:'kg'}, goal:67, deload:6, ov:{}, rest:120, autoRest:true, notify:false, exset:{}, program:null, pv:PROGRAM_VERSION, protein:150, ramp:'', race:'', k5:'', preset:4});
 const blankDoc = () => ({version:7, settings:blankSettings(), days:{}});
 function cleanLift(L){
   if (!L || typeof L.ex !== 'string' || !L.ex.trim() || typeof L.r !== 'number' || !(L.r > 0) || L.r > 600) return null;
@@ -868,7 +868,7 @@ let data, migrated = false;
 })();
 const S = () => data.settings;
 /* A new built-in split replaces a program saved under an older one */
-function upgradeProgram(){ if ((S().pv || 1) < PROGRAM_VERSION) { S().program = null; S().ov = {}; if (S().start === '2026-11-10') S().start = DEFAULT_START; if ((S().pv || 1) < 7) { S().preset = 4; if (!S().ramp && !S().k5) { const st = parseKey(S().start), ws = addDays(st, Math.floor(dayDiff(st, TODAY) / 7) * 7); S().k5 = key(dayDiff(ws, TODAY) <= 1 ? ws : addDays(ws, 7)); } } S().pv = PROGRAM_VERSION; S().u = Date.now(); lsSet(KEY, data); return true; } return false; }
+function upgradeProgram(){ const old = S().pv || 1; if (old >= PROGRAM_VERSION) return false; if (old < 7) { S().program = null; S().ov = {}; if (S().start === '2026-11-10') S().start = DEFAULT_START; S().preset = 4; if (!S().ramp && !S().k5) { const st = parseKey(S().start), ws = addDays(st, Math.floor(dayDiff(st, TODAY) / 7) * 7); S().k5 = key(dayDiff(ws, TODAY) <= 1 ? ws : addDays(ws, 7)); } } if (old < 8 && S().goal === 70 && S().units.body === 'kg') S().goal = 67; S().pv = PROGRAM_VERSION; S().u = Date.now(); lsSet(KEY, data); return true; }
 upgradeProgram();
 const START = () => parseKey(S().start);
 const weekNo = d => Math.floor(dayDiff(START(), d) / 7) + 1;
@@ -1284,7 +1284,7 @@ function renderRun(){
   h += '<div class="runfoot">' + (run.dist ? '<span class="' + (done ? 'okline' : 'calc') + '">' + (done ? 'Done · ' : '') + fmtDist(run.dist) + (run.sec ? ' in ' + mmss(run.sec * 1000) + ' · ' + paceTxt(run.dist, run.sec) : '') + '</span>' : '<span class="calc">Log it when you finish.</span>') +
     '<span class="btnrow">' + (same(d, TODAY) && !run.sec && !timers.run ? '<button class="btn small" type="button" data-ract="timer">' + (p && p.kind === 'Intervals' ? 'Start interval timer' : rwOf(p) ? 'Start run/walk timer' : 'Start run timer') + '</button>' : '') + (p && p.dist && !run.dist ? '<button class="btn small primary" type="button" data-ract="asplan">Done as planned</button>' : '') + '</span></div>';
   if (run.dist) h += '<div class="copts" style="margin-top:10px"><span class="clbl">Effort</span><span class="seg sm">' + [1, 2, 3, 4, 5].map(v => '<button type="button" data-ract="eff" data-v="' + v + '" aria-pressed="' + (run.eff === v) + '" aria-label="' + EFF[v] + '">' + v + '</button>').join('') + '</span>' + (run.eff ? '<span class="calc">' + EFF[run.eff] + '</span>' : '') + '</div><input class="inp text" id="rNote" maxlength="140" placeholder="How did it feel? Shins, breathing, shoes…" value="' + esc(run.note || '') + '" aria-label="Run note" style="margin-top:8px">';
-  else if (p && p.dist && d >= TODAY) h += '<p class="calc" style="margin-top:8px">Fuel: eat about ' + Math.round(p.dist * bodyKg(d) * 1.67 / 10) * 10 + ' kcal extra today so the run does not eat into your bulk.</p>';
+  else if (p && p.dist && d >= TODAY) h += '<p class="calc" style="margin-top:8px">Fuel: eat about ' + Math.round(p.dist * bodyKg(d) * 1.67 / 10) * 10 + ' kcal extra today so the run does not leave you short.</p>';
   if (timers.run && timers.run.day === key(d)) h = h.slice(0, h.indexOf('<div class="runlog">')) + runLiveHtml();
   else if (run.laps && run.laps.length) h += '<p class="calc" style="margin-top:8px">' + (p && p.kind === 'Intervals' ? 'Reps' : 'Laps') + ': <strong>' + run.laps.map(x => mmss(x * 1000)).join(' · ') + '</strong></p>';
   box.innerHTML = h;
@@ -1310,7 +1310,7 @@ $('#runBox').addEventListener('change', e => {
   else if (t.id === 'rMin' || t.id === 'rSec') { const m = parseInt($('#rMin').value, 10) || 0, s = Math.min(59, parseInt($('#rSec').value, 10) || 0), tot = m * 60 + s; saveRun({sec:tot > 0 ? tot : null}); }
 });
 const EFF = ['', 'Very easy', 'Easy', 'Steady', 'Hard', 'All out'];
-function bodyKg(d){ for (let i = 0; i <= 30; i++) { const r = peek(addDays(d, -i)); if (r && r.bw) return S().units.body === 'lb' ? r.bw / 2.2046 : r.bw; } const g = S().goal; return g ? (S().units.body === 'lb' ? g / 2.2046 : g) - 3 : 68; }
+function bodyKg(d){ for (let i = 0; i <= 30; i++) { const r = peek(addDays(d, -i)); if (r && r.bw) return S().units.body === 'lb' ? r.bw / 2.2046 : r.bw; } const g = S().goal; return g ? (S().units.body === 'lb' ? g / 2.2046 : g) : 68; }
 $('#runBox').addEventListener('focusin', e => { if (e.target.matches('input[type=number]')) setTimeout(() => { try { e.target.select(); } catch (x) {} }, 0); });
 
 /* ================= recovery ================= */
@@ -1788,7 +1788,7 @@ function renderBw(){
   el.hidden = false;
   const r = peek(d), v = r && r.bw ? r.bw : '', avg = bwAvg(d), goal = S().goal;
   let hint = 'Weigh in after waking, before eating.';
-  if (avg) hint = '7-day average ' + fmtN(avg, 1) + ' ' + bwU() + (goal ? ' · ' + (Math.abs(goal - avg) < 0.05 ? 'at goal' : fmtN(Math.abs(goal - avg), 1) + ' ' + bwU() + ' to ' + fmtN(goal, 1)) : '');
+  if (avg) hint = '7-day average ' + fmtN(avg, 1) + ' ' + bwU() + (goal ? ' · ' + (Math.abs(goal - avg) <= (bwU() === 'lb' ? 2.2 : 1) ? 'holding at ' + fmtN(goal, 1) : fmtN(Math.abs(goal - avg), 1) + ' ' + bwU() + ' to ' + fmtN(goal, 1)) : '');
   else if (goal) hint += ' Goal ' + fmtN(goal, 1) + ' ' + bwU() + '.';
   el.classList.toggle('compact', !!v && !bwEdit);
   if (v && !bwEdit) { el.innerHTML = '<button type="button" class="bwchip" data-bwedit="1"><b>' + fmtN(v, 1) + ' ' + bwU() + '</b><span>' + (avg ? hint : 'this morning') + '</span><u>Edit</u></button>'; return; }
@@ -1803,7 +1803,7 @@ $('#tBw').addEventListener('click', e => {
   if (e.target.closest('[data-bwedit]')) { bwEdit = true; renderBw(); const i = $('#bwIn'); if (i) i.focus(); return; }
   const b = e.target.closest('[data-bw]'); if (!b) return;
   const r = peek(cur); let base = r && r.bw;
-  if (!base) { for (let i = 1; i <= 30 && !base; i++) { const p = peek(addDays(cur, -i)); if (p && p.bw) base = p.bw; } if (!base) base = S().goal ? S().goal - 3 : 70; setBw(base); vib(6); return; }
+  if (!base) { for (let i = 1; i <= 30 && !base; i++) { const p = peek(addDays(cur, -i)); if (p && p.bw) base = p.bw; } if (!base) base = S().goal || 70; setBw(base); vib(6); return; }
   setBw(Math.max(0, base + (b.dataset.bw === '+' ? 0.1 : -0.1))); vib(6);
 });
 $('#tBw').addEventListener('change', e => { if (e.target.id === 'bwIn') setBw(parseFloat(e.target.value) || 0); });
@@ -1817,17 +1817,19 @@ function renderBwPanel(){
   const X = i => P + (W - 2 * P) * i / 55, Y = v => H - P - (H - 2 * P) * (v - mn) / (mx - mn);
   const now = bwAvg(TODAY), prev = bwAvg(addDays(TODAY, -7)), rate = now && prev ? now - prev : null;
   let advice = 'Keep logging. The weekly rate shows after two weeks of weigh-ins.';
-  if (rate != null && goal && now < goal - 0.05) {
+  const band = U === 'lb' ? 2.2 : 1, hold = goal && now && Math.abs(goal - now) <= band, drift = U === 'lb' ? 0.45 : 0.2;
+  if (hold) advice = rate == null ? 'Holding at ' + fmtN(goal, 1) + ' ' + U + ' for a recomp: same weight, more muscle, less fat. Keep protein high.' : rate > drift ? 'Drifting up. For a recomp, trim about 150 kcal a day.' : rate < -drift ? 'Drifting down. Add about 150 kcal a day so the lifts keep moving.' : 'Holding steady, which is what a recomp needs. Judge progress by the lifts and the mirror, not the scale.';
+  else if (rate != null && goal && now < goal - 0.05) {
     const lo = U === 'lb' ? 0.2 : 0.1, hi = U === 'lb' ? 0.9 : 0.4;
     advice = rate < lo ? 'Gaining slower than planned. Eat a little more each day, about 200 kcal.' : rate > hi ? 'Gaining faster than a lean bulk needs. Trim about 200 kcal a day.' : 'On pace for a lean bulk. Keep eating the same.';
-  } else if (goal && now && now >= goal - 0.05) advice = 'You\'re at your goal weight. Hold here or set a new goal in Setup.';
+  } else if (goal && now && now >= goal - 0.05) advice = 'Above your ' + fmtN(goal, 1) + ' ' + U + ' hold weight. Trim about 150 kcal a day until the average comes back.';
   $('#pBwSub').textContent = 'Last 8 weeks, zoomed to your range. Dots are weigh-ins, the line is the 7-day average.';
   box.innerHTML = '<svg class="bwchart" viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="Bodyweight over the last 8 weeks">' +
     (gIn ? '<line class="goal" x1="' + P + '" x2="' + (W - P) + '" y1="' + Y(goal).toFixed(1) + '" y2="' + Y(goal).toFixed(1) + '"/>' : goal ? '<text class="glab" x="' + (W - P) + '" y="' + (goal > mx ? 14 : H - 6) + '" text-anchor="end">Goal ' + fmtN(goal, 1) + ' ' + U + (goal > mx ? ' ↑' : ' ↓') + '</text>' : '') +
     '<text class="alab" x="' + P + '" y="14">' + fmtN(mx, 1) + '</text><text class="alab" x="' + P + '" y="' + (H - 6) + '">' + fmtN(mn, 1) + '</text>' +
     pts.map(p => '<circle class="pt" cx="' + X(p.i).toFixed(1) + '" cy="' + Y(p.v).toFixed(1) + '" r="2.5"/>').join('') +
     (avgs.length > 1 ? '<polyline points="' + avgs.map(a => X(a.i).toFixed(1) + ',' + Y(a.v).toFixed(1)).join(' ') + '"/>' : '') + '</svg>' +
-    '<div class="kv"><div><b>' + (now ? fmtN(now, 1) : fmtN(pts[pts.length - 1].v, 1)) + ' ' + U + '</b><small>' + (now ? '7-day average' : 'latest') + '</small></div><div><b>' + (rate != null ? (rate >= 0 ? '+' : '−') + fmtN(Math.abs(rate), 2) : '—') + '</b><small>' + U + ' vs last week</small></div><div><b>' + (goal && now ? fmtN(Math.max(0, goal - now), 1) + ' ' + U : '—') + '</b><small>to goal</small></div></div><p class="calc" style="margin-top:10px">' + advice + '</p>';
+    '<div class="kv"><div><b>' + (now ? fmtN(now, 1) : fmtN(pts[pts.length - 1].v, 1)) + ' ' + U + '</b><small>' + (now ? '7-day average' : 'latest') + '</small></div><div><b>' + (rate != null ? (rate >= 0 ? '+' : '−') + fmtN(Math.abs(rate), 2) : '—') + '</b><small>' + U + ' vs last week</small></div><div><b>' + (hold ? 'Hold' : goal && now ? fmtN(Math.abs(goal - now), 1) + ' ' + U : '—') + '</b><small>' + (hold ? 'at ' + fmtN(goal, 1) + ' ' + U : 'to goal') + '</small></div></div><p class="calc" style="margin-top:10px">' + advice + '</p>';
 }
 
 /* ================= exercise swap ================= */
