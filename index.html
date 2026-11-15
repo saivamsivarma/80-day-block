@@ -391,6 +391,33 @@ button.blkhead{width:100%;text-align:left}
 .sumgrid div{padding:12px 14px;border-radius:14px;background:var(--surface);border:1px solid var(--line)}
 .sumgrid b{display:block;font-family:var(--font-display);font-size:26px;line-height:1.1}
 .sumgrid small{font-size:12px;color:var(--muted)}
+.streak{display:flex;flex-wrap:wrap;gap:6px 14px;margin-top:10px;font-size:13px;color:var(--muted)}
+.streak b{font-family:var(--font-data);color:var(--fg);font-weight:600}
+.streak .hot b{color:var(--flame)}
+.nextup{display:flex;align-items:center;gap:12px;width:100%;margin-top:10px;padding:14px 14px 14px 16px;border-radius:16px;background:var(--accent);color:var(--accent-ink);text-align:left}
+.nextup span{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.nextup small{font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-weight:600;opacity:.8}
+.nextup b{font-size:17px;font-weight:600;line-height:1.25}
+.nextup em{font-style:normal;font-size:13px;opacity:.9}
+.nextup svg{width:20px;height:20px;flex:none;stroke:currentColor;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.nextup.ok{background:color-mix(in srgb,var(--good) 12%,var(--surface));color:var(--fg);border:1px solid color-mix(in srgb,var(--good) 45%,var(--line))}
+.nextup.ok b{color:var(--good)}
+.tbig{height:36px;padding:0 12px;border-radius:11px;background:var(--surface-2);font-size:13px;font-weight:600;color:var(--fg)}
+.tfull.big .tring{width:100%;aspect-ratio:auto}
+.tfull.big .tring svg{display:none}
+.tfull.big .tring .tin{position:static}
+.tfull.big .tring .ttime{font-size:min(38vw,46vh)}
+.tfull.big .tring .tof{font-size:18px}
+@media (orientation:landscape) and (max-height:520px){
+  .tfull{padding-top:8px;padding-bottom:10px}
+  .tfull .tmid{gap:4px}
+  .tfull .tring{width:100%;aspect-ratio:auto}
+  .tfull .tring svg{display:none}
+  .tfull .tring .tin{position:static}
+  .tfull .tring .ttime{font-size:min(30vw,52vh)}
+  .tfull .tsub{display:none}
+  .tfull .tctl .btn{height:46px}
+}
 .prow{align-items:stretch;flex-direction:column;gap:8px;padding:10px 12px 12px 14px}
 .prow .ptop{display:flex;align-items:center;gap:10px}
 .pbtns{display:flex;gap:6px;flex:none}
@@ -472,6 +499,8 @@ button.blkhead{width:100%;text-align:left}
       <p class="focus" id="tFocus"></p>
     </header>
     <div class="wstrip" id="tWeek" role="group" aria-label="Days this week"></div>
+    <p class="streak" id="tStreak" hidden></p>
+    <button class="nextup" type="button" id="tNext" hidden></button>
     <div class="dprog" id="tProg" hidden></div>
     <div class="dstat" id="tStat"></div>
     <div class="bwrow" id="tBw"></div>
@@ -581,7 +610,7 @@ button.blkhead{width:100%;text-align:left}
 </nav>
 
 <div class="tfull" id="tfull" hidden role="dialog" aria-modal="true" aria-labelledby="tfLabel">
-  <div class="ttop"><button class="backbtn" type="button" id="tfMin"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>Minimize</button><p class="eyebrow" id="tfLabel"></p></div>
+  <div class="ttop"><button class="backbtn" type="button" id="tfMin"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>Minimize</button><p class="eyebrow" id="tfLabel"></p><button class="tbig" type="button" id="tfBig" aria-pressed="false">Big text</button></div>
   <div class="tmid">
     <div class="tring"><svg viewBox="0 0 120 120" aria-hidden="true"><circle class="trk" cx="60" cy="60" r="54"/><circle class="arc" id="tfArc" cx="60" cy="60" r="54" stroke-dasharray="339.29" stroke-dashoffset="0"/></svg>
       <div class="tin"><span class="ttime" id="tfTime" role="timer">0:00</span><span class="tof" id="tfOf"></span></div></div>
@@ -834,7 +863,7 @@ function audio(){ try { actx = actx || new (window.AudioContext || window.webkit
 function chime(n){ if (!actx) return; try { for (let i = 0; i < n; i++) { const o = actx.createOscillator(), g = actx.createGain(), t = actx.currentTime + i * 0.25; o.frequency.value = 880; o.connect(g); g.connect(actx.destination); g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(0.3, t + 0.02); g.gain.exponentialRampToValueAtTime(0.0001, t + 0.2); o.start(t); o.stop(t + 0.22); } } catch (e) {} }
 const canNotify = () => 'Notification' in window && 'serviceWorker' in navigator;
 function notify(title, body){ try { navigator.serviceWorker.ready.then(reg => reg.showNotification(title, {body, icon:'icon-192.png', tag:'rest'})).catch(() => {}); } catch (e) {} }
-let tfOpen = false, tfGo = 0, tfWake = null, lateAt = 0;
+let tfOpen = false, tfGo = 0, tfWake = null, lateAt = 0, tfBig = !!lsGet('blocks.tbig', false);
 const TF_C = 2 * Math.PI * 54;
 function wake(on){ try { if (on && !tfWake && navigator.wakeLock && !document.hidden) navigator.wakeLock.request('screen').then(l => { tfWake = l; l.addEventListener('release', () => { if (tfWake === l) tfWake = null; }); }, () => {}); else if (!on && tfWake) { tfWake.release(); tfWake = null; } } catch (e) {} }
 function startRest(sec){ timers.rest = {end:Date.now() + sec * 1000, dur:sec}; saveTimers(); audio(); tfOpen = true; renderTimer(); }
@@ -845,13 +874,13 @@ function renderTimer(){
   document.body.classList.toggle('hasrest', !!t);
   const el = $('#tfull'), now = Date.now();
   if (!t && tfGo && now - tfGo < 2600) {
-    el.className = 'tfull go'; el.hidden = false; $('#tfLabel').textContent = 'Rest over'; $('#tfTime').textContent = 'Go'; $('#tfOf').textContent = '';
+    el.className = 'tfull go' + (tfBig ? ' big' : ''); el.hidden = false; $('#tfLabel').textContent = 'Rest over'; $('#tfTime').textContent = 'Go'; $('#tfOf').textContent = '';
     $('#tfArc').style.strokeDashoffset = '0'; $('#tfSub').textContent = 'Time for your next set.';
     setCtl('<button class="btn primary" type="button" data-tf="done">Back to log</button>'); return;
   }
   if (!t || !tfOpen) { el.hidden = true; tfGo = 0; wake(!!t || !!timers.run); if (!t) tfOpen = false; return; }
   const left = t.end - now, total = t.dur * 1000, r = peek(cur), L = r && r.lifts.length ? r.lifts[r.lifts.length - 1] : null, U = S().units;
-  el.className = 'tfull'; $('#tfLabel').textContent = 'Rest';
+  el.className = 'tfull' + (tfBig ? ' big' : ''); $('#tfLabel').textContent = 'Rest'; $('#tfBig').setAttribute('aria-pressed', tfBig); $('#tfBig').textContent = tfBig ? 'Ring view' : 'Big text';
   $('#tfTime').textContent = mmss(left); $('#tfOf').textContent = 'of ' + mmss(total);
   $('#tfArc').style.strokeDashoffset = (TF_C * (1 - Math.max(0, Math.min(1, left / total)))).toFixed(2);
   const sub = L ? 'Last set: ' + L.ex + ' · ' + (L.w ? fmtN(L.w, 2) + ' ' + U.lift + ' × ' : '') + L.r + ' · ' + r.lifts.filter(x => !x.wu).length + ' sets today' : 'Breathe. Next set when the ring empties.';
@@ -860,6 +889,7 @@ function renderTimer(){
   const was = el.hidden; el.hidden = false; wake(true);
   if (was) { const b = $('#tfCtl .primary'); if (b) b.focus({preventScroll:true}); }
 }
+$('#tfBig').addEventListener('click', () => { tfBig = !tfBig; lsSet('blocks.tbig', tfBig); renderTimer(); });
 function setCtl(h){ const c = $('#tfCtl'); if (c.dataset.sig !== h) { c.innerHTML = h; c.dataset.sig = h; } }
 function tick(){
   const now = Date.now();
@@ -1185,6 +1215,21 @@ function tickGym(){
 }
 
 /* ================= run ================= */
+/* Easy pace (seconds per mile) from timed easy and long runs in the last 6 weeks; other targets are offsets from it */
+function easyPace(){
+  let s = 0, m = 0, s2 = 0, m2 = 0;
+  for (const [k, r] of Object.entries(data.days)) {
+    if (!r.run || !r.run.dist || !r.run.sec) continue; const d = parseKey(k), ago = dayDiff(d, TODAY); if (ago < 0 || ago > 42) continue;
+    const kind = d >= START() && planFor(d).run ? planFor(d).run.kind : '';
+    s2 += r.run.sec; m2 += r.run.dist; if (!kind || /Easy|Long|Recovery/.test(kind)) { s += r.run.sec; m += r.run.dist; }
+  }
+  const e = m ? s / m : m2 ? s2 / m2 : 0; return e >= 240 && e <= 1500 ? e : 0;
+}
+function paceTarget(kind){
+  const e = easyPace(); if (!e) return '';
+  const o = /Tempo/.test(kind) ? [-60, -40] : /Interval/.test(kind) ? [-110, -85] : /Race/.test(kind) ? [-15, 15] : /Recovery/.test(kind) ? [15, 45] : [-10, 20], f = S().units.dist === 'km' ? 1 / 1.609344 : 1;
+  return mmss(Math.max(180, e + o[0]) * f * 1000) + '–' + mmss(Math.max(180, e + o[1]) * f * 1000) + ' /' + S().units.dist;
+}
 let runOpen = false;
 function runStatus(d){ const p = planFor(d).run, r = peek(d), run = r && r.run; return {plan:p && p.dist ? p.dist : 0, dist:run && run.dist || 0, sec:run && run.sec || 0, planned:!!p}; }
 function renderRun(){
@@ -1193,6 +1238,7 @@ function renderRun(){
   const U = S().units.dist, steps = p && p.note ? p.note.split('\n').map(s => s.trim()).filter(Boolean) : [];
   $('#runMeta').textContent = run.dist ? fmtDist(run.dist) + (run.sec ? ' · ' + paceTxt(run.dist, run.sec) : '') : (p ? p.kind : 'Extra run');
   let h = p ? '<div class="runplan"><b>' + (p.dist ? fmtDist(p.dist) : p.kind) + '</b><span>' + esc(p.kind) + '</span></div>' : '';
+  { const pt = p && !run.dist ? paceTarget(p.kind) : ''; if (pt) h += '<p class="calc" style="margin-top:6px">Target pace <strong>' + pt + '</strong>' + (p.kind === 'Intervals' ? ' on the fast reps' : '') + ' · from your recent easy runs</p>'; }
   if (steps.length > 1) h += '<ul class="runsteps">' + steps.map(s => { const m = s.match(/^([^:]{2,24}):\s*(.*)$/); return '<li>' + (m ? '<b>' + esc(m[1]) + '</b> · ' + esc(m[2]) : esc(s)) + '</li>'; }).join('') + '</ul>';
   else if (steps.length) h += '<p class="calc" style="margin-top:6px">' + esc(steps[0]) + '</p>';
   const dv = run.dist ? distIn(run.dist) : '', mn = run.sec ? Math.floor(run.sec / 60) : '', sc = run.sec ? run.sec % 60 : '';
@@ -1262,7 +1308,44 @@ function renderStat(){
     if (p.rec.length) parts.push(p.rec.filter((_, i) => r.rec && r.rec[i]).length / p.rec.length);
     const pc = parts.length ? Math.round(parts.reduce((a, b) => a + b, 0) / parts.length * 100) : 0;
     $('#tProg').innerHTML = '<span class="dbar" role="img" aria-label="' + pc + ' percent of the day done"><i style="width:' + pc + '%"' + (pc >= 100 ? ' class="full"' : '') + '></i></span><b>' + pc + '%</b>'; $('#tPct').textContent = parts.length ? ' · ' + pc + '% done' : ''; }
+  renderNext(); renderStreak();
   el.innerHTML = tiles.map(([id, v, l, ok]) => '<button type="button" data-go="' + id + '"' + (ok ? ' class="ok"' : '') + '><b>' + v + '</b><small>' + l + '</small></button>').join('');
+}
+const CHEV_R = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>';
+function nextInfo(){
+  const d = cur, p = planFor(d), r = peek(d) || blankRec(), U = S().units, ls = liftStatus(d), rs = runStatus(d);
+  if (p.ex.length && !ls.fin) {
+    const plan = gymPlan(d, r), it = plan.find(x => r.lifts.filter(L => wkSets(L) && exKey(L.ex) === exKey(x.n)).length < x.s); if (!it) return null;
+    const done = r.lifts.filter(L => wkSets(L) && exKey(L.ex) === exKey(it.n)).length, sg = suggest(it.n, it.rp, done), started = r.gymIn || r.lifts.length;
+    return {go:'secLift', ex:it.n, label:started ? 'Next set' : 'Up next · ' + p.title.split(' + ')[0], title:it.n + (started ? ' · set ' + (done + 1) + ' of ' + it.s : ''), sub:(started ? '' : it.s + ' × ' + it.r + ' · ') + (sg ? 'target ' + (sg.w ? fmtN(sg.w, 2) + ' ' + U.lift + ' × ' : '') + sg.r + (it.rp.sec ? ' s' : '') : started ? it.r + ' reps' : 'first time, pick a starting weight')};
+  }
+  if (p.run && p.run.dist && rs.dist < p.run.dist * 0.95) { const pt = paceTarget(p.run.kind); return {go:'secRun', label:p.ex.length ? 'Next · run' : 'Up next', title:p.run.kind + ' · ' + fmtDist(p.run.dist), sub:rs.dist ? fmtDist(rs.dist) + ' logged so far' : pt ? 'Target pace ' + pt : 'Start the run timer when you head out'}; }
+  const left = p.rec.filter((_, i) => !(r.rec && r.rec[i])).length;
+  if (left) return {go:'secRec', label:'Recovery', title:left + (left === 1 ? ' item' : ' items') + ' left', sub:p.rec.filter((_, i) => !(r.rec && r.rec[i])).slice(0, 2).join(' · ')};
+  if (p.ex.length || p.run || p.rec.length) return {ok:true, label:'Today', title:'All done', sub:'Tomorrow: ' + planFor(addDays(d, 1)).title};
+  return null;
+}
+function renderNext(){
+  const el = $('#tNext'), n = same(cur, TODAY) ? nextInfo() : null; el.hidden = !n; if (!n) return;
+  el.className = 'nextup' + (n.ok ? ' ok' : ''); el.dataset.go = n.go || ''; el.dataset.ex = n.ex || ''; el.disabled = !!n.ok;
+  el.innerHTML = '<span><small>' + esc(n.label) + '</small><b>' + esc(n.title) + '</b><em>' + esc(n.sub) + '</em></span>' + (n.ok ? '' : CHEV_R);
+}
+$('#tNext').addEventListener('click', () => {
+  const el = $('#tNext'), id = el.dataset.go; if (!id) return;
+  if (folds[id] || autoFold[id]) { delete folds[id]; delete autoFold[id]; lsSet('blocks.fold', folds); applyFolds(); }
+  if (el.dataset.ex) { gymActivate(el.dataset.ex, peek(cur) || blankRec()); renderGym(); }
+  const t = (el.dataset.ex && $('.excard.active')) || $('#' + id); t.scrollIntoView({behavior:'smooth', block:el.dataset.ex ? 'center' : 'start'});
+});
+/* Streak: planned sessions logged in a row. Rest days neither count nor break it; today only breaks it once it is over */
+const dayLogged = d => { const r = peek(d); return !!(r && (r.lifts.some(wkSets) || (r.run && r.run.dist))); };
+const dayPlanned = d => { const p = planFor(d); return !!(p.ex.length || p.run); };
+function renderStreak(){
+  const el = $('#tStreak'); let n = 0;
+  for (let i = 0, d = new Date(TODAY); i < 400 && d >= START(); i++, d = addDays(d, -1)) { if (!dayPlanned(d)) continue; if (dayLogged(d)) n++; else if (i > 0) break; }
+  const ws = weekStartOf(cur); let pl = 0, dn = 0;
+  for (let i = 0; i < 7; i++) { const d = addDays(ws, i); if (dayPlanned(d)) { pl++; if (dayLogged(d)) dn++; } }
+  el.hidden = cur < START() || !pl;
+  el.innerHTML = (n >= 2 ? '<span class="hot"><b>' + n + '</b> sessions in a row</span>' : '') + '<span><b>' + dn + ' of ' + pl + '</b> sessions this week</span>';
 }
 let folds = lsGet('blocks.fold', {});
 let autoFold = {};
@@ -1316,6 +1399,13 @@ $('#prevBtn').addEventListener('click', () => goDay(addDays(cur, -1)));
 $('#nextBtn').addEventListener('click', () => goDay(addDays(cur, 1)));
 $('#todayBtn').addEventListener('click', () => goDay(new Date(TODAY)));
 $('#dp').addEventListener('change', e => { if (isKey(e.target.value)) goDay(parseKey(e.target.value)); });
+
+/* Swipe left or right on Today to change day */
+{ let sx = 0, sy = 0, st = 0, ok = false; const v = $('#v-today');
+  v.addEventListener('touchstart', e => { const t = e.touches[0]; ok = e.touches.length === 1 && !e.target.closest('input, textarea, select, .cstep, .seg, svg.exchart'); sx = t.clientX; sy = t.clientY; st = Date.now(); }, {passive:true});
+  v.addEventListener('touchend', e => { if (!ok) return; const t = e.changedTouches[0], dx = t.clientX - sx, dy = t.clientY - sy;
+    if (Math.abs(dx) > 70 && Math.abs(dy) < 45 && Math.abs(dx) > Math.abs(dy) * 2.2 && Date.now() - st < 600) { vib(6); goDay(addDays(cur, dx < 0 ? 1 : -1)); } }, {passive:true});
+}
 
 /* ================= views ================= */
 let view = 'today';
