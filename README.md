@@ -1,8 +1,8 @@
 # Blocks
 
-Gym and run tracker for a weekly hybrid program: push, pull, legs, upper, lower and accessory lifting days, easy, tempo, interval and long runs, a recovery checklist and a daily meal checklist.
+Gym and run tracker for a weekly hybrid program: pull, push, legs, upper and legs lifting days, easy, tempo, interval and long runs, and a recovery checklist.
 
-- Today: the day's session, with exercise cards, -/+ for weight and reps, last-time hints, warm-up and superset sets, a full-screen rest timer, run logging with pace, and recovery and meal checklists
+- Today: the day's session, with exercise cards, -/+ for weight and reps, last-time hints, warm-up and superset sets, a full-screen rest timer, run logging with pace, and a recovery checklist
 - Week: each day's progress and weekly totals
 - Progress: weekly running distance, sets per muscle, lift records and recent sessions
 - Setup: edit the program, units, rest timer, appearance, cloud sync and backup

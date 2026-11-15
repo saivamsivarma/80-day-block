@@ -16,7 +16,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&family=IBM+Plex+Mono:wght@500&family=Onest:wght@400;500;600&display=swap">
 <style>
-/* Layout: one narrow column. Today = the day's session top to bottom (lift, run, recovery, meals); day nav and tabs docked at the bottom for thumb reach */
+/* Layout: one narrow column. Today = the day's session top to bottom (lift, run, recovery); day nav and tabs docked at the bottom for thumb reach */
 :root{
   --bg:#F2F4F7; --surface:#FFFFFF; --surface-2:#E9EDF3; --line:#DCE2EA; --box-line:#B9C2D0;
   --fg:#111620; --muted:#5A6476; --faint:#B3BBC8;
@@ -180,7 +180,7 @@ button.blkhead{width:100%;text-align:left}
 .rfbig{height:96px;font-size:22px;border-radius:22px}
 .rfrow{display:grid;grid-template-columns:2fr 1fr;gap:10px}
 .rfrow .btn{height:56px}
-.wkcards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:8px}
+.wkcards{display:grid;grid-template-columns:minmax(0,1fr);gap:8px;margin-top:8px}
 .wkcards button{display:flex;flex-direction:column;gap:3px;padding:12px 14px;border-radius:14px;background:var(--ink);color:var(--ink-fg);text-align:left}
 .wkcards b{font-size:15px;font-weight:600}
 .wkcards small{font-size:12px;color:var(--ink-sub);line-height:1.3}
@@ -190,16 +190,7 @@ button.blkhead{width:100%;text-align:left}
 .sgroup.solo{margin-top:0}
 .sgroup.solo>h2{font-family:var(--font-display);font-size:30px;font-weight:700;color:var(--fg);letter-spacing:-.02em;margin:0 0 14px}
 .bars.none{display:block;height:auto}
-.macro{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-bottom:10px}
-.macro>div{display:flex;flex-direction:column;gap:6px;padding:10px 12px;border-radius:14px;background:var(--surface);border:1px solid var(--line)}
-.mlbl{font-family:var(--font-data);font-size:13px;color:var(--muted);display:flex;flex-direction:column}
-.mlbl b{color:var(--fg);font-size:17px;font-weight:600}
-.mlbl small{font-family:var(--font-body);font-size:12px}
-.mbar{height:6px;border-radius:4px;background:var(--surface-2);overflow:hidden}
-.mbar i{display:block;height:100%;background:var(--good);border-radius:4px}
-.meal3{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;padding-bottom:12px;border-bottom:1px solid var(--line)}
-.meal3>.field{grid-column:1/-1}
-.meal3 textarea{min-height:60px}
+
 .card{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:14px}
 .plannote{font-size:14px;color:var(--muted);padding:12px 14px;border-radius:14px;background:var(--surface-2)}
 
@@ -371,8 +362,6 @@ button.blkhead{width:100%;text-align:left}
 .pex .inp.text{font-size:15px}
 .pex .x{width:34px;height:34px}
 .pexhead{display:grid;grid-template-columns:minmax(0,1fr) 54px 84px 34px;gap:6px;font-size:12px;color:var(--muted);font-weight:500}
-.meal2{display:grid;grid-template-columns:96px minmax(0,1fr);gap:8px;align-items:center}
-.meal2 span{font-size:13px;color:var(--muted);font-weight:500}
 
 /* Dock */
 .dock{position:fixed;left:0;right:0;bottom:0;z-index:10;background:var(--dock);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom,0px)}
@@ -463,11 +452,6 @@ button.blkhead{width:100%;text-align:left}
       <button class="blkhead" type="button" data-fold="secRec" aria-expanded="true"><h2>Recovery</h2><span id="recMeta"></span><svg class="fchev" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>
       <div id="recBox"></div>
     </section>
-    <section class="blk" id="secMeals">
-      <button class="blkhead" type="button" data-fold="secMeals" aria-expanded="true"><h2>Nutrition</h2><span id="mealMeta"></span><svg class="fchev" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>
-      <div class="macro" id="mealMac"></div>
-      <ul class="chk" id="mealBox"></ul>
-    </section>
     <div class="daytools btnrow" id="tTools"></div>
   </section>
 
@@ -480,7 +464,7 @@ button.blkhead{width:100%;text-align:left}
       <button class="navbtn" type="button" id="wkNext" aria-label="Next week"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
     </div>
     <div class="wktot" id="wkTot"></div>
-    <div class="wkcards"><button type="button" id="wkReview"><b>Week review</b><small>Sessions, miles, weight and records</small></button><button type="button" id="wkGroc"><b>Grocery list</b><small>Everything this week's meals need</small></button></div>
+    <div class="wkcards"><button type="button" id="wkReview"><b>Week review</b><small>Sessions, miles, weight and records</small></button></div>
     <ul class="wklist" id="wkList"></ul>
     <div class="btnrow" style="margin-top:14px"><button class="btn" type="button" id="wkEdit">Edit program</button></div>
   </section>
@@ -504,7 +488,7 @@ button.blkhead{width:100%;text-align:left}
       </div>
       <div class="subbar" id="setSubBar" hidden><button class="backbtn" type="button" id="setBack"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>Setup</button></div>
       <div class="sgroup"><h2>Program</h2><div class="sbox">
-        <button class="navrow" type="button" id="openEditor"><span>Edit workouts, runs and meals<small>Change exercises, sets, reps and the meal plan for each day</small></span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>
+        <button class="navrow" type="button" id="openEditor"><span>Edit workouts and runs<small>Change exercises, sets, reps and runs for each day</small></span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>
         <label class="urow"><span>Week 1 starts</span><input class="inp" id="startDate" type="date" style="width:auto"></label>
         <div class="urow"><span>Deload week</span><span id="deloadSeg"></span></div>
         <label class="urow"><span>Goal weight (<span id="goalU"></span>)</span><input class="inp" id="goalW" type="number" inputmode="decimal" min="0" step="any" style="width:96px;text-align:center" placeholder="none"></label>
@@ -521,7 +505,7 @@ button.blkhead{width:100%;text-align:left}
       </div></div>
       <div class="sgroup"><h2>Install on your phone</h2><div class="sbox"><p class="calc">iPhone: open this page in Safari, tap Share, then Add to Home Screen. Android: open the browser menu and tap Install app.</p></div></div>
       <div class="sgroup"><h2>Erase</h2><div class="sbox">
-        <p class="calc">Deletes every workout, run and meal check on this phone. The program itself stays.</p>
+        <p class="calc">Deletes every workout, run and weigh-in on this phone. The program itself stays.</p>
         <div class="btnrow"><button class="btn small danger" type="button" id="eraseAll">Erase all data</button></div>
       </div></div>
     </div>
@@ -608,62 +592,34 @@ const UP_SVG = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 15l6-6 6
 let TODAY = new Date(); TODAY.setHours(0, 0, 0, 0);
 
 /* ================= program ================= */
-const MEAL_LABELS = ['Breakfast', 'Snack', 'Lunch', 'Dinner', 'Night snack'];
 const DAY_NAMES = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
-/* Lean bulk for 67 kg → 70 kg, 5'11": about 3,150 kcal/day on average (training days ~3,200, long run ~3,450, rest ~2,750), ~180 g protein, carb-heavy for running.
-   Meals built from what's at home: eggs, whey, A2 milk, rice, sweet potato, frozen triple-berry blend, frozen veg mix, plus chicken breast and 93/7 ground turkey.
-   Each meal is [text, kcal, protein g]; numbers are estimates (whole A2 milk, raw meat weights, baked sweet potato). */
-const MEAL = {
-  bStd:['3 eggs scrambled with 1 cup frozen veg mix, 350 g sweet potato hash, 1 cup A2 milk', 741, 37, {eggs:3, veg:1, sp:350, milk:1}],
-  bSat:['3 eggs scrambled with 1 cup frozen veg mix, 400 g sweet potato hash, 1 cup A2 milk. Eat 2–3 h before the run', 786, 38, {eggs:3, veg:1, sp:400, milk:1}],
-  bRest:['3 eggs scrambled with 1 cup frozen veg mix, 250 g sweet potato hash, 1 cup A2 milk', 651, 35, {eggs:3, veg:1, sp:250, milk:1}],
-  shake:['Shake after training: 1 scoop whey, 2 cups A2 milk, 1½ cups frozen berries', 525, 42, {whey:1, milk:2, berries:1.5}],
-  shakeRun:['Right after the run: 1 scoop whey, 2 cups A2 milk, 1½ cups frozen berries', 525, 42, {whey:1, milk:2, berries:1.5}],
-  snackRest:['2 hard-boiled eggs, 1 cup berries, 1 cup A2 milk', 364, 22, {eggs:2, berries:1, milk:1}],
-  riceChicken:['Chicken rice bowl: 5 oz chicken breast, 2½ cups cooked rice, 1 cup veg mix', 742, 46, {chicken:5, rice:2.5, veg:1}],
-  riceChickenBig:['Chicken rice bowl: 5 oz chicken breast, 3 cups cooked rice, 1 cup veg mix', 845, 48, {chicken:5, rice:3, veg:1}],
-  riceTurkey:['Turkey fried rice: 5 oz 93/7 ground turkey, 2½ cups cooked rice, 1 cup veg mix', 785, 41, {turkey:5, rice:2.5, veg:1}],
-  spChicken:['Sheet-pan chicken: 5 oz chicken breast, 400 g sweet potato, 1 cup veg mix', 590, 43, {chicken:5, sp:400, veg:1}],
-  spTurkey:['Turkey skillet: 5 oz 93/7 ground turkey, 400 g sweet potato cubes, 1 cup veg mix', 633, 38, {turkey:5, sp:400, veg:1}],
-  spTurkeyBig:['Turkey skillet: 5 oz 93/7 ground turkey, 500 g sweet potato cubes, 1 cup veg mix', 723, 40, {turkey:5, sp:500, veg:1}],
-  spTurkeyR:['Turkey skillet: 5 oz 93/7 ground turkey, 300 g sweet potato, 1 cup veg mix', 543, 36, {turkey:5, sp:300, veg:1}],
-  pudding:['Rice pudding: 1½ cups cooked rice simmered in 1½ cups A2 milk, ½ cup berries on top', 568, 19, {rice:1.5, milk:1.5, berries:0.5}],
-  puddingS:['Rice pudding: 1 cup cooked rice simmered in 1½ cups A2 milk, ½ cup berries on top', 465, 17, {rice:1, milk:1.5, berries:0.5}]
-};
-const day = (...ks) => ({meals:ks.map(k => MEAL[k][0]), mac:ks.map(k => [MEAL[k][1], MEAL[k][2]])});
 const ex = (n, s, r, g) => g ? {n, s, r, g} : {n, s, r};
 const DEFAULT_PROGRAM = [
-  {title:'Upper A + Easy run', focus:'Heavy upper: chest, back, shoulders, arms',
-   ex:[ex('Incline DB press', 4, '6–8'), ex('Weighted pull-up', 4, '6–8'), ex('Seated DB shoulder press', 3, '8–10'), ex('Chest-supported row', 4, '8–10'), ex('Cable lateral raise', 3, '12–15'), ex('Rope triceps pushdown', 3, '10–12'), ex('EZ bar curl', 3, '8–10')],
-   run:{kind:'Easy run', dist:5, note:'Zone 2. Conversational pace, aerobic base.'}, rec:[], note:'',
-   ...day('bStd', 'shake', 'riceChicken', 'spTurkey', 'pudding')},
-  {title:'Lower A + Tempo run', focus:'Heavy lower: quads, hamstrings, calves, abs',
-   ex:[ex('Barbell back squat', 4, '6–8'), ex('Romanian deadlift', 4, '8–10'), ex('Leg press', 3, '10–12'), ex('Seated leg curl', 3, '10–12'), ex('Standing calf raise', 4, '12–15'), ex('Hanging knee raise', 3, '12–15')],
-   run:{kind:'Tempo run', dist:4.5, note:'Controlled discomfort. Steady hard effort. Lift first, or split the two by several hours.'}, rec:[], note:'',
-   ...day('bStd', 'shake', 'riceTurkey', 'spChicken', 'pudding')},
-  {title:'Recovery', focus:'No lift, no run',
-   ex:[], run:null, rec:['8–10k steps', '15–20 min mobility'], note:'Recover hard so the next two sessions hit.',
-   ...day('bRest', 'snackRest', 'riceChicken', 'spTurkeyR', 'puddingS')},
-  {title:'Upper B + Interval run', focus:'Upper volume: chest, back, delts, arms',
-   ex:[ex('Flat machine chest press', 4, '8–10'), ex('Wide grip lat pulldown', 4, '8–10'), ex('Single arm cable row', 3, '10–12'), ex('Cable lateral raise', 3, '12–15'), ex('Rear delt fly', 3, '12–15'), ex('Overhead cable triceps extension', 3, '10–12'), ex('Hammer curl', 3, '10–12')],
-   run:{kind:'Intervals', dist:4, note:'Warm up: 1 mi easy, Zone 1–2\nMain set: 6 × 400 m at 5K pace, 90 s walk/jog between\nCool down: 1 mi easy'}, rec:[], note:'',
-   ...day('bStd', 'shake', 'riceTurkey', 'spChicken', 'pudding')},
-  {title:'Lower B + Easy run', focus:'Lower volume: quads, glutes, hamstrings, abs',
+  {title:'Pull + Easy run', focus:'Back, rear delts, biceps',
+   ex:[ex('Weighted pull-up', 4, '6–8'), ex('Chest-supported row', 4, '8–10'), ex('Wide grip lat pulldown', 3, '10–12'), ex('Rear delt fly', 3, '12–15'), ex('EZ bar curl', 3, '8–10'), ex('Hammer curl', 3, '10–12')],
+   run:{kind:'Easy run', dist:5, note:'Zone 2. Conversational pace, aerobic base.'}, rec:[], note:''},
+  {title:'Push + Tempo run', focus:'Chest, shoulders, triceps',
+   ex:[ex('Incline DB press', 4, '6–8'), ex('Flat machine chest press', 3, '8–10'), ex('Seated DB shoulder press', 3, '8–10'), ex('Cable lateral raise', 4, '12–15'), ex('Rope triceps pushdown', 3, '10–12'), ex('Overhead cable triceps extension', 3, '10–12')],
+   run:{kind:'Tempo run', dist:4.5, note:'Controlled discomfort. Steady hard effort. Lift first, or split the two by several hours.'}, rec:[], note:''},
+  {title:'Legs A', focus:'Heavy legs: quads, hamstrings, calves, abs',
+   ex:[ex('Barbell back squat', 4, '6–8'), ex('Romanian deadlift', 3, '8–10'), ex('Leg press', 3, '10–12'), ex('Seated leg curl', 3, '10–12'), ex('Standing calf raise', 4, '12–15'), ex('Hanging knee raise', 3, '12–15')],
+   run:null, rec:[], note:'No run today. Put everything into the lifts.'},
+  {title:'Upper + Interval run', focus:'Upper volume: chest, back, delts, arms',
+   ex:[ex('Flat machine chest press', 3, '8–10'), ex('Single arm cable row', 3, '10–12'), ex('Seated DB shoulder press', 3, '10–12'), ex('Wide grip lat pulldown', 3, '10–12'), ex('Cable lateral raise', 3, '12–15'), ex('Rope triceps pushdown', 3, '10–12'), ex('EZ bar curl', 3, '10–12')],
+   run:{kind:'Intervals', dist:4, note:'Warm up: 1 mi easy, Zone 1–2\nMain set: 6 × 400 m at 5K pace, 90 s walk/jog between\nCool down: 1 mi easy'}, rec:[], note:''},
+  {title:'Legs B', focus:'Leg volume: quads, glutes, hamstrings, abs',
    ex:[ex('Hack squat', 4, '8–10'), ex('Romanian deadlift', 3, '8–10'), ex('Walking lunges', 3, '10 each leg'), ex('Seated leg curl', 3, '10–12'), ex('Standing calf raise', 4, '12–15'), ex('Cable crunch', 4, '12–15')],
-   run:{kind:'Easy run', dist:3.75, note:'Zone 2. Conversational pace.'}, rec:[], note:'',
-   ...day('bStd', 'shake', 'riceChicken', 'spTurkey', 'pudding')},
+   run:null, rec:[], note:'No run today.'},
+  {title:'Recovery + Reset', focus:'Low-stress day before the long run',
+   ex:[], run:null, rec:['8–10k steps', '20–30 min mobility', 'Sauna or cold plunge', 'Light stretching', 'Hydration and sleep focus'], note:'No lift, no run. Walk, move, recover.'},
   {title:'Long run', focus:'Zone 2, easy the whole way',
-   ex:[], run:{kind:'Long run', dist:8.5, note:'Zone 2, easy the whole way.'}, rec:['10 min stretching after the run'], note:'No lifting today.',
-   ...day('bSat', 'shakeRun', 'riceChickenBig', 'spTurkeyBig', 'pudding')},
-  {title:'Recovery + Reset', focus:'Low-stress day. Reset the system.',
-   ex:[], run:null, rec:['8–10k steps', '20–30 min mobility', 'Sauna or cold plunge', 'Light stretching', 'Hydration and sleep focus'], note:'No lift, no hard run. Walk, move, recover, and set up the next training week.',
-   ...day('bRest', 'snackRest', 'riceChicken', 'spTurkeyR', 'puddingS')}
+   ex:[], run:{kind:'Long run', dist:8.5, note:'Zone 2, easy the whole way.'}, rec:['10 min stretching after the run'], note:'No lifting today.'}
 ];
-const PROGRAM_VERSION = 3; /* 2 = upper/lower/upper/lower split; 3 = cycle counts from the start date (Tue Nov 10) */
+const PROGRAM_VERSION = 4; /* 2 = upper/lower split; 3 = cycle counts from the start date; 4 = pull/push/legs/upper/legs, week starts Mon Nov 9, meals removed */
 const RUN_KINDS = ['Easy run', 'Tempo run', 'Intervals', 'Long run', 'Recovery run'];
 const dowOf = d => (d.getDay() + 6) % 7;
 const program = () => S().program || DEFAULT_PROGRAM;
-/* The 7-day cycle is counted from the start date: day 1 of every week is the first program day (Upper A) */
+/* The 7-day cycle is counted from the start date: day 1 of every week is the first program day (Pull) */
 const baseIdx = d => ((dayDiff(parseKey(S().start), d) % 7) + 7) % 7;
 /* A pushed-back session stores a per-date override */
 const planIdx = d => { const o = S().ov[key(d)]; return Number.isInteger(o) ? o : baseIdx(d); };
@@ -685,7 +641,7 @@ const COMPOUND = /(squat|deadlift|bench|shoulder press|overhead press|chest pres
 
 /* ================= storage ================= */
 const KEY = 'blocks.v2', TKEY = 'blocks.timers', THEME_KEY = 'blocks.theme', SYNC_KEY = 'blocks.sync';
-const DEFAULT_START = '2026-11-10';
+const DEFAULT_START = '2026-11-09';
 const blankSettings = () => ({u:0, start:DEFAULT_START, units:{lift:'lb', dist:'mi', body:'kg'}, goal:70, deload:6, ov:{}, rest:120, autoRest:true, notify:false, exset:{}, program:null, pv:PROGRAM_VERSION});
 const blankDoc = () => ({version:7, settings:blankSettings(), days:{}});
 function cleanLift(L){
@@ -722,9 +678,7 @@ function cleanProgram(p){
       title:str(x.title, 40, D.title), focus:str(x.focus, 80, ''), note:str(x.note, 300, ''),
       ex:Array.isArray(x.ex) ? x.ex.filter(e => e && typeof e.n === 'string' && e.n.trim()).slice(0, 20).map(e => { const o = {n:e.n.trim().slice(0, 60), s:Math.min(10, Math.max(1, parseInt(e.s, 10) || 3)), r:String(e.r || '8–12').slice(0, 20)}; if (typeof e.g === 'string' && e.g.trim()) o.g = e.g.trim().slice(0, 30); return o; }) : [],
       run:x.run && typeof x.run === 'object' ? {kind:str(x.run.kind, 30, 'Easy run'), dist:posNum(x.run.dist) || 0, note:str(x.run.note, 300, '')} : null,
-      rec:Array.isArray(x.rec) ? x.rec.filter(t => typeof t === 'string' && t.trim()).map(t => t.trim().slice(0, 80)).slice(0, 8) : [],
-      meals:Array.isArray(x.meals) ? MEAL_LABELS.map((_, j) => typeof x.meals[j] === 'string' ? x.meals[j].slice(0, 200) : '') : D.meals.slice(),
-      mac:MEAL_LABELS.map((_, j) => { const m = Array.isArray(x.mac) && Array.isArray(x.mac[j]) ? x.mac[j] : null; return m ? [Math.max(0, Math.min(5000, parseInt(m[0], 10) || 0)), Math.max(0, Math.min(500, parseInt(m[1], 10) || 0))] : [0, 0]; })
+      rec:Array.isArray(x.rec) ? x.rec.filter(t => typeof t === 'string' && t.trim()).map(t => t.trim().slice(0, 80)).slice(0, 8) : []
     };
   });
 }
@@ -783,7 +737,7 @@ let data, migrated = false;
 })();
 const S = () => data.settings;
 /* A new built-in split replaces a program saved under an older one */
-function upgradeProgram(){ if ((S().pv || 1) < PROGRAM_VERSION) { if ((S().pv || 1) < 2) S().program = null; if (S().start === '2026-11-09') S().start = DEFAULT_START; S().pv = PROGRAM_VERSION; S().u = Date.now(); lsSet(KEY, data); return true; } return false; }
+function upgradeProgram(){ if ((S().pv || 1) < PROGRAM_VERSION) { S().program = null; S().ov = {}; if (S().start === '2026-11-10') S().start = DEFAULT_START; S().pv = PROGRAM_VERSION; S().u = Date.now(); lsSet(KEY, data); return true; } return false; }
 upgradeProgram();
 const START = () => parseKey(S().start);
 const weekNo = d => Math.floor(dayDiff(START(), d) / 7) + 1;
@@ -1181,7 +1135,7 @@ $('#runBox').addEventListener('change', e => {
 });
 $('#runBox').addEventListener('focusin', e => { if (e.target.matches('input[type=number]')) setTimeout(() => { try { e.target.select(); } catch (x) {} }, 0); });
 
-/* ================= recovery + meals ================= */
+/* ================= recovery ================= */
 function checkList(items, ticks, kind, labels){
   return items.map((t, i) => '<li><button type="button" data-chk="' + kind + '" data-i="' + i + '" aria-pressed="' + !!(ticks && ticks[i]) + '"><span class="box">' + CHECK_SVG + '</span><span class="tx">' + (labels ? '<small>' + labels[i] + '</small>' : '') + '<span>' + esc(t) + '</span></span></button></li>').join('');
 }
@@ -1193,25 +1147,13 @@ function renderRec(){
   $('#recMeta').textContent = n + ' of ' + p.rec.length;
   $('#recBox').innerHTML = '<ul class="chk">' + checkList(p.rec, r.rec, 'rec') + '</ul>';
 }
-function renderMeals(){
-  const p = planFor(cur), r = peek(cur) || blankRec(), idx = p.meals.map((t, i) => i).filter(i => p.meals[i].trim());
-  $('#secMeals').hidden = !idx.length;
-  const n = idx.filter(i => r.meals && r.meals[i]).length, mac = i => (p.mac && p.mac[i]) || [0, 0];
-  $('#mealMeta').textContent = n + ' of ' + idx.length + ' meals';
-  const tk = idx.reduce((a, i) => a + mac(i)[0], 0), tp = idx.reduce((a, i) => a + mac(i)[1], 0);
-  const ek = idx.reduce((a, i) => a + (r.meals && r.meals[i] ? mac(i)[0] : 0), 0), ep = idx.reduce((a, i) => a + (r.meals && r.meals[i] ? mac(i)[1] : 0), 0);
-  const bar = (v, t, l, u) => '<div><span class="mlbl"><b>' + fmtN(v, 0) + '</b> / ' + fmtN(t, 0) + ' ' + u + '<small>' + l + '</small></span><span class="mbar"><i style="width:' + (t ? Math.min(100, v / t * 100) : 0).toFixed(1) + '%"></i></span></div>';
-  $('#mealMac').hidden = !tk;
-  $('#mealMac').innerHTML = tk ? bar(ek, tk, 'calories', 'kcal') + bar(ep, tp, 'protein', 'g') : '';
-  $('#mealBox').innerHTML = idx.map(i => checkList([p.meals[i]], {0:r.meals && r.meals[i]}, 'meals', [MEAL_LABELS[i] + (mac(i)[0] ? ' · ' + fmtN(mac(i)[0], 0) + ' kcal · ' + mac(i)[1] + ' g protein' : '')]).replace('data-i="0"', 'data-i="' + i + '"')).join('');
-}
 document.addEventListener('click', e => {
   const b = e.target.closest('[data-chk]'); if (!b) return;
   const f = b.dataset.chk, i = b.dataset.i, r = rec(cur), o = r[f] || (r[f] = {});
   if (o[i]) delete o[i]; else { o[i] = true; vib(8); }
   if (!Object.keys(o).length) delete r[f];
   save(); b.setAttribute('aria-pressed', !!o[i]);
-  if (f === 'rec') renderRec(); else renderMeals();
+  renderRec();
   renderStat();
 });
 
@@ -1223,16 +1165,12 @@ function renderStat(){
   const rs = runStatus(d);
   if (rs.planned || rs.dist) tiles.push(['secRun', rs.plan ? fmtN(distIn(rs.dist), 2) + '/' + fmtN(distIn(rs.plan), 2) : fmtN(distIn(rs.dist), 2), S().units.dist + ' run', rs.plan ? rs.dist >= rs.plan * 0.95 : rs.dist > 0]);
   if (p.rec.length) { const n = p.rec.filter((_, i) => r.rec && r.rec[i]).length; tiles.push(['secRec', n + '/' + p.rec.length, 'recovery', n === p.rec.length]); }
-  const mi = p.meals.map((t, i) => i).filter(i => p.meals[i].trim());
-  if (mi.length) { const n = mi.filter(i => r.meals && r.meals[i]).length, mp = i => (p.mac && p.mac[i] ? p.mac[i][1] : 0), tp = mi.reduce((a, i) => a + mp(i), 0);
-    tiles.push(['secMeals', tp ? mi.reduce((a, i) => a + (r.meals && r.meals[i] ? mp(i) : 0), 0) + '/' + tp : n + '/' + mi.length, tp ? 'g protein' : 'meals', n === mi.length]); }
   const el = $('#tStat'); el.style.setProperty('--n', tiles.length || 1);
   if ($('#tWeek').childElementCount) renderStrip();
   { const parts = [];
     if (ls.tgt) parts.push(ls.fin ? 1 : Math.min(1, ls.done / ls.tgt));
     if (rs.plan) parts.push(Math.min(1, rs.dist / rs.plan));
     if (p.rec.length) parts.push(p.rec.filter((_, i) => r.rec && r.rec[i]).length / p.rec.length);
-    if (mi.length) parts.push(mi.filter(i => r.meals && r.meals[i]).length / mi.length);
     const pc = parts.length ? Math.round(parts.reduce((a, b) => a + b, 0) / parts.length * 100) : 0;
     $('#tProg').innerHTML = '<span class="dbar" role="img" aria-label="' + pc + ' percent of the day done"><i style="width:' + pc + '%"' + (pc >= 100 ? ' class="full"' : '') + '></i></span><b>' + pc + '%</b>'; $('#tPct').textContent = parts.length ? ' · ' + pc + '% done' : ''; }
   el.innerHTML = tiles.map(([id, v, l, ok]) => '<button type="button" data-go="' + id + '"' + (ok ? ' class="ok"' : '') + '><b>' + v + '</b><small>' + l + '</small></button>').join('');
@@ -1245,11 +1183,10 @@ function computeAuto(){
   if (ls.tgt && (r.gOut || (ls.fin && !same(d, TODAY)))) done.secLift = 1;
   if (rs.plan && rs.dist >= rs.plan * 0.95 && (rs.sec || !same(d, TODAY))) done.secRun = 1;
   if (p.rec.length && p.rec.every((_, i) => r.rec && r.rec[i])) done.secRec = 1;
-  const mi = p.meals.map((t, i) => i).filter(i => p.meals[i].trim()); if (mi.length && mi.every(i => r.meals && r.meals[i])) done.secMeals = 1;
   autoFold = done;
-  for (const id of ['secLift', 'secRun', 'secRec', 'secMeals']) $('#' + id).classList.toggle('alldone', !!done[id]);
+  for (const id of ['secLift', 'secRun', 'secRec']) $('#' + id).classList.toggle('alldone', !!done[id]);
 }
-function applyFolds(){ for (const id of ['secLift', 'secRun', 'secRec', 'secMeals']) { const el = $('#' + id), f = !!folds[id] || !!autoFold[id]; el.classList.toggle('folded', f); el.querySelector('.blkhead').setAttribute('aria-expanded', !f); } }
+function applyFolds(){ for (const id of ['secLift', 'secRun', 'secRec']) { const el = $('#' + id), f = !!folds[id] || !!autoFold[id]; el.classList.toggle('folded', f); el.querySelector('.blkhead').setAttribute('aria-expanded', !f); } }
 document.querySelectorAll('[data-fold]').forEach(b => b.addEventListener('click', () => { const id = b.dataset.fold; if (folds[id] || autoFold[id]) { delete folds[id]; delete autoFold[id]; } else folds[id] = 1; lsSet('blocks.fold', folds); applyFolds(); }));
 applyFolds();
 $('#tStat').addEventListener('click', e => { const b = e.target.closest('[data-go]'); if (!b) return; if (folds[b.dataset.go] || autoFold[b.dataset.go]) { delete folds[b.dataset.go]; delete autoFold[b.dataset.go]; lsSet('blocks.fold', folds); applyFolds(); } $('#' + b.dataset.go).scrollIntoView({behavior:'smooth', block:'start'}); });
@@ -1265,7 +1202,7 @@ function renderToday(){
   $('#tFocus').hidden = !p.focus && !p.note;
   runOpen = false;
   bwEdit = false; renderBw(); renderTools(); computeAuto(); applyFolds();
-  renderStat(); renderGym(); renderRun(); renderRec(); renderMeals();
+  renderStat(); renderGym(); renderRun(); renderRec();
   $('#dpLabel').textContent = same(d, TODAY) ? 'Today, ' + fMD.format(d) : fShort.format(d);
   $('#dp').value = key(d);
   $('#todayBtn').disabled = same(d, TODAY);
@@ -1276,7 +1213,6 @@ function dayState(d){
   const ls = liftStatus(d); if (ls.tgt) parts.push(ls.fin ? 1 : ls.done ? 0.5 : 0);
   const rs = runStatus(d); if (rs.plan) parts.push(rs.dist >= rs.plan * 0.95 ? 1 : rs.dist ? 0.5 : 0);
   if (p.rec.length) { const n = p.rec.filter((_, i) => r.rec && r.rec[i]).length; parts.push(n === p.rec.length ? 1 : n ? 0.5 : 0); }
-  const mi = p.meals.filter(t => t.trim()).length; if (mi) { const n = Object.keys(r.meals || {}).length; parts.push(n >= mi ? 1 : n ? 0.5 : 0); }
   if (!parts.length) return '';
   return parts.every(x => x === 1) ? 'done' : parts.some(x => x > 0) ? 'part' : '';
 }
@@ -1314,7 +1250,6 @@ function dayTags(d){
   if (ls.tgt || ls.done) tags.push('<span class="tag' + cls(ls.fin, ls.done > 0) + '">' + (ls.fin ? 'Lift ✓' : ls.done ? 'Lift ' + ls.done + '/' + ls.tgt : 'Lift ' + ls.tgt + ' sets') + '</span>');
   if (rs.planned || rs.dist) { const ok = rs.plan ? rs.dist >= rs.plan * 0.95 : rs.dist > 0; tags.push('<span class="tag' + cls(ok, rs.dist > 0) + '">' + (ok ? 'Run ✓ ' + fmtDist(rs.dist) : rs.dist ? 'Run ' + fmtN(distIn(rs.dist), 2) + '/' + fmtDist(rs.plan) : 'Run ' + (rs.plan ? fmtDist(rs.plan) : '')) + '</span>'); }
   if (p.rec.length) { const n = p.rec.filter((_, i) => r.rec && r.rec[i]).length; tags.push('<span class="tag' + cls(n === p.rec.length, n > 0) + '">Recovery ' + n + '/' + p.rec.length + '</span>'); }
-  const mi = p.meals.filter(t => t.trim()).length; if (mi) { const n = Object.keys(r.meals || {}).length; tags.push('<span class="tag' + cls(n >= mi, n > 0) + '">Meals ' + n + '/' + mi + '</span>'); }
   return tags.join('');
 }
 function renderWeek(){
@@ -1322,21 +1257,20 @@ function renderWeek(){
   const ws = addDays(START(), wkOff * 7), days = Array.from({length:7}, (_, i) => addDays(ws, i));
   $('#wkLabel').textContent = 'Week ' + (wkOff + 1) + ' · ' + fMD.format(days[0]) + ' – ' + fMD.format(days[6]) + (isDeload(days[0]) ? ' · Deload' : '');
   $('#wkPrev').disabled = wkOff <= -12;
-  let lt = 0, ld = 0, rp = 0, rd = 0, mt = 0, md = 0;
+  let lt = 0, ld = 0, rp = 0, rd = 0, sets = 0;
   for (const d of days) {
     const p = planFor(d), r = peek(d) || blankRec(), ls = liftStatus(d), rs = runStatus(d);
     if (p.ex.length) { lt++; if (ls.fin) ld++; }
     rp += rs.plan; rd += rs.dist;
-    const mi = p.meals.filter(t => t.trim()).length; mt += mi; md += Math.min(mi, Object.keys(r.meals || {}).length);
+    sets += r.lifts.filter(wkSets).length;
   }
-  $('#wkTot').innerHTML = '<div><b>' + ld + '/' + lt + '</b><small>lift sessions</small></div><div><b>' + fmtN(distIn(rd), 1) + '/' + fmtN(distIn(rp), 1) + '</b><small>' + S().units.dist + ' run</small></div><div><b>' + (mt ? Math.round(md / mt * 100) : 0) + '%</b><small>meals on plan</small></div>';
+  $('#wkTot').innerHTML = '<div><b>' + ld + '/' + lt + '</b><small>lift sessions</small></div><div><b>' + fmtN(distIn(rd), 1) + '/' + fmtN(distIn(rp), 1) + '</b><small>' + S().units.dist + ' run</small></div><div><b>' + sets + '</b><small>sets logged</small></div>';
   $('#wkList').innerHTML = days.map(d => '<li><button type="button" data-day="' + key(d) + '"' + (same(d, TODAY) ? ' class="today"' : '') + '><span class="wkd"><small>' + fWd.format(d) + '</small><b>' + d.getDate() + '</b></span><span class="wkm"><b>' + esc(planFor(d).title) + '</b><span class="tags">' + dayTags(d) + '</span></span></button></li>').join('');
 }
 $('#wkPrev').addEventListener('click', () => { wkOff--; renderWeek(); });
 $('#wkNext').addEventListener('click', () => { wkOff++; renderWeek(); });
 $('#wkList').addEventListener('click', e => { const b = e.target.closest('[data-day]'); if (!b) return; cur = parseKey(b.dataset.day); setView('today'); });
 $('#wkReview').addEventListener('click', () => openReview(wkOff));
-$('#wkGroc').addEventListener('click', () => openGroceries(wkOff));
 $('#wkEdit').addEventListener('click', () => { setView('set'); setSec = 0; applySetSec(); openEditor(planIdx(TODAY)); });
 
 /* ================= progress ================= */
@@ -1434,7 +1368,7 @@ let edDay = 0;
 function editProgram(){ if (!S().program) S().program = JSON.parse(JSON.stringify(DEFAULT_PROGRAM)); return S().program; }
 function openEditor(i){ edDay = i == null ? planIdx(TODAY) : i; $('#setMain').hidden = true; $('#editor').hidden = false; renderEditor(); window.scrollTo(0, 0); }
 function closeEditor(){ $('#setMain').hidden = false; $('#editor').hidden = true; }
-const SET_DESC = {'Program':'Workouts, meals, start date, deload, goal weight', 'Units':'lb or kg, miles or km', 'Rest timer':'Default rest, auto-start, notifications', 'Appearance':'Light or dark, accent color', 'Cloud sync':'Keep your devices in step', 'Backup':'Copy, download or restore your data', 'Install on your phone':'Add Blocks to your Home Screen', 'Erase':'Delete all workout data'};
+const SET_DESC = {'Program':'Workouts, runs, start date, deload, goal weight', 'Units':'lb or kg, miles or km', 'Rest timer':'Default rest, auto-start, notifications', 'Appearance':'Light or dark, accent color', 'Cloud sync':'Keep your devices in step', 'Backup':'Copy, download or restore your data', 'Install on your phone':'Add Blocks to your Home Screen', 'Erase':'Delete all workout data'};
 const setGroups = [...document.querySelectorAll('#setMain > .sgroup')];
 let setSec = null;
 $('#setMenu').innerHTML = setGroups.map((g, i) => { const t = g.querySelector('h2').textContent; return '<button class="navrow" type="button" data-sec="' + i + '"><span>' + t + '<small>' + (SET_DESC[t] || '') + '</small></span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>'; }).join('');
@@ -1460,7 +1394,6 @@ function renderEditor(){
       (p.run ? '<label class="field">Distance (' + U + ')<input class="inp" data-pr="dist" type="number" inputmode="decimal" min="0" step="any" value="' + (p.run.dist ? distIn(p.run.dist) : '') + '"></label><label class="field">Details (one step per line, like "Main set: 6 × 400 m")<textarea data-pr="note" rows="3" maxlength="300">' + esc(p.run.note) + '</textarea></label>' : '') +
     '</div></div>' +
     '<div class="sgroup"><h2>Recovery checklist</h2><div class="sbox"><label class="field">One item per line<textarea data-pf="rec" rows="3">' + esc(p.rec.join('\n')) + '</textarea></label></div></div>' +
-    '<div class="sgroup"><h2>Meals</h2><div class="sbox">' + MEAL_LABELS.map((l, i) => '<div class="meal3"><label class="field">' + l + '<textarea data-pm="' + i + '" rows="2" maxlength="200" placeholder="Leave empty to skip">' + esc(p.meals[i] || '') + '</textarea></label><label class="pfl"><span>kcal</span><input class="inp" data-pk="' + i + '" type="number" inputmode="numeric" min="0" value="' + ((p.mac && p.mac[i] && p.mac[i][0]) || '') + '"></label><label class="pfl"><span>Protein g</span><input class="inp" data-pp="' + i + '" type="number" inputmode="numeric" min="0" value="' + ((p.mac && p.mac[i] && p.mac[i][1]) || '') + '"></label></div>').join('') + '</div></div>' +
     '<div class="btnrow" style="margin-top:18px"><button class="btn small" type="button" id="edResetDay">Reset ' + cycName(edDay) + ' to the original plan</button><button class="btn small danger" type="button" id="edResetAll">Reset whole program</button></div>';
 }
 $('#editor').addEventListener('click', e => {
@@ -1482,8 +1415,6 @@ $('#editor').addEventListener('change', e => {
     if (!P.run) return;
     if (t.dataset.pr === 'dist') { const v = parseFloat(t.value); P.run.dist = v > 0 ? distOut(v) : 0; } else P.run.note = t.value.trim();
   }
-  else if (t.dataset.pm) P.meals[Number(t.dataset.pm)] = t.value.trim();
-  else if (t.dataset.pk || t.dataset.pp) { if (!P.mac) P.mac = MEAL_LABELS.map(() => [0, 0]); const i = Number(t.dataset.pk || t.dataset.pp), v = Math.max(0, parseInt(t.value, 10) || 0); P.mac[i][t.dataset.pk ? 0 : 1] = v; }
   else return;
   saveSettings(); toast('Saved');
 });
@@ -1632,7 +1563,7 @@ function renderBwPanel(){
   let advice = 'Keep logging. The weekly rate shows after two weeks of weigh-ins.';
   if (rate != null && goal && now < goal - 0.05) {
     const lo = U === 'lb' ? 0.2 : 0.1, hi = U === 'lb' ? 0.9 : 0.4;
-    advice = rate < lo ? 'Gaining slower than planned. Add about 200 kcal a day, such as ½ cup more rice at lunch.' : rate > hi ? 'Gaining faster than a lean bulk needs. Trim about 200 kcal, such as a smaller night pudding.' : 'On pace for a lean bulk. Keep eating the same.';
+    advice = rate < lo ? 'Gaining slower than planned. Eat a little more each day, about 200 kcal.' : rate > hi ? 'Gaining faster than a lean bulk needs. Trim about 200 kcal a day.' : 'On pace for a lean bulk. Keep eating the same.';
   } else if (goal && now && now >= goal - 0.05) advice = 'You\'re at your goal weight. Hold here or set a new goal in Setup.';
   $('#pBwSub').textContent = 'Last 8 weeks, zoomed to your range. Dots are weigh-ins, the line is the 7-day average.';
   box.innerHTML = '<svg class="bwchart" viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="Bodyweight over the last 8 weeks">' +
@@ -1755,35 +1686,6 @@ $('#tTools').addEventListener('click', e => {
   else if (b.id === 'toolReview') openReview(Math.floor(dayDiff(START(), cur) / 7));
 });
 
-/* ================= groceries ================= */
-const GROC = [['chicken', 'Chicken breast'], ['turkey', '93/7 ground turkey'], ['eggs', 'Eggs'], ['sp', 'Sweet potatoes'], ['rice', 'Rice'], ['milk', 'A2 milk'], ['berries', 'Frozen berry blend'], ['veg', 'Frozen veg mix'], ['whey', 'Whey protein']];
-const ING_BY_TEXT = {}; for (const k of Object.keys(MEAL)) ING_BY_TEXT[MEAL[k][0]] = MEAL[k][3];
-function grocAmount(k, v){
-  if (k === 'chicken' || k === 'turkey') return fmtN(v / 16, 1) + ' lb raw';
-  if (k === 'eggs') return v + ' (' + fmtN(Math.ceil(v / 12), 0) + ' dozen)';
-  if (k === 'sp') return fmtN(v / 453.6, 0) + ' lb (' + fmtN(v / 1000, 1) + ' kg)';
-  if (k === 'rice') return fmtN(Math.ceil(v / 3 * 2) / 2, 1) + ' cups uncooked';
-  if (k === 'milk') return fmtN(Math.ceil(v / 16 * 4) / 4, 2) + ' gallons';
-  if (k === 'berries') return fmtN(v * 140 / 453.6, 1) + ' lb (' + fmtN(v, 1) + ' cups)';
-  if (k === 'veg') return fmtN(v * 90 / 453.6, 1) + ' lb (' + fmtN(v, 0) + ' cups)';
-  return fmtN(v, 1) + ' scoops';
-}
-function openGroceries(off){
-  const ws = addDays(START(), off * 7), tot = {}, other = new Set(), wkKey = key(ws);
-  for (let i = 0; i < 7; i++) for (const t of planFor(addDays(ws, i)).meals) { if (!t.trim()) continue; const ing = ING_BY_TEXT[t]; if (!ing) { other.add(t); continue; } for (const [k, v] of Object.entries(ing)) tot[k] = (tot[k] || 0) + v; }
-  let st = lsGet('blocks.groc', {}); if (st.wk !== wkKey) st = {wk:wkKey, t:{}};
-  const rows = GROC.filter(([k]) => tot[k]);
-  openExSheet('Groceries · Week ' + (off + 1), '<p class="calc">Everything the meal plan uses from ' + fMD.format(ws) + ' to ' + fMD.format(addDays(ws, 6)) + '. Tick off what you already have or have bought.</p>' +
-    (rows.length ? '<ul class="chk" id="grocList" data-wk="' + wkKey + '">' + rows.map(([k, l]) => '<li><button type="button" data-groc="' + k + '" aria-pressed="' + !!st.t[k] + '"><span class="box">' + CHECK_SVG + '</span><span class="tx"><span>' + l + '</span><small>' + grocAmount(k, tot[k]) + '</small></span></button></li>').join('') + '</ul>' : '<p class="rnote">No ingredients to total.</p>') +
-    (other.size ? '<p class="rgroup">Not counted (meals you edited)</p><p class="calc">' + [...other].map(esc).join('<br>') + '</p>' : ''));
-}
-$('#exSheet').addEventListener('click', e => {
-  const b = e.target.closest('[data-groc]'); if (!b) return;
-  const wk = $('#grocList').dataset.wk; let st = lsGet('blocks.groc', {}); if (st.wk !== wk) st = {wk, t:{}};
-  if (st.t[b.dataset.groc]) delete st.t[b.dataset.groc]; else st.t[b.dataset.groc] = 1;
-  lsSet('blocks.groc', st); b.setAttribute('aria-pressed', !!st.t[b.dataset.groc]); vib(6);
-});
-
 /* ================= weekly review ================= */
 function weekStats(off){
   const ws = addDays(START(), off * 7), o = {ws, lt:0, ld:0, sets:0, vol:0, rp:0, rd:0, mt:0, md:0, prs:[], bw:null};
@@ -1792,7 +1694,6 @@ function weekStats(off){
     const d = addDays(ws, i), p = planFor(d), r = peek(d) || blankRec(), ls = liftStatus(d), rs = runStatus(d);
     if (p.ex.length) { o.lt++; if (ls.fin) o.ld++; }
     o.sets += r.lifts.filter(wkSets).length; o.vol += volOf(r.lifts); o.rp += rs.plan; o.rd += rs.dist;
-    const mi = p.meals.filter(t => t.trim()).length; o.mt += mi; o.md += Math.min(mi, Object.keys(r.meals || {}).length);
     const pr = idx.prs[key(d)]; if (pr) for (const j of pr) if (r.lifts[j]) o.prs.push(r.lifts[j]);
   }
   o.bw = bwAvg(addDays(ws, 6));
@@ -1809,13 +1710,11 @@ function openReview(off){
   const miss = [];
   if (a.lt && a.ld < a.lt) miss.push((a.lt - a.ld) + (a.lt - a.ld === 1 ? ' lift session' : ' lift sessions') + ' missed');
   if (a.rp && a.rd < a.rp * 0.95) miss.push(fmtDist(a.rp - a.rd) + ' of running short');
-  if (a.mt && a.md / a.mt < 0.8) miss.push('meals on plan ' + Math.round(a.md / a.mt * 100) + '%');
   openExSheet('Week ' + (off + 1) + ' review', '<p class="calc">' + fMD.format(a.ws) + ' – ' + fMD.format(addDays(a.ws, 6)) + (isDeload(a.ws) ? ' · deload week' : '') + '</p>' +
     '<ul class="rlist rev"><li><span class="nm">Lift sessions</span><span class="pt"><b>' + a.ld + ' of ' + a.lt + '</b></span></li>' +
     '<li><span class="nm">Working sets</span><span class="pt"><b>' + a.sets + '</b>' + delta(a.sets, b.sets) + '</span></li>' +
     '<li><span class="nm">Volume</span><span class="pt"><b>' + fmtN(a.vol, 0) + ' ' + U.lift + '</b>' + delta(a.vol, b.vol) + '</span></li>' +
     '<li><span class="nm">Running</span><span class="pt"><b>' + fmtN(distIn(a.rd), 1) + ' of ' + fmtN(distIn(a.rp), 1) + ' ' + U.dist + '</b>' + delta(a.rd, b.rd) + '</span></li>' +
-    '<li><span class="nm">Meals on plan</span><span class="pt"><b>' + (a.mt ? Math.round(a.md / a.mt * 100) : 0) + '%</b></span></li>' +
     '<li><span class="nm">Bodyweight, 7-day avg</span><span class="pt"><b>' + bwLine + '</b></span></li></ul>' +
     (a.prs.length ? '<p class="rgroup">New records</p><ul class="rlist">' + a.prs.map(L => '<li><span class="pr">PR</span><span class="nm">' + esc(L.ex) + '</span><span class="pt"><b>' + setTxt(L) + '</b></span></li>').join('') + '</ul>' : '') +
     (best.length ? '<p class="rgroup">Went well</p><p class="calc">' + best.join(' ') + '</p>' : '') +
