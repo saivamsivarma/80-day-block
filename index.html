@@ -561,7 +561,7 @@ button.blkhead{width:100%;text-align:left}
       </div></div>
       <div class="sgroup"><h2>Marathon build</h2><div class="sbox">
         <div class="urow"><span>Grow the runs each week</span><span id="rampSw"></span></div>
-        <p class="calc">Every run gets about 10% longer each week, with a lighter week every fourth. The long run tops out at 20 miles, other runs at 1.6 times their starting distance.</p>
+        <p class="calc">Every run gets about 10% longer each week, with a lighter week every fourth. The long run tops out at 20 miles, the other runs at about 6.</p>
         <label class="urow"><span>Race date</span><input class="inp" id="raceDate" type="date" style="width:auto"></label>
         <p class="calc" id="rampOut"></p>
       </div></div>
@@ -667,27 +667,27 @@ let TODAY = new Date(); TODAY.setHours(0, 0, 0, 0);
 const DAY_NAMES = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 const ex = (n, s, r, g) => g ? {n, s, r, g} : {n, s, r};
 const DEFAULT_PROGRAM = [
-  {title:'Pull + Easy run', focus:'Back, rear delts, biceps',
-   ex:[ex('Weighted pull-up', 4, '6–8'), ex('Chest-supported row', 4, '8–10'), ex('Wide grip lat pulldown', 3, '10–12'), ex('Rear delt fly', 3, '12–15'), ex('EZ bar curl', 3, '8–10'), ex('Hammer curl', 3, '10–12')],
-   run:{kind:'Easy run', dist:5, note:'Zone 2. Conversational pace, aerobic base.'}, rec:[], note:''},
-  {title:'Push + Tempo run', focus:'Chest, shoulders, triceps',
-   ex:[ex('Incline DB press', 4, '6–8'), ex('Flat machine chest press', 3, '8–10'), ex('Seated DB shoulder press', 3, '8–10'), ex('Cable lateral raise', 4, '12–15'), ex('Rope triceps pushdown', 3, '10–12'), ex('Overhead cable triceps extension', 3, '10–12')],
-   run:{kind:'Tempo run', dist:4.5, note:'Controlled discomfort. Steady hard effort. Lift first, or split the two by several hours.'}, rec:[], note:''},
-  {title:'Legs A', focus:'Heavy legs: quads, hamstrings, calves, abs',
-   ex:[ex('Barbell back squat', 4, '6–8'), ex('Romanian deadlift', 3, '8–10'), ex('Leg press', 3, '10–12'), ex('Seated leg curl', 3, '10–12'), ex('Standing calf raise', 4, '12–15'), ex('Hanging knee raise', 3, '12–15')],
+  {title:'Pull + Easy run', focus:'Back, rear delts, triceps',
+   ex:[ex('Weighted pull-up', 4, '6–8'), ex('Chest-supported row', 4, '8–10'), ex('Wide grip lat pulldown', 3, '10–12'), ex('Rear delt fly', 3, '12–15'), ex('Rope triceps pushdown', 3, '10–12'), ex('Overhead cable triceps extension', 3, '10–12')],
+   run:{kind:'Easy run', dist:1.5, note:'Run/walk: jog 2 min, walk 1 min, repeat. Keep it slow enough to talk. Lift first.'}, rec:[], note:''},
+  {title:'Push', focus:'Chest, shoulders, biceps',
+   ex:[ex('Incline DB press', 4, '6–8'), ex('Flat machine chest press', 3, '8–10'), ex('Seated DB shoulder press', 3, '8–10'), ex('Cable lateral raise', 4, '12–15'), ex('EZ bar curl', 3, '8–10'), ex('Hammer curl', 3, '10–12')],
+   run:null, rec:[], note:'No run today.'},
+  {title:'Legs A', focus:'Heavy legs and abs: quads, hamstrings, calves',
+   ex:[ex('Barbell back squat', 4, '6–8'), ex('Romanian deadlift', 3, '8–10'), ex('Leg press', 3, '10–12'), ex('Seated leg curl', 3, '10–12'), ex('Standing calf raise', 4, '12–15'), ex('Hanging knee raise', 4, '12–15')],
    run:null, rec:[], note:'No run today. Put everything into the lifts.'},
-  {title:'Upper + Interval run', focus:'Upper volume: chest, back, delts, arms',
+  {title:'Upper + Easy run', focus:'Upper volume: chest, back, delts, arms',
    ex:[ex('Flat machine chest press', 3, '8–10'), ex('Single arm cable row', 3, '10–12'), ex('Seated DB shoulder press', 3, '10–12'), ex('Wide grip lat pulldown', 3, '10–12'), ex('Cable lateral raise', 3, '12–15'), ex('Rope triceps pushdown', 3, '10–12'), ex('EZ bar curl', 3, '10–12')],
-   run:{kind:'Intervals', dist:4, note:'Warm up: 1 mi easy, Zone 1–2\nMain set: 6 × 400 m at 5K pace, 90 s walk/jog between\nCool down: 1 mi easy'}, rec:[], note:''},
-  {title:'Legs B', focus:'Leg volume: quads, glutes, hamstrings, abs',
+   run:{kind:'Easy run', dist:2, note:'Run/walk: jog 2 min, walk 1 min, repeat. Keep it slow enough to talk. Lift first.'}, rec:[], note:''},
+  {title:'Legs B', focus:'Leg volume and abs: quads, glutes, hamstrings',
    ex:[ex('Hack squat', 4, '8–10'), ex('Romanian deadlift', 3, '8–10'), ex('Walking lunges', 3, '10 each leg'), ex('Seated leg curl', 3, '10–12'), ex('Standing calf raise', 4, '12–15'), ex('Cable crunch', 4, '12–15')],
    run:null, rec:[], note:'No run today.'},
   {title:'Recovery + Reset', focus:'Low-stress day before the long run',
    ex:[], run:null, rec:['8–10k steps', '20–30 min mobility', 'Sauna or cold plunge', 'Light stretching', 'Hydration and sleep focus'], note:'No lift, no run. Walk, move, recover.'},
-  {title:'Long run', focus:'Zone 2, easy the whole way',
-   ex:[], run:{kind:'Long run', dist:8.5, note:'Zone 2, easy the whole way.'}, rec:['10 min stretching after the run'], note:'No lifting today.'}
+  {title:'Long run', focus:'Easy the whole way, walk breaks are fine',
+   ex:[], run:{kind:'Long run', dist:2.5, note:'Run/walk: jog 2 min, walk 1 min, repeat. Slower than you think. Finishing is the goal, not pace.'}, rec:['10 min stretching after the run'], note:'No lifting today.'}
 ];
-const PROGRAM_VERSION = 4; /* 2 = upper/lower split; 3 = cycle counts from the start date; 4 = pull/push/legs/upper/legs, week starts Mon Nov 9, meals removed */
+const PROGRAM_VERSION = 5; /* 4 = pull/push/legs/upper/legs, week starts Mon Nov 9, meals removed; 5 = push has biceps, pull has triceps, beginner run volume */
 const RUN_KINDS = ['Easy run', 'Tempo run', 'Intervals', 'Long run', 'Recovery run'];
 const dowOf = d => (d.getDay() + 6) % 7;
 const program = () => S().program || DEFAULT_PROGRAM;
@@ -701,7 +701,7 @@ const RACE_DAY = {title:'Marathon', focus:'Race day', ex:[], run:{kind:'Race', d
 function rampDist(run, d){
   const rs = S().ramp; if (!rs || !run.dist) return run.dist;
   const ws = weekStartOf(d), n = Math.floor(dayDiff(parseKey(rs), ws) / 7); if (n < 0) return run.dist;
-  const cap = run.kind === 'Long run' ? Math.max(run.dist, 20) : run.dist * 1.6, b = m => m - Math.floor((m + 1) / 4), at = m => Math.min(cap, run.dist * Math.pow(1.1, Math.max(0, b(Math.max(0, m)))));
+  const cap = run.kind === 'Long run' ? Math.max(run.dist, 20) : Math.max(run.dist * 1.6, 6), b = m => m - Math.floor((m + 1) / 4), at = m => Math.min(cap, run.dist * Math.pow(1.1, Math.max(0, b(Math.max(0, m)))));
   const race = S().race ? parseKey(S().race) : null;
   if (race) {
     if (d > race) return run.dist;
