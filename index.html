@@ -670,15 +670,15 @@ const DEFAULT_PROGRAM = [
   {title:'Pull + Easy run', focus:'Back, rear delts, triceps',
    ex:[ex('Weighted pull-up', 4, '6–8'), ex('Chest-supported row', 4, '8–10'), ex('Wide grip lat pulldown', 3, '10–12'), ex('Rear delt fly', 3, '12–15'), ex('Rope triceps pushdown', 3, '10–12'), ex('Overhead cable triceps extension', 3, '10–12')],
    run:{kind:'Easy run', dist:1.5, note:'Run/walk: jog 2 min, walk 1 min, repeat. Keep it slow enough to talk. Lift first.'}, rec:[], note:''},
-  {title:'Push', focus:'Chest, shoulders, biceps',
+  {title:'Push + Interval run', focus:'Chest, shoulders, biceps',
    ex:[ex('Incline DB press', 4, '6–8'), ex('Flat machine chest press', 3, '8–10'), ex('Seated DB shoulder press', 3, '8–10'), ex('Cable lateral raise', 4, '12–15'), ex('EZ bar curl', 3, '8–10'), ex('Hammer curl', 3, '10–12')],
-   run:null, rec:[], note:'No run today.'},
+   run:{kind:'Intervals', dist:1.5, note:'Warm up: 5 min brisk walk, then 0.5 mi easy jog\nMain set: 6 × 200 m brisk, 90 s walk between\nCool down: 5 min walk'}, rec:[], note:''},
   {title:'Legs A', focus:'Heavy legs and abs: quads, hamstrings, calves',
    ex:[ex('Barbell back squat', 4, '6–8'), ex('Romanian deadlift', 3, '8–10'), ex('Leg press', 3, '10–12'), ex('Seated leg curl', 3, '10–12'), ex('Standing calf raise', 4, '12–15'), ex('Hanging knee raise', 4, '12–15')],
    run:null, rec:[], note:'No run today. Put everything into the lifts.'},
-  {title:'Upper + Easy run', focus:'Upper volume: chest, back, delts, arms',
+  {title:'Upper + Tempo run', focus:'Upper volume: chest, back, delts, arms',
    ex:[ex('Flat machine chest press', 3, '8–10'), ex('Single arm cable row', 3, '10–12'), ex('Seated DB shoulder press', 3, '10–12'), ex('Wide grip lat pulldown', 3, '10–12'), ex('Cable lateral raise', 3, '12–15'), ex('Rope triceps pushdown', 3, '10–12'), ex('EZ bar curl', 3, '10–12')],
-   run:{kind:'Easy run', dist:2, note:'Run/walk: jog 2 min, walk 1 min, repeat. Keep it slow enough to talk. Lift first.'}, rec:[], note:''},
+   run:{kind:'Tempo run', dist:2, note:'Warm up: 0.5 mi run/walk\nMain: 1 mi steady, comfortably hard, as few walk breaks as you can\nCool down: 0.5 mi easy'}, rec:[], note:''},
   {title:'Legs B', focus:'Leg volume and abs: quads, glutes, hamstrings',
    ex:[ex('Hack squat', 4, '8–10'), ex('Romanian deadlift', 3, '8–10'), ex('Walking lunges', 3, '10 each leg'), ex('Seated leg curl', 3, '10–12'), ex('Standing calf raise', 4, '12–15'), ex('Cable crunch', 4, '12–15')],
    run:null, rec:[], note:'No run today.'},
@@ -687,7 +687,7 @@ const DEFAULT_PROGRAM = [
   {title:'Long run', focus:'Easy the whole way, walk breaks are fine',
    ex:[], run:{kind:'Long run', dist:2.5, note:'Run/walk: jog 2 min, walk 1 min, repeat. Slower than you think. Finishing is the goal, not pace.'}, rec:['10 min stretching after the run'], note:'No lifting today.'}
 ];
-const PROGRAM_VERSION = 5; /* 4 = pull/push/legs/upper/legs, week starts Mon Nov 9, meals removed; 5 = push has biceps, pull has triceps, beginner run volume */
+const PROGRAM_VERSION = 6; /* 6 = hybrid: four runs a week (easy, intervals, tempo, long) at beginner distances; 4 = pull/push/legs/upper/legs, week starts Mon Nov 9, meals removed; 5 = push has biceps, pull has triceps, beginner run volume */
 const RUN_KINDS = ['Easy run', 'Tempo run', 'Intervals', 'Long run', 'Recovery run'];
 const dowOf = d => (d.getDay() + 6) % 7;
 const program = () => S().program || DEFAULT_PROGRAM;
